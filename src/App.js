@@ -1,39 +1,51 @@
 // App.js
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Tab1 from './components/Tab1/index';
-import Tab2 from './components/Tab2/index';
-import Tab3 from './components/Tab3/index';
-import MobileTabs from './components/Tabs/index';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
+
+import Redirect  from './components/Config/Redirect';
+import ProtectedRoute from './components/Config/ProtectedRoute';
+import UnAuth from './components/Config/UnAuth';
+
+import ConfirmAuth from './components/ConfirmAuth';
 import AppLauncher from './components/AppLauncher';
-import PageNotFound from "./components/Error/Page404";
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Welcome from './components/Welcome';
+import PageNotFound from "./components/Error/PageNotFound";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function App() {
+const App = () => {
 
-  { /* const [user] = useAuthState(auth);  */}
+	  return (
+		<Router>
+		  <div className="App">
+			<Routes>
 
-   
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<AppLauncher />} />
-          <Route path="/tab1" element={<Tab1 />} />
-          <Route path="/tab2" element={<Tab2 />} />
-          <Route path="/tab3" element={<Tab3 />} />
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-        <MobileTabs />
-        <Welcome />
-      </div>
-    </Router>
-  );
+			  {/* Redirection à partir de la racine */}
+			  <Route path="/" element={<Redirect />} /> 
+
+			  {/* Authentification publique */}
+			  <Route path="/auth" element={<ConfirmAuth />} />
+			  <Route path="/un" element={<UnAuth />} />
+			  
+
+			  {/* Routes protégées */}
+			  
+			    <Route 
+					path="/app" 
+					element={
+					  <ProtectedRoute>
+						<AppLauncher />
+					  </ProtectedRoute>
+				} 
+			    />
+
+			  {/* Page non trouvée */}
+			  <Route path="*" element={<PageNotFound />} />
+			</Routes>
+		  </div>
+		</Router>
+	  );
+
 }
 
 export default App;
