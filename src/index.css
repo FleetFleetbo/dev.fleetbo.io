@@ -1,5 +1,4 @@
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -11,3 +10,115 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+  .logo {
+	width: 190px;
+  }
+
+  .App-Container {
+    height: 90vh;
+	display: flex;
+	text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .loader {
+    height: 90vh;
+	display: flex;
+	text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+
+  .Brand {
+    font-weight: 900;
+    margin: 20px 0;
+  }
+  
+  .desc {
+	color: #414141;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 23px;
+  }
+
+  .go {
+    text-decoration: none;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
+    font-weight: 600;
+    width: 100%;
+    font-size: 17px;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 15px 0;
+    border-radius: 25px;
+    transition: 0.3s;
+    line-height: 1;
+    color: #fff;
+    background: #099e51;
+    border: 2px solid #099e51 ;
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+    cursor: pointer;
+  }
+
+  .go:hover {
+    color: #fff;
+    background: rgb(246, 150, 15) ;
+    border: 2px solid rgb(255, 172, 57) ;
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .custom-alert {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000;
+
+    /* Flexbox pour disposition en ligne */
+    display: flex;
+    flex-direction: row; /* Disposition en ligne (horizontale) */
+    align-items: center; /* Centrer verticalement */
+    justify-content: center; /* Centrer horizontalement */
+    gap: 20px; /* Espacement entre les colonnes (boutons) */
+ }
+
+ .custom-alert button {
+	  display: block;
+	  width: 100%;
+	  margin-bottom: 10px;
+	  padding: 10px;
+	  font-size: 18px;
+	  color: #333;
+	  background-color: #f8f9fa;
+	  border: none;
+	  border-radius: 5px;
+	  cursor: pointer;
+  }
+
+  .custom-alert button:hover {
+	  background-color: #e9ecef;
+  }
+
+  .custom-alert button:last-child {
+	  color: red;
+	  font-weight: bold;
+  }
+
