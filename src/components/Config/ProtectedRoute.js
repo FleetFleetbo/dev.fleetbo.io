@@ -26,14 +26,11 @@ import { Spinner } from 'react-bootstrap';
 		useEffect(() => {
 			if (isLogged === 'none') {
 			  navigate('/un'); 
-			  alert('No such document initial!');
 			  setIsLoading(false);
 			  return; 
 			}
 			if (isLogged === 'false') {
-			  console.log('Not logged!');
 			  navigate('/auth'); 
-			  alert('No such document initial!');
 			  setIsLoading(false);
 			  return;
 			}

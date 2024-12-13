@@ -9,13 +9,12 @@ const Redirect = () => {
 	const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement
     const [loading, setLoading] = useState(false); // Pour gérer l'état de chargement des données
 	
-	/**
+
     useEffect(() => {
 		const timer = setTimeout(() => {
 		  const storedData = localStorage.getItem('userId'); // Simulez la récupération de données stockées
 		  const loggedIn   = localStorage.getItem('logged'); // Simulez la récupération de données stockées
 		  if (storedData) {
-			console.log('Redirect App'); 
 			if(loggedIn === 'true') {
 			   navigate('/app'); 
 			   setIsLoading(false);
@@ -27,7 +26,7 @@ const Redirect = () => {
 		}, 500); 
 		return () => clearTimeout(timer);
 	}, [navigate]); 
-	**/
+
 
 	// Pendant le chargement, vous pouvez afficher un indicateur visuel de chargement ou simplement retourner null
     if (isLoading) {
