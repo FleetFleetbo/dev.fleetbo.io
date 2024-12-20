@@ -1,52 +1,48 @@
 // App.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
-
-import Redirect  from './components/Config/Redirect';
+import { useNavigate } from 'react-router-dom';
+import Launch  from './components/Config/Redirect';
 import ProtectedRoute from './components/Config/ProtectedRoute';
 import PageNotFound from "./components/Config/PageNotFound";
 import UnAuth from './components/Config/UnAuth';
-
-import Login from './components/login';
-import Welcome from './components/welcome';
+import Login    from './components/Auth/login';
+import Register from './components/Auth/register';
+import Welcome  from './components/welcome';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => {
+	
+    useEffect(() => {	
+	    if (!window.Android) {  
+		    localStorage.clear(); 
+			sessionStorage.clear(); 
+			window.location.href = 'https://fleetbo.com';	
+		} 
+	}, []);
 
-	  return (
-		<Router>
-		  <div className="App">
-			<Routes>
+    return (
+		<div className="App">
+		  <Routes>
+			{/* Racine */}
+			<Route path="/" element={<Launch />} />
 
-			  {/* Redirection à partir de la racine */}
-			  <Route path="/" element={<Redirect />} /> 
-
-			  {/* Authentification publique */}
-			  <Route path="/auth" element={<Login />} />
-			  <Route path="/un" element={<UnAuth />} />
-			  
-
-			  {/* Routes protégées */}
-			  
-			    <Route 
-					path="/app" 
-					element={
-					  <ProtectedRoute>
-						<Welcome />
-					  </ProtectedRoute>
-				} 
-			    />
-
-			  {/* Page non trouvée */}
-			  <Route path="*" element={<PageNotFound />} />
-			</Routes>
-		  </div>
-		</Router>
-	  );
-
-}
+			{/* Authentification */}
+			<Route path="/login" element={<Login />} />
+			<Route path="/register" element={<Register />} />
+			<Route path="/un" element={<UnAuth />} />
+			
+			{/* Home */}
+            <Route path="/welcome" element={<Welcome />} />
+			
+			{/* Page non trouvée */}
+			<Route path="*" element={<PageNotFound />} />
+		  </Routes>
+		</div>
+    );
+};
 
 export default App;
