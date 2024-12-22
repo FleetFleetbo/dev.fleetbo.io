@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import './../../index.css';
-import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from 'react-router-dom';
 
 const Un = () => {
     useEffect(() => {	 
 		    localStorage.clear(); 
 			sessionStorage.clear(); 
-			window.location.href = 'https://fleetbo.com';	
+			window.location.href = 'https://fleetbo.io';	
 	}, []);
 	return (
         <div className='App'>
