@@ -1,9 +1,7 @@
 // App.js
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Route, Routes  } from 'react-router-dom';
 import Launch  from './components/Config/Redirect';
-import ProtectedRoute from './components/Config/ProtectedRoute';
 import PageNotFound from "./components/Config/PageNotFound";
 import UnAuth from './components/Config/UnAuth';
 import Login    from './components/Auth/login';

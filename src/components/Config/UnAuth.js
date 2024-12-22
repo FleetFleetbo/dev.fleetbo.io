@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import './../../index.css';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 
 const Un = () => {
-
-  const navigate = useNavigate();
-  const [show, setShow] = useState(true);
-
-  const handleClose = async (e) => {
-      setShow(false);
-      navigate('/tab1');
-  }
-
+    useEffect(() => {	 
+		    localStorage.clear(); 
+			sessionStorage.clear(); 
+			window.location.href = 'https://fleetbo.com';	
+	}, []);
 	return (
         <div className='App'>
 		    
