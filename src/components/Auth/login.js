@@ -92,8 +92,26 @@ const Login = () => {
 							<p className='text-secondary'>{appInfo.description}</p>
 						</div>
 						<form onSubmit={handleSubmit}> 
+<<<<<<< HEAD
 							<div className="pb-2 mt-3" >
 								<button className='go' style={{ width: '100%' }} >
+=======
+<<<<<<< HEAD
+							<div className="mb-3" >
+								<input type="password" className="form-control fs-5 p-2" 
+								       id="password" value={password} onChange={(e) => setPassword(e.target.value)} 
+									   placeholder="Mot de passe" style={{ width: '100%' }} />
+							</div>
+							<div className="pb-2 mt-3" >
+								<button className='go' style={{ width: '100%' }} >
+									{loading ? 'Chargement...' : 'Se connecter'}
+								</button>
+							</div>
+						</form>
+=======
+							<div className="col-md-4 pb-2 mt-3" >
+								<button className='go' style={{ width: '100%' }} >
+>>>>>>> 6a1e78927fb5b735d45e6801231d4396d277dfeb
 									{loading ? 'Chargement...' : 'Se connecter'} <i className="fa fa-arrow-right ms-1"></i>
 								</button>
 							</div>
@@ -103,6 +121,10 @@ const Login = () => {
 								Confirmez votre connexion
 							</span>
 						</div>
+<<<<<<< HEAD
+=======
+>>>>>>> 3c9c7e7 (MAJ 13/01/2025)
+>>>>>>> 6a1e78927fb5b735d45e6801231d4396d277dfeb
                     </div>
                 ) : (
                     <h3 className="text-danger">Erreur: Informations de l'application non disponibles</h3>
