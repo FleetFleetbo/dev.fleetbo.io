@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 
 
-const Login = () => {
+const ResetPassword = () => {
 
     const navigate = useNavigate();
 
@@ -11,9 +11,30 @@ const Login = () => {
 	const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
 	const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données
     const [password, setPassword]   = useState('');
-	
 
-    const handleSubmit = async (e) => {
+
+    useEffect(() => {
+        // Récupérer les données depuis localStorage dès que le composant est monté
+        const data = localStorage.getItem('AppInfo');
+        setTimeout(() => {
+			if (data) {
+				// Parsez les données JSON récupérées
+				const parsedData = JSON.parse(data);
+				
+				// Vérifiez la valeur de 'logged' et mettez à jour l'état
+				if (parsedData.logged === true) {
+					navigate('/welcome');
+				} else {
+					setAppInfo(parsedData);
+				}
+				setIsLoading(false);  // Mettre à jour le statut de chargement
+			} else {
+				setIsLoading(false);  // Pas de données, terminer le chargement
+			}
+		}, 1000); 
+    }, [appInfo, navigate]);	
+	
+	const handleSubmit = async (e) => {
 		e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
 		setLoading(true);    // Active le chargement
 
@@ -36,29 +57,6 @@ const Login = () => {
 		}
     };
 
-
-    useEffect(() => {
-        // Récupérer les données depuis localStorage dès que le composant est monté
-        const data = localStorage.getItem('AppInfo');
-        setTimeout(() => {
-			if (data) {
-				// Parsez les données JSON récupérées
-				const parsedData = JSON.parse(data);
-				
-				// Vérifiez la valeur de 'logged' et mettez à jour l'état
-				if (parsedData.logged === true) {
-					navigate('/welcome');
-				} else {
-					setAppInfo(parsedData);
-				}
-				setIsLoading(false);  // Mettre à jour le statut de chargement
-			} else {
-				setIsLoading(false);  // Pas de données, terminer le chargement
-			}
-		}, 1000); 
-    }, [appInfo, navigate]);
-
-
     // Pendant le chargement, afficher un spinner
     if (isLoading) {
         return (
@@ -70,7 +68,8 @@ const Login = () => {
                 </div>
             </div>
         );
-    }	
+    }
+	
 
     return (
         <div className='App'>
@@ -87,36 +86,32 @@ const Login = () => {
 								alt="Logo" 
 							/>
 						</div>
-						<div style={{height: '120px', width: '100%' }}>
+						<div className="mb-2" style={{height: '90px', width: '100%' }}>
 							<h3 className='text-dark fw-bold mt-2'>{appInfo.name}</h3>
-							<p className='text-secondary'>{appInfo.description}</p>
+							<p className='text-secondary'>Nouveau mot de passe</p>
 						</div>
 						<form onSubmit={handleSubmit}> 
-<<<<<<< HEAD
 							<div className="mb-3" >
 								<input type="password" className="form-control fs-5 p-2" 
 								       id="password" value={password} onChange={(e) => setPassword(e.target.value)} 
 									   placeholder="Mot de passe" style={{ width: '100%' }} />
 							</div>
+							<div className="mb-3" >
+								<input type="password" className="form-control fs-5 p-2" 
+								       id="password" value={password} onChange={(e) => setPassword(e.target.value)} 
+									   placeholder="Confirm" style={{ width: '100%' }} />
+							</div>
 							<div className="pb-2 mt-3" >
 								<button className='go' style={{ width: '100%' }} >
-									{loading ? 'Chargement...' : 'Se connecter'}
+									{loading ? 'Chargement...' : 'Valider'}
 								</button>
 							</div>
-						</form>
-=======
-							<div className="col-md-4 pb-2 mt-3" >
-								<button className='go' style={{ width: '100%' }} >
-									{loading ? 'Chargement...' : 'Se connecter'} <i className="fa fa-arrow-right ms-1"></i>
-								</button>
+							<div className="pb-2 mt-2" >
+								<Link to="/login" className='fs-6 text-secondary fw-bold btn btn-sm btn-alert' style={{ width: '100%' }} >
+									Retour
+								</Link>
 							</div>
 						</form>
-						<div className="pb-2 mt-2"  >
-							<span className='fs-6 text-secondary fw-bold'  >
-								Confirmez votre connexion
-							</span>
-						</div>
->>>>>>> 3c9c7e7 (MAJ 13/01/2025)
                     </div>
                 ) : (
                     <h3 className="text-danger">Erreur: Informations de l'application non disponibles</h3>
@@ -126,4 +121,4 @@ const Login = () => {
     )
 };
 
-export default Login;
+export default ResetPassword;

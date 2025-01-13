@@ -1,7 +1,13 @@
 // App.js
 import React, { useEffect } from 'react';
+<<<<<<< HEAD
 import { BrowserRouter as Route, Routes  } from 'react-router-dom';
 import Launch  from './components/Config/Redirect';
+=======
+import { BrowserRouter as  Route, Routes  } from 'react-router-dom';
+import Launch  from './components/Config/Redirect';
+//import ProtectedRoute from './components/Config/ProtectedRoute';
+>>>>>>> 3c9c7e7 (MAJ 13/01/2025)
 import PageNotFound from "./components/Config/PageNotFound";
 import UnAuth from './components/Config/UnAuth';
 import Login    from './components/Auth/login';
@@ -18,7 +24,11 @@ const App = () => {
 	    if (!window.Android) {  
 		    localStorage.clear(); 
 			sessionStorage.clear(); 
+<<<<<<< HEAD
 			window.location.href = 'https://fleetbo.com';	
+=======
+			window.location.href = 'https://autre-nom-de-domaine';	
+>>>>>>> 3c9c7e7 (MAJ 13/01/2025)
 		} 
 	}, []);
 

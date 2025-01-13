@@ -1,11 +1,19 @@
 import React, { useEffect } from 'react';
 import './../../index.css';
+<<<<<<< HEAD
+=======
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 3c9c7e7 (MAJ 13/01/2025)
 
 const Un = () => {
     useEffect(() => {	 
 		    localStorage.clear(); 
 			sessionStorage.clear(); 
+<<<<<<< HEAD
 			window.location.href = 'https://fleetbo.io';	
+=======
+			window.location.href = 'https://fleetbo.com';	
+>>>>>>> 3c9c7e7 (MAJ 13/01/2025)
 	}, []);
 	return (
         <div className='App'>
