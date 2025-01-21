@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import './../../index.css';
-import { useNavigate } from 'react-router-dom';
 
 const Un = () => {
         useEffect(() => {	 
