@@ -77,18 +77,15 @@ img {
   .go {
 	text-decoration: none;
 	font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
-	font-weight: 600;
+	font-weight: bold;
 	width: 100%;
-	font-size: 17px;
 	letter-spacing: 1px;
 	display: inline-block;
-	padding: 15px 30px;
-	border-radius: 25px;
+	padding: 15px 35px;
+	border-radius: 35px;
 	transition: 0.3s;
 	line-height: 1;
 	color: #fff;
-	background: #099e51;
-	border: 2px solid #099e51 ;
 	-webkit-animation-delay: 0.3s;
 	animation-delay: 0.3s;
 	cursor: pointer; 
