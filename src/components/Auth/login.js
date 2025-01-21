@@ -13,6 +13,42 @@ const Login = () => {
     const [password, setPassword]   = useState('');
 	
 
+	const connexion = async (e)  => {
+		e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
+		setLoading(true);    // Active le chargement
+
+		try {
+			// Vérifier si l'interface Android est disponible
+			if (window.Android && typeof window.Android.r0023 === 'function') {
+				window.Android.r0023();
+			} else {
+				navigate('/un');
+				localStorage.clear();
+				setLoading(false);
+			}
+		} catch (error) {
+			// En cas d'erreur, affiche le message d'erreur
+			//console.log(`Erreur : ${error.message}`);
+		} finally {
+			// Désactive le chargement après la soumission
+			setLoading(false);
+		}
+    };
+
+	const logout = () => {
+		setIsLoading(true);
+		setTimeout(() => {
+			if (window.Android && typeof window.Android.o00011 === 'function') {
+				window.Android.o00011(() => {
+				  localStorage.clear();
+				});
+			} else {
+				navigate('/un');
+			}
+		}, 1000);
+	};
+	
+
     const handleSubmit = async (e) => {
 		e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
 		setLoading(true);    // Active le chargement
@@ -91,28 +127,10 @@ const Login = () => {
 							<h3 className='text-dark fw-bold mt-2'>{appInfo.name}</h3>
 							<p className='text-secondary'>{appInfo.description}</p>
 						</div>
-						<form onSubmit={handleSubmit}> 
-<<<<<<< HEAD
-							<div className="pb-2 mt-3" >
-								<button className='go' style={{ width: '100%' }} >
-=======
-<<<<<<< HEAD
-							<div className="mb-3" >
-								<input type="password" className="form-control fs-5 p-2" 
-								       id="password" value={password} onChange={(e) => setPassword(e.target.value)} 
-									   placeholder="Mot de passe" style={{ width: '100%' }} />
-							</div>
-							<div className="pb-2 mt-3" >
-								<button className='go' style={{ width: '100%' }} >
-									{loading ? 'Chargement...' : 'Se connecter'}
-								</button>
-							</div>
-						</form>
-=======
-							<div className="col-md-4 pb-2 mt-3" >
-								<button className='go' style={{ width: '100%' }} >
->>>>>>> 6a1e78927fb5b735d45e6801231d4396d277dfeb
-									{loading ? 'Chargement...' : 'Se connecter'} <i className="fa fa-arrow-right ms-1"></i>
+						<form> 
+							<div className="col-md-5 pb-2" >
+								<button className='go' onClick={connexion} style={{ width: '100%' }} >
+							    	{loading ? 'Chargement...' : 'Confirmer'} <i className="fa fa-arrow-right ms-1"></i>
 								</button>
 							</div>
 						</form>
@@ -121,10 +139,10 @@ const Login = () => {
 								Confirmez votre connexion
 							</span>
 						</div>
-<<<<<<< HEAD
-=======
->>>>>>> 3c9c7e7 (MAJ 13/01/2025)
->>>>>>> 6a1e78927fb5b735d45e6801231d4396d277dfeb
+						<div className="pb-2 mt-2"  >
+						     <button onClick={logout} className='btn-logout text-secondary '>  <i className="fa-solid fa-power-off"></i> Quitter</button>
+						</div>Ò
+
                     </div>
                 ) : (
                     <h3 className="text-danger">Erreur: Informations de l'application non disponibles</h3>
