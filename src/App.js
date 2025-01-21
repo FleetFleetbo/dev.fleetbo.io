@@ -17,8 +17,8 @@ const App = () => {
     useEffect(() => {	
 	    if (!window.Android) {  
 		    localStorage.clear(); 
-			sessionStorage.clear(); 
-			window.location.href = 'https://fleetbo.com';	
+		    sessionStorage.clear(); 
+		    window.location.href = 'https://fleetbo.com';	
 		} 
 	}, []);
 
