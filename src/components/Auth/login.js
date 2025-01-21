@@ -5,14 +5,13 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const Login = () => {
 
-    const navigate = useNavigate();
+        const navigate = useNavigate();
 
 	const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement de la page
 	const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
 	const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données
-        const [password, setPassword]   = useState('');
-	
 
+	
 	const connexion = async (e)  => {
 		e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
 		setLoading(true);    // Active le chargement
