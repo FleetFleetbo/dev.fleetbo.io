@@ -18,7 +18,7 @@ const App = () => {
 	    if (!window.Android) {  
 		    localStorage.clear(); 
 		    sessionStorage.clear(); 
-		    window.location.href = 'https://fleetbo.com';	
+		    window.location.href = 'https://fleetbo.io';	
 		} 
 	}, []);
 
