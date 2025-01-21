@@ -1,6 +1,6 @@
 // App.js
 import React, { useEffect } from 'react';
-import { BrowserRouter as  Route, Routes  } from 'react-router-dom';
+import { Route, Routes  } from 'react-router-dom';
 import Launch  from './components/Config/Redirect';
 import PageNotFound from "./components/Config/PageNotFound";
 import UnAuth from './components/Config/UnAuth';
