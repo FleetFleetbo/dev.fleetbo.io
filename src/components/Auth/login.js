@@ -92,7 +92,7 @@ const Login = () => {
                     <div className='p-4 d-flex flex-column justify-content-center align-items-center text-center'>
                         <br />
 						 <div className="d-flex justify-content-center align-items-center" 
-						    style={{ width: '100px', height: '100px' }}>
+						    style={{ width: '150px', height: '150px' }}>
 							<img 
 								src={`${process.env.PUBLIC_URL}/logo.png`} 
 								className='rounded-circle bg-light' 
