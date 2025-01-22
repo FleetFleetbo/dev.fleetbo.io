@@ -64,7 +64,7 @@ const Welcome = () => {
 								<h4 className='fw-bold' >{appInfo.name}</h4>
 							</div>
 							<div className="d-flex float-right">
-								<button onClick={logout} className='logout'>
+								<button onClick={logout} className='btn-logout'>
 								    <i className="fa-solid fa-power-off"></i>
 								</button>
 							</div>
