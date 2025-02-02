@@ -29,6 +29,16 @@ const Login = () => {
         }
     };
 
+    // Fonction appelée par Kotlin pour retourner le résultat
+    window.onNewDocWithFileResult = (success) => {
+        if (success) {
+            setMessage("Données envoyées avec succès !");
+        } else {
+            setMessage("Erreur lors de l'envoi des données.");
+        }
+        setLoading(false); // Désactiver le chargement
+    };
+
      useEffect(() => {
             // Récupérer les données depuis localStorage dès que le composant est monté
             const data = localStorage.getItem('AppInfo');
