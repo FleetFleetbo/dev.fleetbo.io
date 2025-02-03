@@ -7,9 +7,8 @@ const Login = () => {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement de la page
-	const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
-	const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données
-
+    const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
+    const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
@@ -70,10 +69,7 @@ const Login = () => {
 
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.8 }} // Animation d'apparition
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
             className="parent-container"
         >
             <div className="container">
