@@ -55,8 +55,7 @@ const Login = () => {
     }, [appInfo, navigate]);
 
 
-    // Pendant le chargement, vous pouvez afficher un indicateur visuel de chargement ou simplement retourner null
-	if (isLoading) {
+    if (isLoading) {
         return <div className='parent-container'><><div className="loader">
         </div></> </div>;
     }
