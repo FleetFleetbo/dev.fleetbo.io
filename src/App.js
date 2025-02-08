@@ -32,7 +32,7 @@ function App() {
           <Route path="/welcome" element={<Welcome />} />
           
           {/* Page non trouvée */}
-		    	<Route path="yo" element={<Not />} />
+	  <Route path="*" element={<Not />} />
         </Routes>
       </Router>
     </AnimatePresence>  
