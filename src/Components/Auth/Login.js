@@ -7,10 +7,8 @@ const Login = () => {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement de la page
-	const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
-	const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
-
-    const [message, setMessage]     = useState(); // État pour stocker les données
+    const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
+    const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
 
 
     const handleSubmit = async (e) => {
