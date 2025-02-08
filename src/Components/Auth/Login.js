@@ -43,7 +43,6 @@ const Login = () => {
                     // Vérifiez la valeur de 'logged' et mettez à jour l'état
                     if (parsedData.logged === true) {
                         navigate('/welcome');
-                        setMessage(parsedData.name)
                     } else {
                         setAppInfo(parsedData);
                     }
