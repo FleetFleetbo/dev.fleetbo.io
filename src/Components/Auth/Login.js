@@ -7,8 +7,11 @@ const Login = () => {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement de la page
-    const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
-    const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données
+	const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
+	const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
+
+    const [message, setMessage]     = useState(); // État pour stocker les données
+
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
@@ -16,39 +19,31 @@ const Login = () => {
     
         try {
             if (window.Android && typeof window.Android.s0075 === 'function') {
-                window.Android.s0075(); // ✅ Appelle la fonction Android
+                window.Android.s0075(); //  Appelle la fonction Android
             } else {
                 localStorage.clear();
-                navigate('/un'); // ✅ Redirige si Android n'est pas disponible
+                navigate('/un'); // Redirige si Android n'est pas disponible
             }
         } catch (error) {
-            console.error(`Erreur : ${error.message}`); // ✅ Meilleure gestion des erreurs
+            console.error(`Erreur : ${error.message}`); //  Meilleure gestion des erreurs
         } finally {
-            setTimeout(() => setLoading(false), 1000); // ✅ Ajoute un petit délai pour un effet visuel fluide
+            setTimeout(() => setLoading(false), 1000); // Ajoute un petit délai pour un effet visuel fluide
         }
     };
 
-    // Fonction appelée par Kotlin pour retourner le résultat
-    window.onNewDocWithFileResult = (success) => {
-        if (success) {
-            setMessage("Données envoyées avec succès !");
-        } else {
-            setMessage("Erreur lors de l'envoi des données.");
-        }
-        setLoading(false); // Désactiver le chargement
-    };
-
-     useEffect(() => {
+    useEffect(() => {
             // Récupérer les données depuis localStorage dès que le composant est monté
             const data = localStorage.getItem('AppInfo');
+
             setTimeout(() => {
                 if (data) {
                     // Parsez les données JSON récupérées
                     const parsedData = JSON.parse(data);
-                    
+                 
                     // Vérifiez la valeur de 'logged' et mettez à jour l'état
                     if (parsedData.logged === true) {
                         navigate('/welcome');
+                        setMessage(parsedData.name)
                     } else {
                         setAppInfo(parsedData);
                     }
@@ -91,7 +86,7 @@ const Login = () => {
                     </>
                 ) : (
                     <div>
-                        <p>Informations non disponibles login</p> 
+                        <p>Informations non disponibles login {message}</p> 
                     </div>
                 )}	
             </div>   
