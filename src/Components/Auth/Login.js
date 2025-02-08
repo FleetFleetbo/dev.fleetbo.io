@@ -85,7 +85,7 @@ const Login = () => {
                     </>
                 ) : (
                     <div>
-                        <p>Informations non disponibles login {message}</p> 
+                        <p>Informations non disponibles</p> 
                     </div>
                 )}	
             </div>   
