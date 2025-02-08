@@ -1,43 +1,17 @@
-import React, { useState } from 'react';
-import './css/index.css';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 
-const PageNotFound = () => {
-
-	const navigate = useNavigate();
-	const [show, setShow] = useState(true);
-	const handleClose = async (e) => {
-		  setShow(false);
-		  navigate('/auth');
-	}
+const Not = () => {
 
     return (
-		<div className='App'>
-			<br /> <br /> 
-			<Modal
-				show={show}
-				onHide={handleClose}
-				fullscreen={true}
-				backdrop="static"
-				keyboard={false}
-			>
-				<Modal.Body>
-					<div className='App-Container text-dark'>
-						<div className='text-center'>
-							<h2 className='text-dark fw-bolder'>Error  </h2>
-							<h5 className='text-dark fw-bold'> Not Found </h5>
-						</div>
-						<Button  variant="secondary" className='back btn-secondary' onClick={handleClose}>
-						   Go back
-						</Button>
-					</div>
-				</Modal.Body>
-			</Modal>
-		</div>
+
+	<div className="App-Container">
+	   <div className="parent-container">
+		<p>Not Found</p>
+	   </div>
+	</div>				
+
     )
 };
 
-export default PageNotFound;
+export default Not;
