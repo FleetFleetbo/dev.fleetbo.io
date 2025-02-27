@@ -7,40 +7,49 @@ const Welcome = () => {
 
     const navigate                              = useNavigate();
     const [isLoading, setIsLoading]             = useState(true); // Pour gérer l'état de chargement de la page
-	const [appInfo, setAppInfo]             = useState(null); // État pour stocker les données
+    const [appInfo, setAppInfo]             = useState(null); // État pour stocker les données
 
 
     const logout = () => {
-		setIsLoading(true);
-		setTimeout(() => {
-			if (window.Android && typeof window.Android.o00011 === 'function') {
-				window.Android.o00011();
+        
+	    setIsLoading(true);
+	    setTimeout(() => {
+			if (typeof window.fleetbo.d0a13 === 'function') {
+				window.fleetbo.d0a13();
 				localStorage.clear();
 			} else {
 				navigate('/un');
 			}
-		}, 1000);
+	    }, 1000);
     };
 
 
-    useEffect(() => {
+   useEffect(() => {
         setTimeout(() => {
-            const data = localStorage.getItem('AppInfo');
-            if (data) {
-                const parsedData = JSON.parse(data);
-    
-                if (parsedData.logged === false) {
-                    navigate('/login');
+            try {
+                const data = localStorage.getItem("AppInfo");
+
+                if (data) {
+                    const parsedData = JSON.parse(data);
+
+                    if (!parsedData.logged) {
+                        navigate("/login");
+                    } else {
+                        setAppInfo(parsedData);
+                    }
                 } else {
-                    setAppInfo(parsedData);
+                    navigate("/un");
                 }
+            } catch (error) {
+                console.error("Erreur lors du parsing de AppInfo :", error);
+                localStorage.removeItem("AppInfo"); // Supprime les données corrompues
             }
-            setIsLoading(false); // Désactive le chargement après récupération des données
-        }, 1500); 
+            setIsLoading(false);
+        }, 1000);
     }, [navigate]); // Supprime `appInfo` pour éviter des re-render inutiles
 
 
-    return (
+   return (
         <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -48,8 +57,8 @@ const Welcome = () => {
         >
             <nav className="navbar">
                 <div className="navbar-left">
-                    <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Logo" className="logo" />
-                    <h1 className="title">{appInfo?.name}</h1>
+                    <img src={`${process.env.PUBLIC_URL}/logo512.png`} alt="Logo" className="logo" />
+                    <h1 className="title"> {appInfo.name} </h1>
                 </div>
                 <div className="navbar-right">
                     <button onClick={logout} className="logout">
@@ -58,7 +67,6 @@ const Welcome = () => {
                 </div>
             </nav>
 
-
             <div className="App-Container">
                 {isLoading ? (
                     <div className="parent-container">
@@ -66,8 +74,8 @@ const Welcome = () => {
                     </div>
                 ) : appInfo ? (
                     <div className="text-container">
-                       <h2>{appInfo.name}</h2>
-                       <p>Welcome !</p>
+                       <h2> Fleetbo </h2>
+                       <p>Welcome developer!</p>
                     </div>
                 ) : (
                     <div className="parent-container">
@@ -77,7 +85,6 @@ const Welcome = () => {
             </div>
             
         </motion.div>
-    
     )
 };
 
