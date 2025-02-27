@@ -86,7 +86,7 @@ img {
 }
 
 .title {
-  font-size: 16px;
+  font-size: 18px;
   margin: 0;
 }
 
@@ -164,6 +164,7 @@ img {
   margin: 0; /* Pas de margin */
   color: #f2f2f2; /* Couleur du texte (icône) */
   cursor: pointer; /* Curseur de pointeur */
+  font-size: 18px;
 }
 
 .btn-logout {
