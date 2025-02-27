@@ -12,7 +12,7 @@ import './App.css';
 
 function App() {
   useEffect(() => {	
-    if (!window.Android) {  
+    if (!window.fleetbo) {  
         localStorage.clear(); 
         sessionStorage.clear(); 
         window.location.href = 'https://fleetbo.io';	
