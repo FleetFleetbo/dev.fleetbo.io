@@ -81,7 +81,7 @@ const Login = () => {
                 ) : appInfo ? (
                     <>
                         <img
-                            src={`${process.env.PUBLIC_URL}/logo512.png`}
+                            src={`${process.env.PUBLIC_URL}/logo.png`}
                             className="img-login"
                             alt="Logo"
                         />
