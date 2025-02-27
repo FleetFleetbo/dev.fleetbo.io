@@ -153,10 +153,9 @@ img {
 }
 
 .custom-alert button:last-child {
-  color: red;
+  color: #b52e2e; 
   font-weight: bold;
 }
-
 
 .logout {
   background: none; /* Pas de fond */
@@ -165,6 +164,17 @@ img {
   margin: 0; /* Pas de margin */
   color: #f2f2f2; /* Couleur du texte (icône) */
   cursor: pointer; /* Curseur de pointeur */
+}
+
+.btn-logout {
+  background: none; /* Pas de fond */
+  border: none; /* Pas de bordure */
+  padding: 0; /* Pas de padding */
+  margin: 0; /* Pas de margin */
+  color: #5d5d5d; /* Couleur du texte (icône) */
+  cursor: pointer; /* Curseur de pointeur */
+  font-size: 14px;
+  margin-top: 5%;
 }
 
 /******** FORM ********/
