@@ -11,13 +11,23 @@ const Login = () => {
     const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
 
 
-    const handleSubmit = async (e) => {
+    const logout = async (e) => {
+        e.preventDefault(); 
+		setIsLoading(true);
+		setTimeout(() => {
+			if (typeof window.fleetbo.c00ey0 === 'function') {
+				window.fleetbo.c00ey0();
+			} 
+		}, 1000);
+	};
+    
+     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
         setLoading(true);    // Active le chargement
     
         try {
-            if (window.Android && typeof window.Android.s0075 === 'function') {
-                window.Android.s0075(); //  Appelle la fonction Android
+            if (typeof window.fleetbo.s0075 === 'function') {
+                window.fleetbo.s0075(); //  Appelle la fonction Android
             } else {
                 localStorage.clear();
                 navigate('/un'); // Redirige si Android n'est pas disponible
@@ -29,7 +39,7 @@ const Login = () => {
         }
     };
 
-    useEffect(() => {
+     useEffect(() => {
             // Récupérer les données depuis localStorage dès que le composant est monté
             const data = localStorage.getItem('AppInfo');
 
@@ -64,27 +74,38 @@ const Login = () => {
             className="parent-container"
         >
             <div className="container">
-            {appInfo ? (
+            {isLoading ? (
+                    <div className="parent-container">
+                        <div className="loader"></div>
+                    </div>
+                ) : appInfo ? (
                     <>
-                        <img 
-                            src={`${process.env.PUBLIC_URL}/logo.png`} 
+                        <img
+                            src={`${process.env.PUBLIC_URL}/logo512.png`}
                             className="img-login"
-                            alt="Logo" 
+                            alt="Logo"
                         />
                         <div className="text-container">
                             <h2>{appInfo.name}</h2>
-                            <div style={{ height: '70px' }}>
-                                 <p>{appInfo.description}</p> 
+                            <div style={{ height: "70px" }}>
+                                <p>{appInfo.description}</p>
                             </div>
-                            <button onClick={handleSubmit} className="go"> {loading ? 'Chargement...' : 'Se connecter'} </button>
-                            <span className="mini">Confirmez votre connexion</span>
-                        </div>  
+                            <button onClick={handleSubmit} className="go">
+                                {loading ? "Chargement..." : "Se connecter"}
+                            </button>
+                        </div>
+                        <br />
+                        <div className="pb-2">
+                            <button onClick={logout} className="btn-logout mt-3 text-secondary">
+                                <i className="fa-solid fa-power-off"></i> Quitter
+                            </button>
+                        </div>
                     </>
                 ) : (
                     <div>
-                        <p>Informations non disponibles</p> 
+                        <p>Informations non disponibles</p>
                     </div>
-                )}	
+                )}
             </div>   
         </motion.div>
     )
