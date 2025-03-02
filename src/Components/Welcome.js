@@ -7,7 +7,7 @@ const Welcome = () => {
 
     const navigate                              = useNavigate();
     const [isLoading, setIsLoading]             = useState(true); // Pour gérer l'état de chargement de la page
-    const [appInfo, setAppInfo]                 = useState(null); // État pour stocker les données
+    const [appInfo, setAppInfo]                 = useState({}); // État pour stocker les données
 
 
     const logout = () => {
