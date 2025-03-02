@@ -58,7 +58,7 @@ const Welcome = () => {
             <nav className="navbar">
                 <div className="navbar-left">
                     <img src={`${process.env.PUBLIC_URL}/logo512.png`} alt="Logo" className="logo" />
-                    <h1 className="title"> {appInfo.name} </h1>
+                    {appInfo && appInfo.name && <h1 className="title">{appInfo.name}</h1>}
                 </div>
                 <div className="navbar-right">
                     <button onClick={logout} className="logout">
