@@ -19,6 +19,17 @@ function App() {
     } 
   }, []);
 
+  useEffect(() => {	
+    // WARNING! use localStorage only for test mode
+    localStorage.setItem('appId', 'your appId');
+    localStorage.setItem('database', 'your databaseName');
+    if (!window.fleetbo) {  
+        localStorage.clear(); 
+        sessionStorage.clear(); 
+        window.location.href = 'https://fleetbo.io';	
+    } 
+  }, []);	
+
   return (
     <AnimatePresence mode="wait">
       <Router>
