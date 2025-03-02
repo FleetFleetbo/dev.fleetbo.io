@@ -11,13 +11,6 @@ import Welcome from "./Components/Welcome";
 import './App.css';
 
 function App() {
-  useEffect(() => {	
-    if (!window.fleetbo) {  
-        localStorage.clear(); 
-        sessionStorage.clear(); 
-        window.location.href = 'https://fleetbo.io';	
-    } 
-  }, []);
 
   useEffect(() => {	
     // WARNING! use localStorage only for test mode
