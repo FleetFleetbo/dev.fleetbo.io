@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 const Not = () => {
 
-    return (
 
-	<div className="App-Container">
-	   <div className="parent-container">
-		<p>Not Found</p>
-	   </div>
-	</div>				
+	const [loadpage, setLoadPage]   = useState(true); 
+	
+	useEffect(() => {
+		setTimeout(() => {  setLoadPage(false); }, 1300);   
+	}, [loadpage]);
+
+    return (
+    <>
+	{/* Container avec gestion du loader */}
+		<div className="container">
+		{loadpage ? (
+		<div className="parent-container">
+			<div className="loader"></div>
+		</div>
+		) : (
+		<>
+		<div className="parent-container">
+			<h6 className="text-secondary fw-normal">Not found.</h6>
+		</div>
+		</>
+		)}
+		</div>		
+	 </>
 
     )
 };
