@@ -30,7 +30,7 @@ const Footer = () => {
             // pour que l'état soit cohérent dans les effets
             
             switch(theView) {
-                case 'Home':
+                case 'tab1':
                     setActiveTab("Tab1");
                     window.fleetbo.openView(theView, false);
                     break;
@@ -60,15 +60,15 @@ const Footer = () => {
 
     return (
         <footer style={styles.footer}>
-            <Link onClick={(e) => selectTab('tab1', e) } style={activeTab === "Tab1" ? { ...styles.link, ...styles.activeLink } : styles.link}>
-                <i className="fa-solid fa-house"></i>
-            </Link>
-            <Link onClick={(e) => selectTab('tab2', e)} style={activeTab === "Tab2" ? { ...styles.link, ...styles.activeLink } : styles.link}>
-                ➕ 
-            </Link>
-            <Link onClick={(e) => selectTab('tab3', e)} style={activeTab === "Tab3" ? { ...styles.link, ...styles.activeLink } : styles.link}>
-                <i className="fa-solid fa-user"></i>
-            </Link>
+        <Link onClick={(e) => selectTab('tab1', e) } style={activeTab === "Tab1" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+            <i className="fa-solid fa-house"></i>
+        </Link>
+        <Link onClick={(e) => selectTab('tab2', e)} style={activeTab === "Tab2" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+            ➕ 
+        </Link>
+        <Link onClick={(e) => selectTab('tab3', e)} style={activeTab === "Tab3" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+            <i className="fa-solid fa-user"></i>
+        </Link>
         </footer>
     );
 
@@ -100,4 +100,3 @@ const styles = {
     backgroundColor: '#c7f3de'
   },
 };
-
