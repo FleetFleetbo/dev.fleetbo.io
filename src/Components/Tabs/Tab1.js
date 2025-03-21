@@ -18,15 +18,15 @@ const Tab1 = () => {
         </header>
 
         {/* Container avec gestion du loader */}
-        <div className="container">
+        <div className="center-container">
           {loadpage ? (
-            <div className="parent-container">
-              <div className="loader"></div>
-            </div>
+            <div className="">  </div>
           ) : (
             <>
-              <h2 className="mt-2 fw-bolder text-success">Welcome developer.</h2>
-              <h3 className="text-dark fw-normal">Change code for your app.</h3>
+              <div className="container">
+                  <h3 className="fw-bolder text-success">Tab 1</h3>
+                  <h5 className="text-dark fw-normal">Change code for your app.</h5>
+              </div>
             </>
           )}
         </div>
@@ -35,4 +35,3 @@ const Tab1 = () => {
 };
 
 export default Tab1;
-
