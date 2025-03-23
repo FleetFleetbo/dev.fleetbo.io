@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
@@ -7,11 +6,14 @@ import Footer from "./Components/Config/Footer";
 import Not from './Components/Config/Not';
 
 import Login from "./Components/Auth/Login";
+import Register from "./Components/Auth/Register";
 import Welcome from "./Components/Welcome";
 
 import Tab1 from "./Components/Tabs/Tab1";
 import Tab2 from "./Components/Tabs/Tab2";
 import Tab3 from "./Components/Tabs/Tab3";
+
+import Insert from "./Components/Pages/Insert";
 
 import './App.css';
 
@@ -22,13 +24,9 @@ function App() {
 
     if (window.fleetbo) {
       if(window.localStorage){
-           // WARNING! use localStorage only for test mode
-	    localStorage.setItem('appId', 'your appId');
-	    localStorage.setItem('database', 'your databaseName');
+         
       }
     }else {
-      localStorage.clear(); 
-      sessionStorage.clear(); 
       window.location.href = 'https://fleetbo.io';
       return; // Arrête l'exécution si redirection
     }
@@ -43,19 +41,25 @@ function App() {
       <Router>
         <Routes>
 
-          <Route path="/redirect" element={<Redirect isLoggedIn={isLoggedIn} />} />
+          <Route path="/" element={<Redirect isLoggedIn={isLoggedIn} />} />
+
           {/* Authentification */}
+          <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />} />
           <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
           <Route path="/welcome" element={isLoggedIn ? <Welcome /> : <Navigate to="/login" />} />
 
           <Route path="/tab1" element={isLoggedIn ? <Tab1 /> : <Navigate to="/login" />} />
           <Route path="/tab2" element={isLoggedIn ? <Tab2 /> : <Navigate to="/login" />} />
           <Route path="/tab3" element={isLoggedIn ? <Tab3 /> : <Navigate to="/login" />} />
+
+          {/* Pages */}
+	        <Route path="/insert" element={isLoggedIn ? <Insert /> : <Navigate to="/login" />} />
          
           
           {/* Page non trouvée */}
 	        <Route path="*" element={<Not />} />
-          {/* Page non trouvée */}
+
+          {/* Tabs */}
           <Route path="/footer" element={ <Footer /> } />
         </Routes>
       </Router>
@@ -63,4 +67,3 @@ function App() {
 }
 
 export default App;
-
