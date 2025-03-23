@@ -29,6 +29,7 @@ const Tab3 = () => {
     
             setUserData({
               username: data.username || "",
+              //phoneNumber: data.phoneNumber || "Non défini",
               dateCreated: data.dateCreated || ""
             });
           } else {
@@ -72,7 +73,7 @@ const Tab3 = () => {
         {/* Container avec gestion du loader */}
         <div className="center-container">
           {loadpage ? (
-            <div></div>
+              <div className="loader"></div>
           ) : (
             <>
               <div className="container">
