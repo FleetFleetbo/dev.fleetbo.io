@@ -5,13 +5,6 @@ import {  Link  } from 'react-router-dom';
 
 const Insert = () => {
     
-    const styles = {
-        container: {
-            textAlign: 'center',
-            padding: '20px',
-            marginTop: '20px'
-        }
-    };
 
     const [imageURL, setImageURL] = useState(""); // State pour l'URL de l'image
     const [message,  setMessage]  = useState("");
@@ -138,9 +131,11 @@ const Insert = () => {
             </header>
 
             {/* Container avec gestion du loader */}
-            <div className="center-container" style={styles.container}>
+            <div className="center-container " >
             {loadpage ? (
-                   <div></div>
+                <div className="center-container">
+                   <div className="loader"></div>
+                </div>
             ) : (
                 <>
                       <div className="row">
@@ -166,7 +161,7 @@ const Insert = () => {
                                                position: 'relative',
                                            }}
                                        >
-                                            {/* Image */}
+                                                   {/* Image */}
                                             <img
                                                id="imageView"
                                                src={imageURL || `${process.env.PUBLIC_URL}/logo512.png`}
@@ -198,9 +193,9 @@ const Insert = () => {
                                    </div>
                                            
                                    <div className="mb-3">
-                                       <label className="float-start fw-bold text-dark fs-5">Category</label>
+                                       <label className="float-start fs-5">Category</label>
                                        <select
-                                           className="form-control"
+                                           className="form-control input"
                                            name="ville"
                                            value={formData.ville}
                                            onChange={handleChange}
@@ -213,13 +208,13 @@ const Insert = () => {
                                    </div>
        
                                    <div className="mb-3">
-                                       <label className="float-start fw-bold text-dark fs-5">Description</label>
+                                       <label className="float-start fs-5">Description</label>
                                        <input
                                            type="text"
                                            name="complement"
                                            value={formData.complement}
                                            onChange={handleChange}
-                                           className="form-control"
+                                           className="form-control input"
                                            placeholder="Ex: Face petit terrain"
                                            required
                                        />
@@ -242,5 +237,4 @@ const Insert = () => {
 };
 
 export default Insert;
-
 
