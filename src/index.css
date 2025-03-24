@@ -186,6 +186,17 @@ img {
 
 /******** FORM ********/
 
+.input {
+ padding: 3%;
+ font-size: 18px;
+}
+
+label {
+  font-weight: 550;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #333;
+}
+
 /* Supprime les marges et paddings par défaut */
 * {
   margin: 0;
@@ -204,7 +215,7 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0%;
+  padding: 1%;
   height: 90vh;
   overflow-x: hidden;
 }
