@@ -45,19 +45,19 @@ function App() {
 
           {/* Authentification */}
           <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />} />
-          <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
-          <Route path="/welcome" element={isLoggedIn ? <Welcome /> : <Navigate to="/login" />} />
+          <Route path="/login"    element={<Login onLogin={() => setIsLoggedIn(true)} />} />
+          <Route path="/welcome"  element={isLoggedIn ? <Welcome /> : <Navigate to="/login" />} />
 
           <Route path="/tab1" element={isLoggedIn ? <Tab1 /> : <Navigate to="/login" />} />
           <Route path="/tab2" element={isLoggedIn ? <Tab2 /> : <Navigate to="/login" />} />
           <Route path="/tab3" element={isLoggedIn ? <Tab3 /> : <Navigate to="/login" />} />
 
           {/* Pages */}
-	        <Route path="/insert" element={isLoggedIn ? <Insert /> : <Navigate to="/login" />} />
+	  <Route path="/insert" element={isLoggedIn ? <Insert /> : <Navigate to="/login" />} />
          
           
           {/* Page non trouvée */}
-	        <Route path="*" element={<Not />} />
+	  <Route path="*" element={<Not />} />
 
           {/* Tabs */}
           <Route path="/footer" element={ <Footer /> } />
