@@ -13,49 +13,50 @@ const Tab3 = () => {
 
 
     useEffect(() => {
-      setTimeout(() => {
-        if (typeof window.fleetbo.gdf37Auth === "function") {
-          window.fleetbo.gdf37Auth("users");
-        }
-        setLoadPage(false);
-      }, 300);
-    
-      // Correction de la fonction qui récupère les données de WebView
-      window.getDocument = (jsonData) => {
-        try {
-          if (typeof jsonData === "string") {
-            const cleanedJson = jsonData.replace(/\\"/g, '"'); // Nettoyage des échappements
-            const data = JSON.parse(cleanedJson);
-    
-            setUserData({
-              username: data.username || "",
-              //phoneNumber: data.phoneNumber || "Non défini",
-              dateCreated: data.dateCreated || ""
-            });
-          } else {
-            console.error("Données reçues ne sont pas valides :", jsonData);
+        setTimeout(() => {
+          if (typeof window.fleetbo.gdf37Auth === "function") {
+            window.fleetbo.gdf37Auth("users");
           }
-        } catch (error) {
-          console.error("Erreur de parsing JSON :", error);
-        }
-      };
+          setLoadPage(false);
+        }, 300);
+    
+        // Correction de la fonction qui récupère les données de WebView
+        window.getData = (jsonData) => {
+          try {
+            if (typeof jsonData === "string") {
+              const cleanedJson = jsonData.replace(/\\"/g, '"'); // Nettoyage des échappements
+              const data = JSON.parse(cleanedJson);
+      
+              setUserData({
+                username: data.username || "",
+                //phoneNumber: data.phoneNumber || "Non défini",
+                dateCreated: data.dateCreated || ""
+              });
+            } else {
+              console.error("Données reçues ne sont pas valides :", jsonData);
+            }
+          } catch (error) {
+            console.error("Erreur de parsing JSON :", error);
+          }
+        };
+
     }, []);
 
 
     const logout = async (e) => {
-      e.preventDefault(); 
-      setLoadPage(true);
-      setTimeout(() => {
-        if (typeof window.fleetbo.c00ey0 === 'function') {
-           window.fleetbo.d0a13();
-        } 
-      }, 1000);
+        e.preventDefault(); 
+        setLoadPage(true);
+        setTimeout(() => {
+          if (typeof window.fleetbo.c00ey0 === 'function') {
+            window.fleetbo.d0a13();
+          } 
+        }, 1000);
     };
 
     const openPage= async () => {
-      if (typeof window.fleetbo.openPage === 'function') {
-        window.fleetbo.openPage('insert');
-      } 
+        if (typeof window.fleetbo.openPage === 'function') {
+          window.fleetbo.openPage('insert');
+        } 
     };
 
 
