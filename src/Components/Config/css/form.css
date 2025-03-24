@@ -78,6 +78,12 @@
   .form-footer a:hover {
     text-decoration: underline;
   }
+
+  .label {
+    color:  #414141;
+    float: left;
+    font-size: 17px;
+  }
   
   /* Mobile Optimization */
   @media (max-width: 480px) {
