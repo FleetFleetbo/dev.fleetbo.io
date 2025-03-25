@@ -20,7 +20,7 @@ const Tab1 = () => {
         {/* Container avec gestion du loader */}
         <div className="center-container">
           {loadpage ? (
-            <div className="">  </div>
+              <div className="loader"></div>
           ) : (
             <>
               <div className="container">
