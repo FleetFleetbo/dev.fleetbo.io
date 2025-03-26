@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Fleetbo from '../helper/systemHelper';
 
 
-
 const Insert = () => {
     
     const [loading,  setLoading]  = useState();
@@ -32,7 +31,6 @@ const Insert = () => {
         }));
     };
 
-    
     const handleSubmit = (e) => {
         setLoading(true);
         e.preventDefault();
