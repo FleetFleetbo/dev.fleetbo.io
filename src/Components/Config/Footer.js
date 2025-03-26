@@ -2,13 +2,11 @@ import React, {  useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
-
-
 const Footer = () => {
 
-    const [activeTab, setActiveTab]             = useState();
+    const [activeTab, setActiveTab]          = useState();
 
-    window.activeTab = (tab) => {
+    window.activeTab                         = (tab) => {
         console.log("activeTab called with:", tab);
         setActiveTab(tab);
     };
@@ -16,7 +14,7 @@ const Footer = () => {
 
     const selectTab = async (theView, e) => {
         if (e) {
-            e.preventDefault(); // Empêche le comportement par défaut de l'événement
+            e.preventDefault(); 
         }
         
         try {
@@ -25,14 +23,11 @@ const Footer = () => {
                 console.error("tabId invalide");
                 return;
             }
-
-            // Mettre à jour l'onglet actif AVANT d'appeler l'interface native
-            // pour que l'état soit cohérent dans les effets
             
             switch(theView) {
-                case 'tab1':
+                case 'Home':
                     setActiveTab("Tab1");
-                    window.fleetbo.openView(theView, false);
+                    window.fleetbo.openView(theView, true);
                     break;
                 case 'tab2':
                     setActiveTab("Tab2");
@@ -45,13 +40,6 @@ const Footer = () => {
                 default:
                     console.error(`Onglet inconnu: ${theView}`);
             }
-            
-            // Appeler l'interface native exposée
-            if (window.fleetbo) {
-                //await window.fleetbo.openNativeScreen(tabId); 
-            } else {
-                console.error("Interface native non disponible");
-            }
         } catch (error) {
             console.error("Erreur lors de la sélection de l'onglet :", error);
         }
@@ -59,17 +47,17 @@ const Footer = () => {
 
 
     return (
-        <footer style={styles.footer}>
-        <Link onClick={(e) => selectTab('tab1', e) } style={activeTab === "Tab1" ? { ...styles.link, ...styles.activeLink } : styles.link}>
-            <i className="fa-solid fa-house"></i>
-        </Link>
-        <Link onClick={(e) => selectTab('tab2', e)} style={activeTab === "Tab2" ? { ...styles.link, ...styles.activeLink } : styles.link}>
-            ➕ 
-        </Link>
-        <Link onClick={(e) => selectTab('tab3', e)} style={activeTab === "Tab3" ? { ...styles.link, ...styles.activeLink } : styles.link}>
-            <i className="fa-solid fa-user"></i>
-        </Link>
-        </footer>
+        <div style={styles.footer}>
+            <Link onClick={(e) => selectTab('Home', e) } style={activeTab === "Tab1" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+                <i className="fa-solid fa-house"></i>
+            </Link>
+            <Link onClick={(e) => selectTab('tab2', e)} style={activeTab === "Tab2" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+                ➕ 
+            </Link>
+            <Link onClick={(e) => selectTab('tab3', e)} style={activeTab === "Tab3" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+                <i className="fa-solid fa-user"></i>
+            </Link>
+        </div>
     );
 
 };
