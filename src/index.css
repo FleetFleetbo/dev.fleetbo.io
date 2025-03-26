@@ -186,15 +186,25 @@ img {
 
 /******** FORM ********/
 
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 90vh;
+  overflow-x: hidden;
+}
+
 .input {
  padding: 3%;
  font-size: 18px;
 }
 
 label {
-  font-weight: 550;
+  font-weight: 500;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: #333;
+  font-size: 18px;
 }
 
 /* Supprime les marges et paddings par défaut */
@@ -215,7 +225,6 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 1%;
   height: 90vh;
   overflow-x: hidden;
 }
@@ -281,8 +290,6 @@ html, body {
 .header {
   background-color: #d272c1;
   text-align: center;
-  padding: 10px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -291,7 +298,6 @@ html, body {
   padding: 10px 20px;
   width: 100%;
 }
-
 
 /* Footer Navigation */
 .footer-nav {
