@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Fleetbo from './../Tabs/helper/systemHelper';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import "../Config/css/form.css"
@@ -13,7 +14,9 @@ const Register = () => {
 
     const [formData, setFormData]   = useState({ username: "" });
 
+    const  fleetboDB                = "vOWFCGQNcE2QyzlTMe8h";
     const  db                       = "users";
+    
 
 
     // Gérer le changement des inputs
@@ -21,29 +24,13 @@ const Register = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const logout = async (e) => {
-        //e.preventDefault(); 
-		setIsLoading(true);
-
-			if (typeof window.fleetbo.c00ey0 === 'function') {
-				window.fleetbo.c00ey0();
-			} 
-
-	};
-
-    
     const handleSubmit = async (e) => {
         e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
         setLoading(true);    // Active le chargement
     
         try {
-            if (typeof window.fleetbo.s0075 === 'function') {
-                window.fleetbo.s0075(db, JSON.stringify(formData)); //  Appelle la fonction Android
-                setFormData({ username: "" });
-            } else {
-                localStorage.clear();
-                navigate('/un'); // Redirige si Android n'est pas disponible
-            }
+            Fleetbo.s0075(fleetboDB, db, JSON.stringify(formData)); //  Appelle la fonction Android
+            setFormData({ username: "" });
         } catch (error) {
             console.error(`Error : ${error.message}`); //  Meilleure gestion des erreurs
         } finally {
@@ -79,7 +66,7 @@ const Register = () => {
     return (
         <motion.div
             transition={{ duration: 0.4 }}
-            className="center-container"
+            className="form-auth"
         >
             <div className="">
             {isLoading ? (
@@ -91,7 +78,7 @@ const Register = () => {
                             <div className='row mt-4'>
                                 <h2 className='fw-bold'>Create an account</h2>
                                 <div style={{ height: "70px" }}>
-                                    <p style={{ textAlign: "left" }}>Réseau social ayant pour but d’échanger et de découvrir de la musique avec ses amis.</p>
+                                    <p style={{ textAlign: "left" }}>{appInfo.description}</p>
                                 </div>
                                 <form onSubmit={handleSubmit} >
                                     <div className='mb-3'>
@@ -112,7 +99,7 @@ const Register = () => {
                         </div>
                         <br />
                         <div className="pb-2">
-                            <button onClick={logout} className="btn-logout mt-2 text-secondary">
+                            <button onClick={() => { setTimeout(() => { Fleetbo.d0a13() }, 500)  }} className="btn-logout mt-2 text-secondary">
                                 <i className="fa-solid fa-power-off"></i> Leave
                             </button>
                         </div>
@@ -128,4 +115,3 @@ const Register = () => {
 };
 
 export default Register;
-
