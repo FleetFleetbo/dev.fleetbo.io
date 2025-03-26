@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import Fleetbo from './helper/systemHelper';
 
 
 const Tab3 = () => {
 
-
     const [loadpage, setLoadPage]   = useState(true); 
     const [userData, setUserData]   = useState({
       username: "",
-      //phoneNumber: "Non défini",
       dateCreated: ""
     });
+    const  fleetboDB                = "vOWFCGQNcE2QyzlTMe8h";
+    const  db                       = "users";
 
 
     useEffect(() => {
+
         setTimeout(() => {
-          if (typeof window.fleetbo.gdf37Auth === "function") {
-            window.fleetbo.gdf37Auth("users");
-          }
+          Fleetbo.gdf37Auth(fleetboDB, db);
           setLoadPage(false);
         }, 300);
     
@@ -43,32 +43,10 @@ const Tab3 = () => {
     }, []);
 
 
-    const logout = async (e) => {
-        e.preventDefault(); 
-        setLoadPage(true);
-        setTimeout(() => {
-          if (typeof window.fleetbo.c00ey0 === 'function') {
-            window.fleetbo.d0a13();
-          } 
-        }, 1000);
-    };
-
-    const openPage= async () => {
-        if (typeof window.fleetbo.openPage === 'function') {
-          window.fleetbo.openPage('insert');
-        } 
-    };
-
-
     return (
       <>
         <header className='navbar pt-4'> 
             <h1 className='fs-5 fw-bolder'>Tab3</h1>
-            <div className="navbar-right">
-                <button onClick={ openPage } className="logout fs-5 fw-bold">
-                    <i className="fa-solid fa-plus"></i>
-                </button>
-            </div>
         </header>
 
         {/* Container avec gestion du loader */}
@@ -86,7 +64,9 @@ const Tab3 = () => {
                   <h2 className="text-success fw-bolder mt-2">{userData.username}</h2>
                   <h5 className="text-dark fw-normal">+237693386555</h5>
                   <h6 className="text-secondary fw-bold">Since {userData.dateCreated} </h6>
-                  <button onClick={logout} className="go mt-3"> Log Out </button>
+                  <button onClick={() => { setTimeout(() => { Fleetbo.d0a13() }, 500)  }} className="go mt-3"> 
+                     Log Out 
+                  </button>
               </div>
             </>
           )}
