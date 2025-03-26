@@ -66,7 +66,7 @@ const Register = () => {
     return (
         <motion.div
             transition={{ duration: 0.4 }}
-            className="form-auth"
+            className="form-container"
         >
             <div className="">
             {isLoading ? (
