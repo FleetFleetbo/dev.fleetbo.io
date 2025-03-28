@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from './helper/systemHelper';
+import Fleetbo from 'systemHelper';
+import { fleetboDB } from 'db';
 
 
 const Tab3 = () => {
 
     const [loadpage, setLoadPage]   = useState(true); 
     const [userData, setUserData]   = useState({
-      username: "",
-      dateCreated: ""
+          username: "",
+          dateCreated: ""
     });
-    const  fleetboDB                = "vOWFCGQNcE2QyzlTMe8h";
     const  db                       = "users";
 
 
