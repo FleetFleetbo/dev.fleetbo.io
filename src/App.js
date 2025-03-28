@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-
-import Redirect from "./Components/Config/Redirect";
 import Footer from "./Components/Config/Footer";
 import Not from './Components/Config/Not';
 
@@ -40,7 +38,7 @@ function App() {
       <Router>
         <Routes>
 
-          <Route path="/" element={<Redirect isLoggedIn={isLoggedIn} />} />
+          <Route path="/" element={<Welcome isLoggedIn={isLoggedIn} />} />
 
           {/* Authentification */}
           <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />} />
