@@ -1,5 +1,7 @@
 import React, {  useState } from 'react';
 import { Link } from 'react-router-dom';
+import Fleetbo from 'systemHelper';
+
 
 
 const Footer = () => {
@@ -14,7 +16,7 @@ const Footer = () => {
 
     const selectTab = async (theView, e) => {
         if (e) {
-            e.preventDefault(); 
+            e.preventDefault(); // Empêche le comportement par défaut de l'événement
         }
         
         try {
@@ -23,23 +25,27 @@ const Footer = () => {
                 console.error("tabId invalide");
                 return;
             }
+
+            // Mettre à jour l'onglet actif AVANT d'appeler l'interface native
+            // pour que l'état soit cohérent dans les effets
             
             switch(theView) {
-                case 'Home':
+                case 'tab1':
                     setActiveTab("Tab1");
-                    window.fleetbo.openView(theView, true);
+                    Fleetbo.openView(theView, false);
                     break;
                 case 'tab2':
                     setActiveTab("Tab2");
-                    window.fleetbo.openView(theView, false );
+                    Fleetbo.openView(theView, false );
                     break;
                 case 'tab3':
                     setActiveTab("Tab3");
-                    window.fleetbo.openView(theView, false);
+                    Fleetbo.openView(theView, false);
                     break;
                 default:
                     console.error(`Onglet inconnu: ${theView}`);
             }
+
         } catch (error) {
             console.error("Erreur lors de la sélection de l'onglet :", error);
         }
@@ -48,7 +54,7 @@ const Footer = () => {
 
     return (
         <div style={styles.footer}>
-            <Link onClick={(e) => selectTab('Home', e) } style={activeTab === "Tab1" ? { ...styles.link, ...styles.activeLink } : styles.link}>
+            <Link onClick={(e) => selectTab('tab1', e) } style={activeTab === "Tab1" ? { ...styles.link, ...styles.activeLink } : styles.link}>
                 <i className="fa-solid fa-house"></i>
             </Link>
             <Link onClick={(e) => selectTab('tab2', e)} style={activeTab === "Tab2" ? { ...styles.link, ...styles.activeLink } : styles.link}>
