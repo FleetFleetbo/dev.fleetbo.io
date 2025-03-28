@@ -4,7 +4,7 @@ import Fleetbo from 'systemHelper';
 
 
 
-const Footer = () => {
+const Footer                                 = () => {
 
     const [activeTab, setActiveTab]          = useState();
 
@@ -25,6 +25,9 @@ const Footer = () => {
                 console.error("tabId invalide");
                 return;
             }
+
+            // Mettre à jour l'onglet actif AVANT d'appeler l'interface native
+            // pour que l'état soit cohérent dans les effets
             
             switch(theView) {
                 case 'tab1':
