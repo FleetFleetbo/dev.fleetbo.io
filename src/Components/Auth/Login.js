@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from './../Tabs/helper/systemHelper';
+import Fleetbo from 'systemHelper';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 
@@ -14,14 +14,14 @@ const Login = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault(); 
-        setLoading(true); 
+        setLoading(true);   
     
         try {
             Fleetbo.c0074(); 
         } catch (error) {
-            console.error(`Erreur : ${error.message}`); 
+            console.error(`Erreur : ${error.message}`);
         } finally {
-            setTimeout(() => setLoading(false), 1000); // Ajoute un petit délai pour un effet visuel fluide
+            setTimeout(() => setLoading(false), 1000); 
         }
     };
     
@@ -41,9 +41,9 @@ const Login = () => {
                     } else {
                         setAppInfo(parsedData);
                     }
-                    setIsLoading(false);  // Mettre à jour le statut de chargement
+                    setIsLoading(false);  
                 } else {
-                    setIsLoading(false);  // Pas de données, terminer le chargement
+                    setIsLoading(false); 
                 }
             }, 1000); 
     }, [appInfo, navigate]);
