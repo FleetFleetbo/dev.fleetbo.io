@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from './../Tabs/helper/systemHelper';
+import Fleetbo from 'helper/systemHelper';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
 import "../Config/css/form.css"
@@ -13,8 +13,6 @@ const Register = () => {
     const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
 
     const [formData, setFormData]   = useState({ username: "" });
-
-    const  fleetboDB                = "vOWFCGQNcE2QyzlTMe8h";
     const  db                       = "users";
     
 
@@ -25,11 +23,11 @@ const Register = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Empêche le rechargement de la page lors de la soumission
-        setLoading(true);    // Active le chargement
+        e.preventDefault();
+        setLoading(true); 
     
         try {
-            Fleetbo.s0075(fleetboDB, db, JSON.stringify(formData)); //  Appelle la fonction Android
+            Fleetbo.s0075(fleetboDB, db, JSON.stringify(formData)); 
             setFormData({ username: "" });
         } catch (error) {
             console.error(`Error : ${error.message}`); //  Meilleure gestion des erreurs
