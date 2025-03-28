@@ -31,11 +31,9 @@ const Tab1 = () => {
       }
     };
 
-
     useEffect(() => {
       Fleetbo.gdf37(fleetboDB, db);
     }, []);
-
 
     const deleteItem = async (id) => {
       Fleetbo.dd0769(fleetboDB, db, id);
