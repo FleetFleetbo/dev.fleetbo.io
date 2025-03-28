@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from './helper/systemHelper';
+import Fleetbo from 'systemHelper';
+import { fleetboDB } from 'db';
 
 
 const Tab1 = () => {
 
-
     const [loadpage, setLoadPage]   = useState(true); 
     const [data, setData]           = useState([]);  // Doit être un tableau pour stocker tous les documents
-    const  fleetboDB                = "vOWFCGQNcE2QyzlTMe8h";
     const  db                       = "items";
 
     const openPage= async () => {
@@ -20,8 +19,8 @@ const Tab1 = () => {
           const parsedData = JSON.parse(jsonData);
 
           if (parsedData.success) {
-              setData(parsedData.data || []); // Stocker tous les éléments
-              setLoadPage(false); // Fin du chargement après récupération des données
+              setData(parsedData.data || []); 
+              setLoadPage(false); 
           } else {
               console.error("Erreur de récupération des données :", parsedData.message);
               setLoadPage(false);
