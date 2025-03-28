@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import Fleetbo from '../helper/systemHelper';
+import Fleetbo from 'systemHelper';
+import { fleetboDB } from 'db';
 
 
 const Insert = () => {
@@ -8,11 +9,11 @@ const Insert = () => {
     const [loading,  setLoading]  = useState();
     const [loadpage, setLoadPage] = useState(true); 
     const [formData, setFormData] = useState({
-        title: "",
-        content: "",
-        // No need to store current date. Automatic
+            title: "",
+            content: "",
+            // No need to store current date. Automatic
     });
-    const  fleetboDB                            = "vOWFCGQNcE2QyzlTMe8h";
+
     const  db                                   = "items";
     const [resultMessage, setResultMessage]     = useState();
     const [messageType, setMessageType]         = useState(''); // 'success' or 'error'
