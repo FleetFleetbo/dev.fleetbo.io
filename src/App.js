@@ -39,7 +39,7 @@ function App() {
         <Router>
           <Routes>
 
-            <Route path="/tab1" element={<Tab1 isLoggedIn={isLoggedIn} />} />
+            <Route path="/" element={<Tab1 isLoggedIn={isLoggedIn} />} />
 
             {/* Authentification */}
             <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />} />
