@@ -4,7 +4,7 @@ import Fleetbo from 'systemHelper';
 
 const Welcome = ()  => {
 
-  const [isNative, setIsNative] = useState(true);
+  const [isNative, setIsNative] = useState(false);
 
   useEffect(() => {
     if(isNative){
