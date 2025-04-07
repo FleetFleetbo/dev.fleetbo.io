@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import Welcome from "./Components/Welcome";
+
 import Login from "./Components/Auth/Login";
 import Register from "./Components/Auth/Register";
 
@@ -39,7 +41,7 @@ function App() {
         <Router>
           <Routes>
 
-            <Route path="/" element={<Tab1 isLoggedIn={isLoggedIn} />} />
+            <Route path="/" element={<Welcome isLoggedIn={isLoggedIn} />} />
 
             {/* Authentification */}
             <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />} />
@@ -53,7 +55,7 @@ function App() {
             <Route path="/insert" element={isLoggedIn ? <Insert /> : <Navigate to="/login" />} />
           
             
-            {/* Page non trouvée */}
+            {/* Error*/}
             <Route path="*" element={<Not />} />
 
             {/* Tabs */}
