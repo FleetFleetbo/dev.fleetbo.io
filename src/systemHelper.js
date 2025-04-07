@@ -64,3 +64,43 @@ const Fleetbo = {
 };
 
 export default Fleetbo;
+
+
+let onDataReceived = null; 
+window.getData = (json) => {
+  try {
+    let parsed = json;
+    if (typeof json === "string") {
+      parsed = JSON.parse(json);
+    }
+
+    if (typeof onDataReceived === 'function') {
+      onDataReceived(parsed); 
+    }
+  } catch (e) {
+    console.error("❌ JSON invalide reçu par window.getData:", json, e);
+  }
+};
+export const FleetboGet = (callback) => {
+  onDataReceived = callback; 
+};
+
+
+let onDataReceivedList = null; 
+window.getData = (json) => {
+  try {
+    let parsed = json;
+    if (typeof json === "string") {
+      parsed = JSON.parse(json);
+    }
+
+    if (typeof onDataReceivedList === 'function') {
+      onDataReceivedList(parsed); 
+    }
+  } catch (e) {
+    console.error("❌ JSON invalide reçu par window.getData:", json, e);
+  }
+};
+export const FleetboGetList = (callback) => {
+    onDataReceivedList = callback; 
+};
