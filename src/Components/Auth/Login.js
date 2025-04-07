@@ -27,15 +27,13 @@ const Login = () => {
     
 
     useEffect(() => {
-            // Récupérer les données depuis localStorage dès que le composant est monté
+
             const data = localStorage.getItem('AppInfo');
 
             setTimeout(() => {
                 if (data) {
-                    // Parsez les données JSON récupérées
                     const parsedData = JSON.parse(data);
-                 
-                    // Vérifiez la valeur de 'logged' et mettez à jour l'état
+
                     if (parsedData.logged === true) {
                         navigate('/tab1');
                     } else {
@@ -62,15 +60,6 @@ const Login = () => {
                     <>
  
                         <div className="text-container">
-                            {/*
-                            <div className='row'>
-                                <img
-                                    src={`${process.env.PUBLIC_URL}/logo.png`}
-                                    className="img-login mt-2" 
-                                    alt="Logo"
-                                />
-                            </div>
-                            */}
                             <div className='row mt-4'>
                                 <h2 className='fw-bolder'>{appInfo.name}</h2>
                                 <div style={{ height: "70px" }}>
