@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from 'systemHelper';
+import Fleetbo, { FleetboGet } from 'systemHelper';
 import { fleetboDB } from 'db';
+
 
 
 const Tab3 = () => {
@@ -14,32 +15,21 @@ const Tab3 = () => {
 
 
     useEffect(() => {
-
-        setTimeout(() => {
-          Fleetbo.gdf37Auth(fleetboDB, db);
-          setLoadPage(false);
-        }, 300);
+      FleetboGet((jsonData) => {
+        try {
+          setUserData({
+            username: jsonData.username || "Anonymous",
+            dateCreated: jsonData.dateCreated || "",
+          });
+        } catch (error) {
+          console.error("Error getting data:", jsonData, error);
+        }
+      });
     
-        // Correction de la fonction qui récupère les données de WebView
-        window.getData = (jsonData) => {
-          try {
-            if (typeof jsonData === "string") {
-              const cleanedJson = jsonData.replace(/\\"/g, '"'); // Nettoyage des échappements
-              const data = JSON.parse(cleanedJson);
-      
-              setUserData({
-                username: data.username || "",
-                //phoneNumber: data.phoneNumber || "Non défini",
-                dateCreated: data.dateCreated || ""
-              });
-            } else {
-              console.error("Données reçues ne sont pas valides :", jsonData);
-            }
-          } catch (error) {
-            console.error("Erreur de parsing JSON :", error);
-          }
-        };
-
+      setTimeout(() => {
+        Fleetbo.gdf37Auth(fleetboDB, db); 
+        setLoadPage(false);
+      }, 300);
     }, []);
 
 
@@ -57,7 +47,7 @@ const Tab3 = () => {
             <>
               <div className="container">
                   <img
-                  className='img-login'
+                    className='img-login'
                     src="https://static.vecteezy.com/system/resources/thumbnails/009/397/835/small/man-avatar-clipart-illustration-free-png.png"
                     alt="user"
                   />
