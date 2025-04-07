@@ -9,14 +9,16 @@ import "../Config/css/form.css"
 const Register = () => {
 
     const navigate                  = useNavigate();
-    const [isLoading, setIsLoading] = useState(true); 
-    const [loading, setLoading]     = useState(false);
-    const [appInfo, setAppInfo]     = useState(null); 
+    const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement de la page
+    const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
+    const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
 
     const [formData, setFormData]   = useState({ username: "" });
     const  db                       = "users";
     
 
+
+    // Gérer le changement des inputs
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -31,7 +33,7 @@ const Register = () => {
         } catch (error) {
             console.error(`Error : ${error.message}`); //  Meilleure gestion des erreurs
         } finally {
-            setTimeout(() => setLoading(false), 500); // Ajoute un petit délai pour un effet visuel fluide
+            setTimeout(() => setLoading(false), 1000); // Ajoute un petit délai pour un effet visuel fluide
         }
     };
     
@@ -55,7 +57,7 @@ const Register = () => {
                 } else {
                     setIsLoading(false);  // Pas de données, terminer le chargement
                 }
-            }, 500); 
+            }, 1000); 
     }, [appInfo, navigate]);
 
 
@@ -96,7 +98,7 @@ const Register = () => {
                         </div>
                         <br />
                         <div className="pb-2">
-                            <button onClick={() => { setTimeout(() => { Fleetbo.d0a13() }, 500)  }} className="btn-logout mt-2 text-secondary">
+                            <button onClick={() => { setTimeout(() => { Fleetbo.toHome() }, 500)  }} className="btn-logout mt-2 text-secondary">
                                 <i className="fa-solid fa-power-off"></i> Leave
                             </button>
                         </div>
