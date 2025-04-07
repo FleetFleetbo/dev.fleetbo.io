@@ -9,16 +9,14 @@ import "../Config/css/form.css"
 const Register = () => {
 
     const navigate                  = useNavigate();
-    const [isLoading, setIsLoading] = useState(true); // Pour gérer l'état de chargement de la page
-    const [loading, setLoading]     = useState(false); // Pour gérer l'état de chargement des données
-    const [appInfo, setAppInfo]     = useState(null); // État pour stocker les données``
+    const [isLoading, setIsLoading] = useState(true); 
+    const [loading, setLoading]     = useState(false);
+    const [appInfo, setAppInfo]     = useState(null); 
 
     const [formData, setFormData]   = useState({ username: "" });
     const  db                       = "users";
     
 
-
-    // Gérer le changement des inputs
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -33,7 +31,7 @@ const Register = () => {
         } catch (error) {
             console.error(`Error : ${error.message}`); //  Meilleure gestion des erreurs
         } finally {
-            setTimeout(() => setLoading(false), 1000); // Ajoute un petit délai pour un effet visuel fluide
+            setTimeout(() => setLoading(false), 500); // Ajoute un petit délai pour un effet visuel fluide
         }
     };
     
@@ -57,7 +55,7 @@ const Register = () => {
                 } else {
                     setIsLoading(false);  // Pas de données, terminer le chargement
                 }
-            }, 1000); 
+            }, 500); 
     }, [appInfo, navigate]);
 
 
