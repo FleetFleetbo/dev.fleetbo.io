@@ -39,7 +39,7 @@ const Tab3 = () => {
             <h1 className='fs-5 fw-bolder'>Tab3</h1>
         </header>
 
-        {/* Container avec gestion du loader */}
+
         <div className="center-container">
           {loadpage ? (
               <div className="loader"></div>
