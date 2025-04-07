@@ -7,6 +7,11 @@ const Fleetbo = {
         }
     },
 
+    // Go to Home
+    toHome: () => {
+        Fleetbo.execute("toHome");
+    },
+
     // Connexion / login
     c0074: () => {
         Fleetbo.execute("c0074");
