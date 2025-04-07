@@ -1,45 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from 'systemHelper';
+import Fleetbo, { FleetboGetList } from 'systemHelper';
 import { fleetboDB } from 'db';
 
 
 const Tab1 = () => {
 
-    
-    const [isNative, setIsNative]   = useState(true);
+
     const [loadpage, setLoadPage]   = useState(true); 
-    const [data, setData]           = useState([]);  // Doit être un tableau pour stocker tous les documents
+    const [data, setData]           = useState([]); 
     const  db                       = "items";
+    const openPage                  = async () => {  Fleetbo.openPage('insert'); };
 
-    const openPage= async () => {
-      Fleetbo.openPage('insert');
-    };
-
-    // Get data
-    window.getData = (jsonData) => {
-      try {
-          const parsedData = JSON.parse(jsonData);
-
-          if (parsedData.success) {
-              setData(parsedData.data || []); 
-              setLoadPage(false); 
-          } else {
-              console.error("Erreur de récupération des données :", parsedData.message);
-              setLoadPage(false);
-          }
-      } catch (error) {
-          console.error("Erreur de parsing JSON :", error);
-          setLoadPage(false);
-      }
-    };
 
     useEffect(() => {
-      if(isNative){
-        Fleetbo.openView("Home", true);
-        setIsNative(true);
-      }
-      Fleetbo.gdf37(fleetboDB, db);
-    }, [isNative]);
+      // 1. Listen data 
+      FleetboGetList((response) => {
+        try {
+          if (response.success && Array.isArray(response.data)) {
+            setData(response.data);
+          } else {
+            console.warn("⚠️ No data in response.");
+            setData([]);
+          }
+        } catch (e) {
+          console.error("❌ Error parsing data:", e);
+          setData([]);
+        } finally {
+          setLoadPage(false);
+        }
+      });
+  
+      // 2. Call function to get data
+      setTimeout(() => {
+        Fleetbo.gdf37(fleetboDB, db); 
+      }, 300);
+    }, []);
+
 
     const deleteItem = async (id) => {
       Fleetbo.dd0769(fleetboDB, db, id);
