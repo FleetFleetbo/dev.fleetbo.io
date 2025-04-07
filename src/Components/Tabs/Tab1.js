@@ -5,7 +5,6 @@ import { fleetboDB } from 'db';
 
 const Tab1 = () => {
 
-    const [isNative, setIsNative]   = useState(false);
     const [loadpage, setLoadPage]   = useState(true); 
     const [data, setData]           = useState([]); 
     const  db                       = "items";
@@ -13,10 +12,6 @@ const Tab1 = () => {
 
 
     useEffect(() => {
-      if(isNative){
-          Fleetbo.openView("Home", true);
-          setIsNative(true);
-      }
       // 1. Listen data 
       FleetboGetList((response) => {
         try {
@@ -59,7 +54,7 @@ const Tab1 = () => {
             </div>
         </header>
 
-        {/* Container avec gestion du loader */}
+
         <div className="p-3">
           {loadpage ? (
             <div className='center-container'>
