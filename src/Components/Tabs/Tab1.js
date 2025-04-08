@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo, { FleetboGetList } from 'systemHelper';
+import Fleetbo from 'systemHelper';
 import { fleetboDB } from 'db';
 
 
 const Tab1 = () => {
 
     const [loadpage, setLoadPage]   = useState(true); 
-    const [data, setData]           = useState([]); 
-    const  db                       = "items";
-    const openPage                  = async () => {  Fleetbo.openPage('insert'); };
-
+    const [data, setData]           = useState([]);  
+    const db                        = "items";
+    const openPage                  = async () => {
+          Fleetbo.openPage('insert');
+    };
 
     useEffect(() => {
-      // 1. Listen data 
-      FleetboGetList((response) => {
-        try {
-          if (response.success && Array.isArray(response.data)) {
-            setData(response.data);
-          } else {
-            console.warn("⚠️ No data in response.");
-            setData([]);
-          }
-        } catch (e) {
-          console.error("❌ Error parsing data:", e);
-          setData([]);
-        } finally {
-          setLoadPage(false);
+      // 1. Définir la fonction de callback qui sera utilisée par Fleetbo
+      Fleetbo.setDataCallback((parsedData) => {
+        if (parsedData.success) {
+          setData(parsedData.data || []); 
+        } else {
+          console.error("Erreur de récupération des données :", parsedData.message);
         }
+        setLoadPage(false);
       });
-  
-      // 2. Call function to get data
-      setTimeout(() => {
-        Fleetbo.gdf37(fleetboDB, db); 
-      }, 300);
-    }, []);
 
+      // 2. Appeler la fonction pour récupérer les données
+      Fleetbo.gdf37(fleetboDB, db);
+      
+      // Nettoyage lors du démontage du composant
+      return () => {
+        Fleetbo.setDataCallback(null);
+      };
+    }, []);
 
     const deleteItem = async (id) => {
       Fleetbo.dd0769(fleetboDB, db, id);
@@ -54,7 +50,7 @@ const Tab1 = () => {
             </div>
         </header>
 
-
+        {/* Container avec gestion du loader */}
         <div className="p-3">
           {loadpage ? (
             <div className='center-container'>
@@ -82,7 +78,7 @@ const Tab1 = () => {
                           </div>
                       ))
                   ) : (
-                    <p>Aucun élément disponible.</p>
+                    <p>No data available.</p>
                   )}
 
               </div>
