@@ -1,4 +1,10 @@
 const Fleetbo = {
+
+    // Fonction pour définir le callback à utiliser quand des données sont reçues
+    setDataCallback: (callback) => {
+      dataCallback = callback;
+    },
+
     execute: (funcName, ...args) => {
         if (window.fleetbo && typeof window.fleetbo[funcName] === "function") {
             window.fleetbo[funcName](...args);
@@ -72,7 +78,7 @@ export default Fleetbo;
 
 
 let onDataReceived = null; 
-window.getData = (json) => {
+window.getDataDocument = (json) => {
   try {
     let parsed = json;
     if (typeof json === "string") {
@@ -91,21 +97,28 @@ export const FleetboGet = (callback) => {
 };
 
 
-let onDataReceivedList = null; 
-window.getData = (json) => {
-  try {
-    let parsed = json;
-    if (typeof json === "string") {
-      parsed = JSON.parse(json);
-    }
 
-    if (typeof onDataReceivedList === 'function') {
-      onDataReceivedList(parsed); 
+// Variable pour stocker le callback
+let dataCallback = null;
+// Fonction interne qui sera exposée sur window pour le pont Kotlin
+window.getData = (jsonData) => {
+  try {
+    const parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+    
+    // Appeler le callback enregistré par setDataCallback
+    if (typeof dataCallback === 'function') {
+      dataCallback(parsedData);
+    } else {
+      console.error("❌ Aucun callback défini pour recevoir les données");
     }
-  } catch (e) {
-    console.error("❌ JSON invalide reçu par window.getData:", json, e);
+  } catch (error) {
+    console.error("❌ Erreur de parsing JSON :", error);
+    // Même en cas d'erreur, on essaie de notifier avec un message d'erreur
+    if (typeof dataCallback === 'function') {
+      dataCallback({
+        success: false,
+        message: "Erreur de parsing JSON: " + error.message
+      });
+    }
   }
-};
-export const FleetboGetList = (callback) => {
-    onDataReceivedList = callback; 
 };
