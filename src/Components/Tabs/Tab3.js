@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo, { FleetboGet } from 'systemHelper';
+import Fleetbo, { FleetboGet, useLoadingTimeout } from 'systemHelper';
 import { fleetboDB } from 'db';
 
 const Tab3 = () => {
@@ -7,29 +7,46 @@ const Tab3 = () => {
     const [userData, setUserData] = useState(null); 
     const [error, setError] = useState("");
     const db = "users";
+    
+    // Utiliser le hook de timeout pour gérer le loader infini
+    useLoadingTimeout(loadpage, setLoadPage, setError);
 
     useEffect(() => {
         FleetboGet((jsonData) => {
             try {
-                if (jsonData && (jsonData.username || jsonData.dateCreated)) {
+                console.log("Données reçues:", jsonData);
+                
+                // Gérer les différents cas de réponse
+                if (jsonData.error) {
+                    setError(jsonData.message || "Une erreur s'est produite");
+                    setUserData(null);
+                } else if (jsonData.notFound) {
+                    setError("Aucune donnée utilisateur disponible");
+                    setUserData(null);
+                } else if (jsonData && (jsonData.username || jsonData.dateCreated)) {
                     setUserData({
                         username: jsonData.username || "Not available",
                         dateCreated: jsonData.dateCreated || ""
                     });
+                    setError("");
                 } else {
-                    setError("Aucune donnée utilisateur disponible");
+                    setError("Format de données incorrect");
+                    setUserData(null);
                 }
             } catch (error) {
-                console.error("Error getting data:", jsonData, error);
-                setError("Erreur lors de la récupération des données");
+                console.error("Error processing data:", jsonData, error);
+                setError("Erreur lors du traitement des données");
+                setUserData(null);
+            } finally {
+                setLoadPage(false);
             }
-            
-            setLoadPage(false);
         });
     
         setTimeout(() => {
             Fleetbo.gdf37Auth(fleetboDB, db);
         }, 300);
+        
+        // Pas besoin de retour de nettoyage ici car le failsafe est géré séparément
     }, []);
 
     return (
