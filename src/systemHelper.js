@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Fleetbo = {
 
     // Fonction pour définir le callback à utiliser quand des données sont reçues
@@ -77,6 +79,24 @@ const Fleetbo = {
 export default Fleetbo;
 
 
+export const useLoadingTimeout = (loadingState, setLoadingState, setErrorState, timeoutMs = 1000) => {
+  React.useEffect(() => {
+    // Seulement configurer le timeout si l'état de chargement est true
+    if (!loadingState) return;
+    
+    const failsafeTimeout = setTimeout(() => {
+      if (loadingState) {
+        console.warn("Délai d'attente dépassé");
+        setLoadingState(false);
+        setErrorState("Délai d'attente dépassé. Veuillez réessayer.");
+      }
+    }, timeoutMs);
+
+    // Nettoyer le timeout si le composant est démonté ou l'état change
+    return () => clearTimeout(failsafeTimeout);
+  }, [loadingState, setLoadingState, setErrorState, timeoutMs]);
+};
+
 let onDataReceived = null; 
 window.getDataDocument = (json) => {
   try {
@@ -86,14 +106,24 @@ window.getDataDocument = (json) => {
     }
 
     if (typeof onDataReceived === 'function') {
-      onDataReceived(parsed); 
+      onDataReceived(parsed);
+    } else {
+      console.error("❌ Aucun callback défini pour recevoir les données");
     }
   } catch (e) {
-    console.error("❌ JSON invalide reçu par window.getData:", json, e);
+    console.error("❌ JSON invalide reçu par window.getDataDocument:", json, e);
+    // Même en cas d'erreur, notifier avec un message d'erreur
+    if (typeof onDataReceived === 'function') {
+      onDataReceived({
+        error: true,
+        message: "Erreur de parsing JSON: " + e.message
+      });
+    }
   }
 };
 export const FleetboGet = (callback) => {
-  onDataReceived = callback; 
+  onDataReceived = callback;
+  console.log("Callback enregistré pour FleetboGet");
 };
 
 
