@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Fleetbo from 'systemHelper';
+import Fleetbo, { useLoadingTimeout }  from 'systemHelper';
 import { fleetboDB } from 'db';
 
 
@@ -7,10 +7,14 @@ const Tab1 = () => {
 
     const [loadpage, setLoadPage]   = useState(true); 
     const [data, setData]           = useState([]);  
+    const [error, setError]         = useState("");
     const db                        = "items";
     const openPage                  = async () => {
           Fleetbo.openPage('insert');
     };
+
+    // Utiliser le hook de timeout pour gérer le loader infini
+    useLoadingTimeout(loadpage, setLoadPage, setError);
 
     useEffect(() => {
       // 1. Définir la fonction de callback qui sera utilisée par Fleetbo
@@ -18,6 +22,7 @@ const Tab1 = () => {
         if (parsedData.success) {
           setData(parsedData.data || []); 
         } else {
+          setError("Erreur de récupération des données.");
           console.error("Erreur de récupération des données :", parsedData.message);
         }
         setLoadPage(false);
@@ -38,7 +43,6 @@ const Tab1 = () => {
     };
 
 
-
     return (
       <>
         <header className='navbar pt-4'> 
@@ -56,6 +60,8 @@ const Tab1 = () => {
             <div className='center-container'>
               <div className="loader"></div>
             </div>
+          ) : error ? (
+            <div className="alert alert-danger">{error}</div>
           ) : (
             <>
               <div className="row mt-3">
