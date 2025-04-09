@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
-
+import        { useLoadingTimeout } from 'systemHelper';
 
 const Tab2 = () => {
 
 
     const [loadpage, setLoadPage]   = useState(true); 
+    const [error, setError]         = useState("");
+
+    // Utiliser le hook de timeout pour gérer le loader infini
+    useLoadingTimeout(loadpage, setLoadPage, setError);
 
     useEffect(() => {
         setTimeout(() => {  setLoadPage(false); }, 300);   
@@ -13,15 +17,15 @@ const Tab2 = () => {
 
     return (
       <>
-        <header className='navbar pt-4'> 
-            <h1 className='fs-5 fw-bolder'>Tab2</h1>
-        </header>
+        <header className='navbar pt-4'> <h1 className='fs-5 fw-bolder'>Tab2</h1> </header>
 
         {/* Container avec gestion du loader */}
         <div className="center-container">
           {loadpage ? (
               <div className="loader"></div>
-          ) : (
+            ) : error ? (
+              <div className="alert alert-danger">{error}</div>
+            ) : (
             <>
               <div className="container">
                   <h3 className="fw-bolder text-success">Tab 2 </h3>
