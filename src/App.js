@@ -21,20 +21,15 @@ import './App.css';
 
 function App() {
 
-
     useEffect(() => {
-      
       if (window.fleetbo) {
         if(window.localStorage){ }
       }else {
         window.location.href = 'https://fleetbo.io';
         return; 
-      }
-    
+      } 
     }, []);
   
-  
-
     const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     return (
