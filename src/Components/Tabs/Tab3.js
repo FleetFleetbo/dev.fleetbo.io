@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Fleetbo, { FleetboGet, useLoadingTimeout } from 'systemHelper';
 import { fleetboDB } from 'db';
 
+
 const Tab3 = () => {
     const [loadpage, setLoadPage] = useState(true);
     const [userData, setUserData] = useState(null); 
-    const [error, setError] = useState("");
-    const db = "users";
+    const [error, setError]       = useState("");
+    const db                      = "users";
     
-    // Utiliser le hook de timeout pour gérer le loader infini
+
     useLoadingTimeout(loadpage, setLoadPage, setError);
 
     useEffect(() => {
@@ -44,15 +45,15 @@ const Tab3 = () => {
     
         setTimeout(() => {
             Fleetbo.gdf37Auth(fleetboDB, db);
-        }, 300);
+        }, 500);
         
         // Pas besoin de retour de nettoyage ici car le failsafe est géré séparément
     }, []);
 
     return (
         <>
-            <header className='navbar pt-4'> 
-                <h1 className='fs-5 fw-bolder'>Tab3</h1>
+            <header className='navbar pt-3'> 
+                <h2 className='fw-bolder'>Tab3</h2>
             </header>
 
             <div className="center-container">
