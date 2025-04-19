@@ -45,8 +45,8 @@ const Tab1 = () => {
 
     return (
       <>
-        <header className='navbar pt-4'> 
-            <h1 className='fs-5 fw-bolder'>Tab1</h1>
+         <header className='navbar pt-3'> 
+            <h2 className='fw-bolder'>Tab1</h2>
             <div className="navbar-right">
                 <button onClick={ openPage } className="logout fs-5 fw-bold">
                     <i className="fa-solid fa-plus"></i>
