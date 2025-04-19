@@ -24,9 +24,10 @@ const Tab3 = () => {
                 } else if (jsonData.notFound) {
                     setError("Aucune donnée utilisateur disponible");
                     setUserData(null);
-                } else if (jsonData && (jsonData.username || jsonData.dateCreated)) {
+                } else if (jsonData && (jsonData.username || || jsonData.phoneNumber || jsonData.dateCreated)) {
                     setUserData({
                         username: jsonData.username || "Not available",
+                        phoneNumber: jsonData.phoneNumber || "Not available",
                         dateCreated: jsonData.dateCreated || ""
                     });
                     setError("");
@@ -49,6 +50,7 @@ const Tab3 = () => {
         
         // Pas besoin de retour de nettoyage ici car le failsafe est géré séparément
     }, []);
+    
 
     return (
         <>
@@ -71,8 +73,8 @@ const Tab3 = () => {
                         <h2 className="text-success fw-bolder mt-2">
                             {userData.username || "Not available"}
                         </h2>
-                        <h5 className="text-dark fw-normal">+237693386555</h5>
-                        <h6 className="text-secondary fw-bold">
+                        <h5 className="text-dark fw-normal">{userData.phoneNumber}</h5>
+                        <h6 className="text-secondary">
                             {userData.dateCreated ? `Since ${userData.dateCreated}` : ""}
                         </h6>
                         <button 
