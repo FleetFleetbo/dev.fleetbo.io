@@ -17,7 +17,7 @@ const Tab2 = () => {
 
     return (
       <>
-        <header className='navbar pt-4'> <h1 className='fs-5 fw-bolder'>Tab2</h1> </header>
+        <header className='navbar pt-3'> <h2 className='fw-bolder'>Tab2</h2> </header>
 
         {/* Container avec gestion du loader */}
         <div className="center-container">
