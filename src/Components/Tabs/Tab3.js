@@ -67,7 +67,7 @@ const Tab3 = () => {
                     <div className="container">
                         <img
                             className='img-login'
-                            src="https://static.vecteezy.com/system/resources/thumbnails/009/397/835/small/man-avatar-clipart-illustration-free-png.png"
+                            src="/avatar.png"
                             alt="user"
                         />
                         <h2 className="text-success fw-bolder mt-2">
