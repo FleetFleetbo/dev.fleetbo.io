@@ -24,7 +24,7 @@ const Tab3 = () => {
                 } else if (jsonData.notFound) {
                     setError("Aucune donnée utilisateur disponible");
                     setUserData(null);
-                } else if (jsonData && (jsonData.username || || jsonData.phoneNumber || jsonData.dateCreated)) {
+                } else if (jsonData && (jsonData.username || jsonData.phoneNumber || jsonData.dateCreated)) {
                     setUserData({
                         username: jsonData.username || "Not available",
                         phoneNumber: jsonData.phoneNumber || "Not available",
