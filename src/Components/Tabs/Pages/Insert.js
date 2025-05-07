@@ -1,14 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Fleetbo from 'systemHelper';
 import { fleetboDB } from 'db';
 
 
 const Insert = () => {
     
-    const [loading,  setLoading]  = useState();
-    const [loadpage, setLoadPage] = useState(true); 
-    const [formData, setFormData] = useState({
+    const [loading,  setLoading]                = useState();
+    const [formData, setFormData]               = useState({
             title: "",
             content: "",
             // No need to store current date. Automatic
@@ -17,11 +16,6 @@ const Insert = () => {
     const  db                                   = "items";
     const [resultMessage, setResultMessage]     = useState();
     const [messageType, setMessageType]         = useState(''); // 'success' or 'error'
-
-
-    useEffect(() => {
-        setTimeout(() => {  setLoadPage(false); }, 300);   
-    }, [loadpage]);
 
 
     const handleChange = (e) => {
@@ -40,12 +34,13 @@ const Insert = () => {
 
         if (!formData.title || !formData.content) {
             setLoading(false);
-            setResultMessage('Champs obligatoires');
+            setResultMessage('Required fields');
             setMessageType('danger');
             return;
         }
         
         const jsonData   = JSON.stringify(formData);
+
         // Insertion
         setTimeout(() => {
             Fleetbo.adn9991(fleetboDB, db, jsonData);
@@ -56,11 +51,11 @@ const Insert = () => {
 
     window.onAddResult = (success) => {
         if (success) {
-            setResultMessage('✅ Ajouté avec succès.');
+            setResultMessage('✅ Added successfully.');
             setMessageType('success');
             return;
         } else {
-            setResultMessage("❌ Erreur lors de l'envoie");
+            setResultMessage("❌ Sending error.");
             setMessageType('danger');
             return;
         }
@@ -83,71 +78,66 @@ const Insert = () => {
             </header>
 
             {/* Container avec gestion du loader */}
-            <div className="form-container" >
-            {loadpage ? (
-                <div className="loader"></div>
-            ) : (
-                <>
-                      <div className="form">
-                               
-                                <form onSubmit={handleSubmit} >
+            <div className="p-3" >
+        
+                <div className="p-2 mt-2">          
+                    <form onSubmit={handleSubmit} >
                                   
-                                    <div className='mb-3'>
-                                       <div className='mt-1'>
-                                           <h3 className="float-start fw-bolder text-success" style={{ fontFamily: 'tahoma' }}>
-                                                Add item
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <br /> <br />
+                        <div className='mb-3'>
+                            <div className='mt-1'>
+                                <h3 className="float-start fw-bolder text-success" style={{ fontFamily: 'tahoma' }}>
+                                    Add item
+                                </h3>
+                            </div>
+                        </div>
+                        <br /> <br />
   
-                                    <div className="mb-3">
-                                       <label className="float-start fs-5 mb-2">Title</label>
-                                       <input
-                                           type='text'
-                                           className="form-control input"
-                                           name="title"
-                                           value={formData.title}
-                                           onChange={handleChange}
+                        <div className="mb-3">
+                            <label className="float-start fs-5 mb-2">Title</label>
+                            <input
+                                type='text'
+                                className="form-control input"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
                                            
-                                       />
-                                    </div>
+                            />
+                        </div>
        
-                                    <div className="mb-3">
-                                       <label className="float-start fs-5 mb-2">Description</label>
-                                       <textarea
-                                           type="text"
-                                           name="content"
-                                           value={formData.content}
-                                           onChange={handleChange}
-                                           className="form-control input"
-                                           rows={4}
+                        <div className="mb-3">
+                            <label className="float-start fs-5 mb-2">Description</label>
+                            <textarea
+                                type="text"
+                                name="content"
+                                value={formData.content}
+                                onChange={handleChange}
+                                className="form-control input"
+                                rows={4}
                                            
-                                       >
-                                       </textarea>
+                            >
+                            </textarea>
+                        </div>
+       
+                        <button
+                                className="go mt-2 mb-2 fw-bold" 
+                                onClick={handleSubmit} 
+                                type="submit"
+                                disabled={loading}
+                        >
+                                {loading ? 'Loading...' : 'Add'} 
+                        </button>
+                        <div className="text-success fw-normal mt-1" style={{ height: '20px'}}>
+                                {/* Result Message */}
+                                {resultMessage && (
+                                    <div className={`input-box mt-3 fs-6 text-${messageType === 'success' ? 'success' : 'danger'}`}>
+                                        {resultMessage}  
                                     </div>
+                                )}
+                        </div>
        
-                                    <button
-                                        className="go mt-2 mb-2 fw-bold" 
-                                        onClick={handleSubmit} 
-                                        type="submit"
-                                        disabled={loading}
-                                    >
-                                        {loading ? 'Loading...' : 'Add'} 
-                                    </button>
-                                   <div className="text-success fw-normal mt-1" style={{ height: '20px'}}>
-                                        {/* Result Message */}
-                                        {resultMessage && (
-                                            <div className={`input-box mt-3 fs-6 text-${messageType === 'success' ? 'success' : 'danger'}`}>
-                                                {resultMessage}  
-                                            </div>
-                                        )}
-                                   </div>
-       
-                                </form>
-                       </div>
-                </>
-            )}
+                    </form>
+                </div>
+          
             </div>
         </>
     );
