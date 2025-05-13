@@ -42,25 +42,26 @@ const Fleetbo = {
         Fleetbo.execute("openGalleryView");
     },
 
-    adn9991: (fleetboDB, db, jsonData) => {
-        Fleetbo.execute("adn9991", fleetboDB, db, jsonData);
+    add: (fleetboDB, db, jsonData) => {
+        Fleetbo.execute("add", fleetboDB, db, jsonData);
     },
 
-    gdf37: (fleetboDB, db) => {
-        Fleetbo.execute("gdf37", fleetboDB, db);
+    getAuthUser: (fleetboDB, db) => {
+        Fleetbo.execute("getAuthUser", fleetboDB, db);
     },
 
-    gdf37Auth: (fleetboDB, db) => {
-        Fleetbo.execute("gdf37Auth", fleetboDB, db);
+    getDocs: (fleetboDB, db) => {
+        Fleetbo.execute("getDocs", fleetboDB, db);
     },
 
-    dd0769: (fleetboDB, db, id) => {
-        Fleetbo.execute("dd0769", fleetboDB, db, id);
+    delete: (fleetboDB, db, id) => {
+        Fleetbo.execute("delete", fleetboDB, db, id);
     },
 
     d0a13: () => {
         Fleetbo.execute("d0a13");
-    }
+    },
+  
 };
 
 export default Fleetbo;
