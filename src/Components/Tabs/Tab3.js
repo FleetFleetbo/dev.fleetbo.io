@@ -45,8 +45,8 @@ const Tab3 = () => {
         });
     
         setTimeout(() => {
-            Fleetbo.gdf37Auth(fleetboDB, db);
-        }, 500);
+            Fleetbo.getAuthUser(fleetboDB, db);
+        }, 300);
         
         // Pas besoin de retour de nettoyage ici car le failsafe est géré séparément
     }, []);
@@ -71,7 +71,7 @@ const Tab3 = () => {
                             alt="user"
                         />
                         <h2 className="text-success fw-bolder mt-2">
-                            {userData.username || "Not available"}
+                            {userData.username || "Not available"} 
                         </h2>
                         <h5 className="text-dark fw-normal">{userData.phoneNumber}</h5>
                         <h6 className="text-secondary">
