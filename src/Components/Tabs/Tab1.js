@@ -3,21 +3,25 @@ import Fleetbo, { useLoadingTimeout }  from 'systemHelper';
 import { fleetboDB } from 'db';
 
 
+
+
 const Tab1 = () => {
 
     const [loadpage, setLoadPage]   = useState(true); 
     const [data, setData]           = useState([]);  
     const [error, setError]         = useState("");
     const db                        = "items";
+
+
     const openPage                  = async () => {
-          Fleetbo.openPage('insert');
+        Fleetbo.openPage('insert');
     };
 
     // Utiliser le hook de timeout pour gérer le loader infini
     useLoadingTimeout(loadpage, setLoadPage, setError);
 
     useEffect(() => {
-      // 1. Définir la fonction de callback qui sera utilisée par Fleetbo
+      // 1. Callback function wil be used by Fleetbo
       Fleetbo.setDataCallback((parsedData) => {
         if (parsedData.success) {
           setData(parsedData.data || []); 
@@ -28,31 +32,33 @@ const Tab1 = () => {
         setLoadPage(false);
       });
 
-      // 2. Appeler la fonction pour récupérer les données
-      Fleetbo.gdf37(fleetboDB, db);
+      // 2. Call function to get data 
+      Fleetbo.getDocs(fleetboDB, db);
       
-      // Nettoyage lors du démontage du composant
+      // Clean lors du démontage du composant
       return () => {
         Fleetbo.setDataCallback(null);
       };
     }, []);
 
     const deleteItem = async (id) => {
-      Fleetbo.dd0769(fleetboDB, db, id);
+      Fleetbo.delete(fleetboDB, db, id);
       setData((prevData) => prevData.filter(item => item.id !== id));
     };
 
 
     return (
       <>
-         <header className='navbar pt-3'> 
-            <h2 className='fw-bolder'>Tab1</h2>
+
+        <header className='navbar pt-3'> 
+          <h2 className='fw-bolder'>Tab1</h2>
             <div className="navbar-right">
-                <button onClick={ openPage } className="logout fs-5 fw-bold">
-                    <i className="fa-solid fa-plus"></i>
-                </button>
+                  <button onClick={ openPage } className="logout fs-5 fw-bold">
+                      <i className="fa-solid fa-plus"></i>
+                  </button>
             </div>
         </header>
+       
 
         {/* Container avec gestion du loader */}
         <div className="p-3">
