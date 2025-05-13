@@ -4,59 +4,69 @@ import Fleetbo from 'systemHelper';
 import './css/Navbar.css';
 
 
-const Navbar                                 = () => {
+const Footer                                 = () => {
 
     const [activeTab, setActiveTab]          = useState();
     const navbarType                         = localStorage.getItem("navbarType");
+    window.activeTab                         = (tab) => {  setActiveTab(tab); };
 
-    window.activeTab                         = (tab) => {
-        console.log("activeTab called with:", tab);
-        setActiveTab(tab);
+
+    const selectTab = async (theView, e) => {
+        if (e) {
+            e.preventDefault(); 
+        }
+        try {
+            if (!theView) {
+                console.error("tabId invalide");
+                return;
+            }
+            switch(theView) {
+                case 'tab1':
+                    setActiveTab("Tab1");
+                    Fleetbo.openView(theView, false);
+                    break;
+                case 'tab2':
+                    setActiveTab("Tab2");
+                    Fleetbo.openView(theView, false );
+                    break;
+                case 'tab3':
+                    setActiveTab("Tab3");
+                    Fleetbo.openView(theView, false);
+                    break;
+                default:
+                    console.error(`Onglet inconnu: ${theView}`);
+            }
+
+        } catch (error) {
+            console.error("Erreur lors de la sélection de l'onglet :", error);
+        }
     };
 
 
     return (
         <>
+            //You can choose depending on the navbarType value
             {navbarType === "header" ? (
-                //You can choose depending on the navbarType value
                 <div className="header">
-                    <Link 
-                        onClick={(e) => Fleetbo.selectTab('tab1', e, setActiveTab)} 
-                        className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}
-                    >
+                    <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
                         <i className="fa-solid fa-house"></i>
                     </Link>
-                    <Link 
-                        onClick={(e) => Fleetbo.selectTab('tab2', e, setActiveTab)} 
-                        className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}
-                    >
+                    <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
                         <i className="fa-solid fa-bell"></i> 
                     </Link>
-                    <Link 
-                        onClick={(e) => Fleetbo.selectTab('tab3', e, setActiveTab)} 
-                        className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}
-                    >
+                    <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
                         <i className="fa-solid fa-user"></i>
                     </Link>
                 </div>
             ) : (
                 <div className="footer">
-                    <Link 
-                        onClick={(e) => Fleetbo.selectTab('tab1', e, setActiveTab)} 
-                        className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}
-                    >
-                        <i className="fa-solid fa-house"></i>
+                    <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
+                        <i className="fa-solid fa-house"></i> 
                     </Link>
-                    <Link 
-                        onClick={(e) => Fleetbo.selectTab('tab2', e, setActiveTab)} 
-                        className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}
-                    >
-                        <i className="fa-solid fa-bell"></i> 
+                    <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
+                    <i className="fa-solid fa-bell"></i>  
                     </Link>
-                    <Link 
-                        onClick={(e) => Fleetbo.selectTab('tab3', e, setActiveTab)} 
-                        className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}
-                    >
+                    <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
                         <i className="fa-solid fa-user"></i>
                     </Link>
                 </div>
@@ -66,4 +76,4 @@ const Navbar                                 = () => {
 
 };
 
-export default Navbar;
+export default Footer;
