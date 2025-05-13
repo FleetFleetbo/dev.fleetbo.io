@@ -12,7 +12,7 @@ import Tab3 from "./Components/Tabs/Tab3";
 
 import Insert from "./Components/Tabs/Pages/Insert";
 
-import Footer from "./Components/Config/Footer";
+import Navbar from "./Components/Config/Navbar";
 import Not from './Components/Config/Not';
 
 import './App.css';
@@ -54,7 +54,7 @@ function App() {
             <Route path="*" element={<Not />} />
 
             {/* Tabs */}
-            <Route path="/footer" element={ <Footer /> } />
+            <Route path="/navbar" element={ <Navbar /> } />
           </Routes>
         </Router>
     );
