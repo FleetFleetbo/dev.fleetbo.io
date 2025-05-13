@@ -45,7 +45,7 @@ const Footer                                 = () => {
 
     return (
         <>
-            //You can choose depending on the navbarType value
+             {/*You can choose depending on the navbarType value */}
             {navbarType === "header" ? (
                 <div className="header">
                     <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
