@@ -4,7 +4,7 @@ import Fleetbo from 'systemHelper';
 import './css/Navbar.css';
 
 
-const Footer                                 = () => {
+const Navbar                                 = () => {
 
     const [activeTab, setActiveTab]          = useState();
     const navbarType                         = localStorage.getItem("navbarType");
@@ -45,7 +45,6 @@ const Footer                                 = () => {
 
     return (
         <>
-             {/*You can choose depending on the navbarType value */}
             {navbarType === "header" ? (
                 <div className="header">
                     <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
@@ -76,4 +75,4 @@ const Footer                                 = () => {
 
 };
 
-export default Footer;
+export default Navbar;
