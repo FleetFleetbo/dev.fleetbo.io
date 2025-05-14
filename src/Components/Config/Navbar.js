@@ -7,8 +7,9 @@ import './css/Navbar.css';
 const Navbar                                 = () => {
 
     const [activeTab, setActiveTab]          = useState();
-    const navbarType                         = localStorage.getItem("navbarType");
+    const navbarType                         = localStorage.getItem("navbar");
     window.activeTab                         = (tab) => {  setActiveTab(tab); };
+
 
     const selectTab                          = async (theView, e) => {
         if (e) { e.preventDefault(); }
@@ -18,13 +19,13 @@ const Navbar                                 = () => {
                 return;
             }
             switch(theView) {
-                case 'Home':
+                case 'tab1':
                     setActiveTab("Tab1");
-                    Fleetbo.openView(theView, true);
+                    Fleetbo.openView(theView, false);
                     break;
-                case 'tab2':
+                case 'Home':
                     setActiveTab("Tab2");
-                    Fleetbo.openView(theView, false );
+                    Fleetbo.openView(theView, true );
                     break;
                 case 'tab3':
                     setActiveTab("Tab3");
@@ -44,11 +45,11 @@ const Navbar                                 = () => {
             {/* Choose one type Navabar */}
             {navbarType === "header" ? (
                 <div className="header">
-                    <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
+                    <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
                         <i className="fa-solid fa-house"></i> 
                     </Link>
                     <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
-                        <i className="fa-solid fa-bell"></i> 
+                        <i className="fa-solid fa-mobile-screen"></i>
                     </Link>
                     <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
                         <i className="fa-solid fa-user"></i>
@@ -59,8 +60,8 @@ const Navbar                                 = () => {
                     <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
                         <i className="fa-solid fa-house"></i> 
                     </Link>
-                    <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
-                        <i className="fa-solid fa-bell"></i>  
+                    <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
+                        <i className="fa-solid fa-mobile-screen"></i>
                     </Link>
                     <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
                         <i className="fa-solid fa-user"></i>
