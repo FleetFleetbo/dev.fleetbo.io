@@ -7,7 +7,7 @@ import './css/Navbar.css';
 const Navbar                                 = () => {
 
     const [activeTab, setActiveTab]          = useState();
-    const navbarType                         = "footer"; //localStorage.getItem("navbarType");
+    const navbarType                         = localStorage.getItem("navbarType");
     window.activeTab                         = (tab) => {  setActiveTab(tab); };
 
     const selectTab                          = async (theView, e) => {
@@ -56,7 +56,7 @@ const Navbar                                 = () => {
                 </div>
             ) : (
                 <div className="footer">
-                    <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
+                    <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
                         <i className="fa-solid fa-house"></i> 
                     </Link>
                     <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
