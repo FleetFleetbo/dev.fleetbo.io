@@ -1,18 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import Fleetbo from 'systemHelper';
+import React from 'react';
 
 
 const Welcome = ()  => {
-
-  const [isNative, setIsNative] = useState(false);
-
-  useEffect(() => {
-    if(isNative){
-      Fleetbo.openView("Home", true);
-      setIsNative(true);
-    }
-      
-  },[isNative]);
 
   return (
     <div className="loader-container">
