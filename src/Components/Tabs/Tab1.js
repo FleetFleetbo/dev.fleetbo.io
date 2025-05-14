@@ -11,7 +11,15 @@ const Tab1 = () => {
     const [data, setData]           = useState([]);  
     const [error, setError]         = useState("");
     const db                        = "items";
-
+    /*
+    const [isNative, setIsNative]   = useState(true);
+    useEffect(() => {
+      if(isNative){
+        Fleetbo.openView("Home", true);
+        setIsNative(true);
+      }   
+    },[isNative]);
+    */
 
     const openPage                  = async () => {
         Fleetbo.openPage('insert');
@@ -40,6 +48,7 @@ const Tab1 = () => {
         Fleetbo.setDataCallback(null);
       };
     }, []);
+    
 
     const deleteItem = async (id) => {
       Fleetbo.delete(fleetboDB, db, id);
@@ -50,8 +59,8 @@ const Tab1 = () => {
     return (
       <>
 
-        <header className='navbar pt-3'> 
-          <h2 className='fw-bolder'>Tab1</h2>
+        <header className='navbar ps-3 pt-3'> 
+          <h2 className='fw-bolder'>Home</h2>
             <div className="navbar-right">
                   <button onClick={ openPage } className="logout fs-5 fw-bold">
                       <i className="fa-solid fa-plus"></i>
