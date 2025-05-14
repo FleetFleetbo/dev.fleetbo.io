@@ -22,6 +22,7 @@ import './App.css';
 function App() {
 
     useEffect(() => {
+      localStorage.setItem("navbar",localStorage.getItem("navbarType"));
       if (window.fleetbo) {
         if(window.localStorage){ }
       }else {
