@@ -7,23 +7,20 @@ import './css/Navbar.css';
 const Navbar                                 = () => {
 
     const [activeTab, setActiveTab]          = useState();
-    const navbarType                         = localStorage.getItem("navbarType");
+    const navbarType                         = "footer"; //localStorage.getItem("navbarType");
     window.activeTab                         = (tab) => {  setActiveTab(tab); };
 
-
-    const selectTab = async (theView, e) => {
-        if (e) {
-            e.preventDefault(); 
-        }
+    const selectTab                          = async (theView, e) => {
+        if (e) { e.preventDefault(); }
         try {
             if (!theView) {
                 console.error("tabId invalide");
                 return;
             }
             switch(theView) {
-                case 'tab1':
+                case 'Home':
                     setActiveTab("Tab1");
-                    Fleetbo.openView(theView, false);
+                    Fleetbo.openView(theView, true);
                     break;
                 case 'tab2':
                     setActiveTab("Tab2");
@@ -42,13 +39,13 @@ const Navbar                                 = () => {
         }
     };
 
-
     return (
         <>
+            {/* Choose one type Navabar */}
             {navbarType === "header" ? (
                 <div className="header">
                     <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
-                        <i className="fa-solid fa-house"></i>
+                        <i className="fa-solid fa-house"></i> 
                     </Link>
                     <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
                         <i className="fa-solid fa-bell"></i> 
@@ -59,11 +56,11 @@ const Navbar                                 = () => {
                 </div>
             ) : (
                 <div className="footer">
-                    <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
+                    <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
                         <i className="fa-solid fa-house"></i> 
                     </Link>
                     <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
-                    <i className="fa-solid fa-bell"></i>  
+                        <i className="fa-solid fa-bell"></i>  
                     </Link>
                     <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
                         <i className="fa-solid fa-user"></i>
