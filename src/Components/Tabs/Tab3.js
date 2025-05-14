@@ -54,8 +54,8 @@ const Tab3 = () => {
 
     return (
         <>
-            <header className='navbar pt-3'> 
-                <h2 className='fw-bolder'>Tab3</h2>
+            <header className='navbar ps-3 pt-3'> 
+                <h2 className='fw-bolder'>Account</h2>
             </header>
 
             <div className="center-container">
