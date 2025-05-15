@@ -60,7 +60,7 @@ const Tab1 = () => {
       <>
 
         <header className='navbar ps-3 pt-3'> 
-          <h2 className='fw-bolder'>Home</h2>
+          <h2 className='fw-bolder'>Tab 1</h2>
             <div className="navbar-right">
                   <button onClick={ openPage } className="logout fs-5 fw-bold">
                       <i className="fa-solid fa-plus"></i>
