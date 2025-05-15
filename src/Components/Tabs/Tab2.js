@@ -17,7 +17,7 @@ const Tab2 = () => {
 
     return (
       <>
-        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Screen</h2> </header>
+        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Tab 2</h2> </header>
 
         {/* Container avec gestion du loader */}
         <div className="center-container">
