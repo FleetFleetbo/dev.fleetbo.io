@@ -20,9 +20,6 @@ const Insert = () => {
             // No need to store current date. Automatic
     });
 
-    
-
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -68,11 +65,19 @@ const Insert = () => {
             return;
         }
         
-        const jsonData   = JSON.stringify(formData);
+        // Définir les données directement pour éviter les problèmes d'asynchronicité
+        const notificationData = {
+            title: formData.title,
+            body: formData.content, 
+            image: ""
+        };
+        const jsonDataNotification    = JSON.stringify(notificationData); 
+        const jsonData                = JSON.stringify(formData);
 
         // Insertion
         setTimeout(() => {
             Fleetbo.add(fleetboDB, db, jsonData);
+            Fleetbo.startNotification(jsonDataNotification);
             setFormData({ title: "", content: "", image: "" });
             setImageURL("");
             setLoading(false);
