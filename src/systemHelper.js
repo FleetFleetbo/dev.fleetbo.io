@@ -62,6 +62,10 @@ const Fleetbo = {
         Fleetbo.execute("d0a13");
     },
 
+    startNotification: (dataNotification) => {
+        Fleetbo.execute("startNotification", dataNotification);
+    },
+
   
 };
 
