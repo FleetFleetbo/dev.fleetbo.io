@@ -66,6 +66,10 @@ const Fleetbo = {
         Fleetbo.execute("startNotification", dataNotification);
     },
 
+    getToken: () => {
+        Fleetbo.execute("getToken");
+    },
+
   
 };
 
