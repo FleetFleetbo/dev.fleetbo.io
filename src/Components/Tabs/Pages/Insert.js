@@ -45,7 +45,8 @@ const Insert = () => {
             }
         };
 
-         // Get token 
+        // Get token 
+        Fleetbo.getToken();
         window.getToken = (deviceToken) => {
             setToken(deviceToken);
             // setLocalStorage('fcmToken', deviceToken);
