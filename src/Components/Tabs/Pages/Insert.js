@@ -13,6 +13,7 @@ const Insert = () => {
     const [resultMessage, setResultMessage]     = useState();
     const [messageType, setMessageType]         = useState(''); // 'success' or 'error'
     const [imageURL, setImageURL]               = useState(""); // State pour l'URL de l'image
+    const [token, setToken]                     = useState('');
     const [formData, setFormData]               = useState({
             title: "",
             content: "",
