@@ -65,6 +65,9 @@ const Tab1 = () => {
                   <button onClick={ openPage } className="logout fs-5 fw-bold">
                       <i className="fa-solid fa-plus"></i>
                   </button>
+                  <button onClick={() => Fleetbo.getToken() } className="logout fs-5 fw-bold ms-5">
+                      <i className="fa-solid fa-bell"></i>
+                  </button>
             </div>
         </header>
        
@@ -80,7 +83,7 @@ const Tab1 = () => {
           ) : (
             <>
               <div className="row mt-3">
-                  <h2 className='fw-bolder'>Items</h2>
+                  <h2 className='fw-bolder mb-4'>Items</h2>
 
                   {data.length > 0 ? (
                       data.map((item, index) => (
@@ -90,7 +93,7 @@ const Tab1 = () => {
                                   <div className='col-11 order-1'>
                                       <span className="text-dark fw-normal">  {item.content}</span>
                                   </div>
-                                  <div className='col-1 order-3'>
+                                  <div className='col-1 order-3 ms-4'>
                                       <button onClick={() => deleteItem(item.id)}  className="logout fs-5 fw-bold"> 
                                           <i className="fa-solid fa-trash text-danger"></i> 
                                       </button>
