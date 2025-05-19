@@ -77,6 +77,7 @@ const Insert = () => {
         const notificationData = {
             title: formData.title,
             body: formData.content, 
+            token: token,
             image: ""
         };
         const jsonDataNotification    = JSON.stringify(notificationData); 
