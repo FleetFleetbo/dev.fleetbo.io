@@ -46,9 +46,16 @@ const Insert = () => {
             }
         };
 
+         // Définir la fonction window.getToken
+        window.getToken = (deviceToken) => {
+            setToken(deviceToken);
+            // setLocalStorage('fcmToken', deviceToken);
+        };
+
         // Cleanup function to remove the global function when component unmounts
         return () => {
             window.displayImage = undefined;
+            delete window.getToken;
         };
     }, []);
 
