@@ -40,13 +40,12 @@ const Insert = () => {
                     image: decodedImageBase64, // Add the image to the form data
                 }));
                 // Close gallery if needed - depends on your implementation
-                // Fleetbo.closeGalleryView();
             } catch (error) {
                 console.error("Error decoding image:", error);
             }
         };
 
-         // Définir la fonction window.getToken
+         // Get token 
         window.getToken = (deviceToken) => {
             setToken(deviceToken);
             // setLocalStorage('fcmToken', deviceToken);
