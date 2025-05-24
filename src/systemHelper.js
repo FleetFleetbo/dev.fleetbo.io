@@ -34,6 +34,10 @@ const Fleetbo = {
         Fleetbo.execute("openPage", page);
     },
 
+    openPageId: (page, id) => {
+        Fleetbo.execute("openPageId", page, id);
+    },
+
     openView: (theView, boolean) => {
         Fleetbo.execute("openView", theView, boolean);
     },
@@ -52,6 +56,10 @@ const Fleetbo = {
 
     getDocs: (fleetboDB, db) => {
         Fleetbo.execute("getDocs", fleetboDB, db);
+    },
+
+    getDoc: (fleetboDB, db, id) => {
+        Fleetbo.execute("getDoc", fleetboDB, db, id);
     },
 
     delete: (fleetboDB, db, id) => {
