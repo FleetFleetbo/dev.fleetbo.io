@@ -44,6 +44,12 @@ const Tab1 = () => {
       // 2. Call function to get data 
       Fleetbo.getDocs(fleetboDB, db);
 
+      // 3. Get token 
+      window.getToken = (deviceToken) => {
+        //setToken(deviceToken);
+        // setLocalStorage('fcmToken', deviceToken);
+      };
+
       // Clean lors du démontage du composant
       return () => {
         Fleetbo.setDataCallback(null);
