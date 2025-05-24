@@ -4,13 +4,14 @@ import { fleetboDB } from 'db';
 
 
 
-
 const Tab1 = () => {
 
-    const [loadpage, setLoadPage]   = useState(true); 
-    const [data, setData]           = useState([]);  
-    const [error, setError]         = useState("");
-    const db                        = "items";
+    const [loadpage, setLoadPage]     = useState(true); 
+    const [data, setData]             = useState([]);  
+    const [error, setError]           = useState("");
+    const db                          = "items";
+    const page1                       = "item";
+
     /*
     const [isNative, setIsNative]   = useState(true);
     useEffect(() => {
@@ -42,10 +43,11 @@ const Tab1 = () => {
 
       // 2. Call function to get data 
       Fleetbo.getDocs(fleetboDB, db);
-      
+
       // Clean lors du démontage du composant
       return () => {
         Fleetbo.setDataCallback(null);
+        delete window.getToken;
       };
     }, []);
     
@@ -90,8 +92,13 @@ const Tab1 = () => {
                           <div key={index} className='row'>
                               <h5 className="fw-bold text-success mt-2">{item.title}</h5>
                               <div className="d-flex col-12">
-                                  <div className='col-11 order-1'>
+                                  <div className='col-10 order-1'>
                                       <span className="text-dark fw-normal">  {item.content}</span>
+                                  </div>
+                                  <div className='col-1 order-1 '>
+                                      <button onClick={() => Fleetbo.openPageId(page1, item.id)} className="logout fs-5 fw-bold"> 
+                                          <i className="fa-solid fa-eye text-success"></i> 
+                                      </button>
                                   </div>
                                   <div className='col-1 order-3 ms-4'>
                                       <button onClick={() => deleteItem(item.id)}  className="logout fs-5 fw-bold"> 
@@ -104,7 +111,6 @@ const Tab1 = () => {
                   ) : (
                     <p>No data available.</p>
                   )}
-
               </div>
             </>
           )}
