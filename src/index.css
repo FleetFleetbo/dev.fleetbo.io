@@ -40,31 +40,43 @@ img {
 
 
 
-/*******  LOADER ******/
-  .loader {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3; /* Couleur du bord */
-    border-top: 5px solid #4caf50 ; /* Couleur de l'animation */
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
+/******* LOADER ******/
+.loader {
+  width: 35px;
+  height: 35px;
+  border: 4px solid #f3f3f3; /* Bordure unie pour le "fond" */
+  border-top: 4px solid #4caf50; /* Bordure animée sur le dessus, même épaisseur */
+  /* Si tu voulais une bordure transparente en bas et sur les côtés, tu pourrais faire :
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-sizing: border-box; /* IMPÉRATIF : assure que la bordure est incluse dans la largeur/hauteur */
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-  .loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100%;
-  }
+.loader-container {
+  display: flex; /* Utilise Flexbox pour un centrage facile */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  /* La marge de 100% est inhabituelle et peut pousser le loader très bas.
+     Si vous voulez le centrer verticalement dans la fenêtre, utilisez 'height: 100vh;'.
+     Sinon, ajustez cette marge selon votre besoin spécifique de positionnement.
+     Par exemple, pour le centrer dans son parent, le 'margin-top' n'est pas nécessaire. */
+  /* margin-top: 100px; */ /* Exemple: Une marge fixe pour le positionner sous du contenu */
+  /* OU si vous voulez le centrer sur toute la hauteur de l'écran: */
+  /* height: 100vh; */
+}
 /********** FIN **********/
 
 
