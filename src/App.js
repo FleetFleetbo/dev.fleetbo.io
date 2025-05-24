@@ -11,6 +11,7 @@ import Tab2 from "./Components/Tabs/Tab2";
 import Tab3 from "./Components/Tabs/Tab3";
 
 import Insert from "./Components/Tabs/Pages/Insert";
+import Item from "./Components/Tabs/Pages/Item";
 
 import Navbar from "./Components/Config/Navbar";
 import Not from './Components/Config/Not';
@@ -49,6 +50,7 @@ function App() {
 
             {/* Pages */}
             <Route path="/insert" element={isLoggedIn ? <Insert /> : <Navigate to="/login" />} />
+            <Route path="/item" element={isLoggedIn ? <Item /> : <Navigate to="/login" />} />
           
             
             {/* Error*/}
