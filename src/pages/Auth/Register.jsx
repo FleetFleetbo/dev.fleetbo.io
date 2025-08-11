@@ -3,7 +3,7 @@ import Fleetbo from 'api/fleetbo';
 import { fleetboDB } from 'config/fleetboConfig';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
-import "assets/css/form.css"
+import "assets/css/Form.css"
 
 
 const Register = () => {
