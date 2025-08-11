@@ -1,65 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Welcome from "./Components/Welcome";
+// --- Imports from the new structure ---
 
-import Login from "./Components/Auth/Login";
-import Register from "./Components/Auth/Register";
+// Context and internal logic
+import { AuthProvider } from './context/AuthContext';
+import AuthGate from './components/Internal/AuthGate';
 
-import Tab1 from "./Components/Tabs/Tab1";
-import Tab2 from "./Components/Tabs/Tab2";
-import Tab3 from "./Components/Tabs/Tab3";
+// Layout components
+import ProtectedRoute from './components/layout/ProtectedRoute';
+import Navbar from './components/layout/Navbar';
 
-import Insert from "./Components/Tabs/Pages/Insert";
-import Item from "./Components/Tabs/Pages/Item";
+// Application pages
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import Tab1 from "./pages/Tabs/Tab1";
+import Tab2 from "./pages/Tabs/Tab2";
+import Tab3 from "./pages/Tabs/Tab3";
+import Insert from "./pages/Items/Insert";
+import Item from "./pages/Items/Item";
+import NotFound from './pages/NotFound';
 
-import Navbar from "./Components/Config/Navbar";
-import Not from './Components/Config/Not';
-
-import './App.css';
-
-
+// Global styles
+import './assets/css/App.css';
 
 function App() {
-
     useEffect(() => {
-      localStorage.setItem("navbar",localStorage.getItem("navbarType"));
-      if (window.fleetbo) {
-        if(window.localStorage){ }
-      }else {
-        window.location.href = 'https://fleetbo.io';
-        return; 
-      } 
+      // This check ensures that the app is running correctly in the WebView
+      if (!window.fleetbo) {
+        // In production, you might want a more elegant error page
+        window.location.href = 'https://fleetbo.io'; 
+        console.error("The application must be run in the native container.");
+      }
     }, []);
-  
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     return (
-        <Router>
-          <Routes>
+        <AuthProvider>
+          <Router>
 
-            <Route path="/" element={<Welcome isLoggedIn={isLoggedIn} />} />
+            <Routes>
+              {/* The AuthGate guard handles the initial redirection from the root */}
+              <Route path="/" element={<AuthGate />} />
 
-            {/* Authentification */}
-            <Route path="/register" element={<Register onLogin={() => setIsLoggedIn(true)} />} />
-            <Route path="/login"    element={<Login onLogin={() => setIsLoggedIn(true)} />} />
+              {/* Public routes */}
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
 
-            <Route path="/tab1" element={isLoggedIn ? <Tab1 /> : <Navigate to="/login" />} />
-            <Route path="/tab2" element={isLoggedIn ? <Tab2 /> : <Navigate to="/login" />} />
-            <Route path="/tab3" element={isLoggedIn ? <Tab3 /> : <Navigate to="/login" />} />
+              {/* Protected routes that require authentication */}
+              <Route path="/tab1" element={<ProtectedRoute><Tab1 /></ProtectedRoute>} />
+              <Route path="/tab2" element={<ProtectedRoute><Tab2 /></ProtectedRoute>} />
+              <Route path="/tab3" element={<ProtectedRoute><Tab3 /></ProtectedRoute>} />
+              <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
+              <Route path="/item" element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
-            {/* Pages */}
-            <Route path="/insert" element={isLoggedIn ? <Insert /> : <Navigate to="/login" />} />
-            <Route path="/item" element={isLoggedIn ? <Item /> : <Navigate to="/login" />} />
-          
-            
-            {/* Error*/}
-            <Route path="*" element={<Not />} />
-
-            {/* Tabs */}
-            <Route path="/navbar" element={ <Navbar /> } />
-          </Routes>
-        </Router>
+              {/* Utility or "fallback" routes */}
+              <Route path="*" element={<NotFound />} />
+              <Route path="/navbar" element={<Navbar />} />
+            </Routes>
+          </Router>
+        </AuthProvider>
     );
 }
 
