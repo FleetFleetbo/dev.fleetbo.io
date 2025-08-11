@@ -67,7 +67,7 @@ const Login = () => {
                                 </div>
                                 <div > 
                                     <button onClick={handleSubmit} className="go">
-                                        {loading ? "Chargement..." : "Go"}
+                                        {loading ? "Loading..." : "Go"}
                                     </button>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@ const Login = () => {
                     </>
                 ) : (
                     <div>
-                        <p>Informations non disponibles</p>
+                        <p>Information not available</p>
                     </div>
                 )}
             </div>   
