@@ -4,7 +4,7 @@ import Fleetbo from 'api/fleetbo';
 import 'assets/css/Navbar.css';
 
 const Navbar                        = () => {
-    const [activeTab, setActiveTab] = useState("Tab1"); /
+    const [activeTab, setActiveTab] = useState("Tab1"); 
     const navbarType                = localStorage.getItem("navbar");
 
     // This function is called to set the active tab.
