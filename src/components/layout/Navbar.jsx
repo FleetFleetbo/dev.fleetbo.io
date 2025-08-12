@@ -28,11 +28,11 @@ const Navbar                        = () => {
                     break;
                 case 'Home': //  Native layout name
                     setActiveTab("Tab2");
-                    Fleetbo.openView(theView, true); // Natif
+                    Fleetbo.openView(theView, true);  //  Natif
                     break;
                 case 'tab3':
                     setActiveTab("Tab3");
-                    Fleetbo.openView(theView, false); // web
+                    Fleetbo.openView(theView, false); //  web
                     break;
                 default:
                     console.error(`Onglet inconnu: ${theView}`);
