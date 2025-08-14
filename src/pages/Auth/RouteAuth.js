@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import Loader from 'components/common/Loader'; 
-import Fleetbo from 'api/fleetbo';
 
 /**
  * Ce composant agit comme un aiguilleur.
@@ -10,11 +9,11 @@ import Fleetbo from 'api/fleetbo';
  * et redirige l'utilisateur vers la page appropriée en utilisant React Router.
  */
 const RouteAuth = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     useEffect(() => {
-        const data = localStorage.getItem('AppInfo');
 
+        const data = localStorage.getItem('AppInfo');
         if (data) {
             try {
                 const parsedData = JSON.parse(data);
@@ -32,7 +31,7 @@ const RouteAuth = () => {
             console.error("Aucune information AppInfo trouvée dans localStorage pour le routage.");
             navigate('/login', { replace: true });
         }
-    }, [navigate]); 
+    }, [navigate]);
 
     return <Loader />;
 };
