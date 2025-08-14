@@ -14,6 +14,8 @@ import Navbar from './components/layout/Navbar';
 // Application pages
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
+import RouteAuth from "./pages/Auth/RouteAuth";
+
 import Tab1 from "./pages/Tabs/Tab1";
 import Tab2 from "./pages/Tabs/Tab2";
 import Tab3 from "./pages/Tabs/Tab3";
@@ -43,6 +45,7 @@ function App() {
               <Route path="/" element={<AuthGate />} />
 
               {/* Public routes */}
+              <Route path="/auth/route" element={<RouteAuth />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
 
