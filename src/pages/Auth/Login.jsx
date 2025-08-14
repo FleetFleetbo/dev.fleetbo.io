@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Fleetbo from 'api/fleetbo';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
+import {  Link  } from 'react-router-dom';
 
 
 const Login = () => {
@@ -43,26 +44,23 @@ const Login = () => {
             }, 1000); 
     }, [appInfo, navigate]);
 
-    const handleLeave = () => {
-        localStorage.clear();
-        Fleetbo.d0a13();
-    };
-
     return (
         <motion.div
-            transition={{ duration: 0.4 }}
-            className="form-container"
-        >
-            <div className="container">
-            {isLoading ? (
-                    <div className=""> </div>
-                ) : appInfo ? (
+                    transition={{ duration: 0.4 }}
+                    className="form-container"
+                >
+                    <div className="">
+                    {isLoading ? (
+                                <div className=" "></div>
+                        ) : appInfo ? (
                     <>
  
                         <div className="text-container">
                             <div className='row mt-4'>
-                                <h2 className='fw-bolder'>{appInfo.name}</h2>
-                                <div style={{ height: "70px" }}>
+                                <h1 className='fw-bolder text-success fs-1'>Login </h1>
+                                
+                                <div className='pb-1' >
+                                    <h3 className='fw-bolder'>{appInfo.appName}</h3>
                                     <p style={{ textAlign: "left" }}>{appInfo.description}</p>
                                 </div>
                                 <div > 
@@ -73,8 +71,14 @@ const Login = () => {
                             </div>
                         </div>
                         <br />
+                        <div className="pb-1">
+                            <Link to="/register" className="btn-logout mt-1">
+                                New account
+                            </Link>
+                        </div>
+                        <br />
                         <div className="pb-2">
-                            <button onClick={handleLeave} className="btn-logout mt-1 text-secondary">
+                            <button onClick={() => { setTimeout(() => { Fleetbo.d0a13() }, 500)  }} className="btn-leave">
                                 <i className="fa-solid fa-power-off"></i> Leave
                             </button>
                         </div>
