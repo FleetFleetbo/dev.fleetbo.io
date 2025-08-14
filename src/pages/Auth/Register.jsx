@@ -3,17 +3,18 @@ import Fleetbo from 'api/fleetbo';
 import { fleetboDB } from 'config/fleetboConfig';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
-import "assets/css/Form.css"
+import {  Link  } from 'react-router-dom';
 
 
 const Register = () => {
 
-    const navigate                  = useNavigate();
-    const [isLoading, setIsLoading] = useState(true); 
-    const [loading, setLoading]     = useState(false); 
-    const [appInfo, setAppInfo]     = useState(null); 
-    const [formData, setFormData]   = useState({ username: "" });
-    const  db                       = "users";
+    const navigate                            = useNavigate();
+    const [isLoading, setIsLoading]           = useState(true); 
+    const [loading, setLoading]               = useState(false); 
+    const [loadingLeave, setLoadingLeave]     = useState(false); 
+    const [appInfo, setAppInfo]               = useState(null);
+    const [formData, setFormData]             = useState({ username: "" });
+    const  db                                 = "users";
     
 
     const handleChange = (e) => {
@@ -30,6 +31,18 @@ const Register = () => {
             console.error(`Error : ${error.message}`);
         } finally {
             setTimeout(() => setLoading(false), 1000); 
+        }
+    };
+
+    const leaveApp = async () => { 
+        setLoadingLeave(true);   
+
+        try {
+            Fleetbo.d0a13(); 
+        } catch (error) {
+            console.error(`Erreur : ${error.message}`);
+        } finally {
+            setTimeout(() => setLoadingLeave(false), 500); 
         }
     };
     
@@ -50,7 +63,7 @@ const Register = () => {
                 } else {
                     setIsLoading(false);  
                 }
-            }, 1000); 
+            }, 100); 
     }, [appInfo, navigate]);
 
 
@@ -61,21 +74,21 @@ const Register = () => {
         >
             <div className="">
             {isLoading ? (
-                        <div className=" "></div>
+                    <></>
                 ) : appInfo ? (
                     <>
  
                         <div className="text-container">
                             <div className='row mt-4'>
-                                <h2 className='fw-bold'>Create an account</h2>
-                                <div style={{ height: "70px" }}>
+                                <div style={{ height: "100px" }}>
+                                    <h2 className='fw-bold'>New Account</h2>
                                     <p style={{ textAlign: "left" }}>{appInfo.description}</p>
                                 </div>
-                                <form onSubmit={handleSubmit} >
+                                <form className='mt-1' onSubmit={handleSubmit} >
                                     <div className='mb-3'>
                                         <label className='form-group label'>Username</label>
                                         <input 
-                                            className='form-control input p-2' 
+                                            className='form-control mt-2 p-2' 
                                             name="username" type="text" 
                                             value={formData.username} onChange={handleChange} 
                                             placeholder='' required />
@@ -89,9 +102,15 @@ const Register = () => {
                             </div>
                         </div>
                         <br />
+                        <div className="pb-1">
+                            <Link to="/login" className="btn-logout mt-1">
+                                Login
+                            </Link>
+                        </div>
+                        <br />
                         <div className="pb-2">
-                            <button onClick={() => { setTimeout(() => { Fleetbo.toHome() }, 500)  }} className="btn-logout mt-2 text-secondary">
-                                <i className="fa-solid fa-power-off"></i> Leave
+                            <button onClick={leaveApp} className="btn-leave">
+                                <i className="fa-solid fa-power-off"></i> {loadingLeave ? "Leave..." : "Leave"}
                             </button>
                         </div>
                     </>
