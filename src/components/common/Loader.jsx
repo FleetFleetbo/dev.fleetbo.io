@@ -9,7 +9,7 @@ const Loader = () => {
       style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', zIndex: 1050 }} 
     >
       {/* Standard Bootstrap spinner */}
-      <div className="spinner-border text-info" role="status">
+      <div className="spinner-border text-success" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
     </div>
