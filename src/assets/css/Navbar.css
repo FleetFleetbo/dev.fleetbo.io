@@ -1,37 +1,59 @@
+/* Styles de base (mobile-first approach) */
+.footer, .header {
+  position: fixed;
+  width: 100%;
+  background: #f2f2f2;
+  display: flex; /* Utilisation de flexbox pour un alignement facile */
+  justify-content: space-around; /* Distribue les icônes équitablement */
+  z-index: 1000;
+  box-sizing: border-box; /* S'assure que le padding n'ajoute pas à la largeur */
+}
+
 .footer {
-    position: fixed;
-    width: 100%;
-    background: #f2f2f2;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    z-index: 1000;
-  }
+  bottom: 0;
+  padding: 5px 13px; /* Padding vertical réduit pour les petits écrans */
+}
+
+.header {
+  top: 0;
+  padding: 1px 0;
+  border-bottom: 1px solid #ddd; /* Ajout d'une bordure discrète */
+}
+
+.nav-link {
+  color: #222;
+  /* Utilise flex-grow pour que chaque lien prenne une part égale de l'espace */
+  flex-grow: 1;
+  text-align: center; /* Centre l'icône à l'intérieur du lien */
   
-  .header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background: #f2f2f2;
-    display: flex;
-    justify-content: space-around;
-    padding: 1px;
-    z-index: 1000;
-  }
+  padding: 10px 10px; /* Padding vertical et horizontal de base */
+  font-size: 18px; /* Taille d'icône adaptée aux mobiles */
   
+  cursor: pointer;
+  text-decoration: none;
+  border-top-left-radius: 8px; 
+  border-top-right-radius: 8px; 
+  
+  /* Transition douce pour le changement de couleur */
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.nav-link.active {
+  background: #b37605;
+  color: #fff;
+}
+
+/* --- AJUSTEMENTS POUR ÉCRANS PLUS LARGES --- */
+/* Appliqué à partir de 768px (tablettes et ordinateurs) */
+@media (min-width: 768px) {
   .nav-link {
-    color: #222;
-    padding: 10px 40px 10px 40px;
+    flex-grow: 0; /* Empêche les liens de s'étirer sur de grands écrans */
+    padding: 10px 40px; /* On remet votre padding original pour les grands écrans */
     font-size: 19px;
-    cursor: pointer;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    text-decoration: none;
   }
   
-  .nav-link.active {
-    background: #0E904D;
-    color: #fff;
+  .footer, .header {
+    justify-content: center; /* Centre la barre de navigation sur les grands écrans */
+    gap: 20px; /* Ajoute un espace entre les icônes */
   }
+}
