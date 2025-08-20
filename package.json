@@ -5,6 +5,7 @@
   "dependencies": {
     "cra-template-pwa": "2.0.0",
     "framer-motion": "^12.0.6",
+    "history": "^5.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.4",
