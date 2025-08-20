@@ -10,6 +10,13 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+header {
+  background: #0E904D;
+  color: white;
+  text-align: left;
+  padding: 20px 20px 5px 15px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -64,6 +71,8 @@ img {
     margin-top: 100%;
   }
 /********** FIN **********/
+
+
 
 /****** NAVBAR  ******/
 .navbar {
@@ -241,25 +250,11 @@ html, body {
   cursor: pointer; 
 }
 
-
 /* Style général */
 .app-con {
   margin-bottom: 15%;
   min-height: 100vh;
   overflow-y: auto;
-}
-
-/* Header */
-.header {
-  background-color: #d272c1;
-  text-align: center;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #d272c1;
-  color: white;
-  padding: 10px 20px;
-  width: 100%;
 }
 
 /* Contenu des Tabs */
@@ -271,11 +266,4 @@ html, body {
   font-size: 20px;
   color: white;
   transition: background-color 0.3s ease-in-out;
-}
-
-header {
-  background: #0E904D;
-  color: white;
-  text-align: left;
-  padding: 20px 20px 5px 15px;
 }
