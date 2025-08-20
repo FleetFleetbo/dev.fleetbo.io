@@ -46,13 +46,10 @@ function AppContent() {
             <Route path="/tab1" element={<ProtectedRoute><Tab1 /></ProtectedRoute>} />
             <Route path="/tab2" element={<ProtectedRoute><Tab2 /></ProtectedRoute>} />
             <Route path="/tab3" element={<ProtectedRoute><Tab3 /></ProtectedRoute>} />
+
+            {/* ... vos autres routes protégées ... */}
             <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item" element={<ProtectedRoute><Item /></ProtectedRoute>} />
-                
-            {/* ... vos autres routes protégées ... */}
-            <Route path="/newmedia" element={<ProtectedRoute><NewMedia /></ProtectedRoute>} />
-            <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
-            <Route path="/media"   element={<ProtectedRoute><Media /></ProtectedRoute>} />
 
             {/* Routes de secours */}
             <Route path="*"       element={<NotFound />} />
