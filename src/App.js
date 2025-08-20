@@ -26,41 +26,45 @@ import NotFound from './pages/NotFound';
 // Global styles
 import './assets/css/App.css';
 
-function App() {
-    useEffect(() => {
-      // This check ensures that the app is running correctly in the WebView
-      if (!window.fleetbo) {
-        // In production, you might want a more elegant error page
-        window.location.href = 'https://fleetbo.io'; 
-        console.error("The application must be run in the native container.");
-      }
-    }, []);
+// Hooks
+import { useStartupEffects } from 'hooks/useStartupEffects';
 
+
+function AppContent() {
+    useStartupEffects();
+    return (
+        <Routes>
+            {/* Le AuthGate gère la redirection initiale depuis la racine */}
+            <Route path="/" element={<AuthGate />} />
+
+            {/* Routes publiques */}
+            <Route path="/auth/route" element={<RouteAuth />} />
+            <Route path="/register"   element={<Register />} />
+            <Route path="/login"      element={<Login />} />
+
+            {/* Routes protégées */}
+            <Route path="/tab1" element={<ProtectedRoute><Tab1 /></ProtectedRoute>} />
+            <Route path="/tab2" element={<ProtectedRoute><Tab2 /></ProtectedRoute>} />
+            <Route path="/tab3" element={<ProtectedRoute><Tab3 /></ProtectedRoute>} />
+            <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
+            <Route path="/item" element={<ProtectedRoute><Item /></ProtectedRoute>} />
+                
+            {/* ... vos autres routes protégées ... */}
+            <Route path="/newmedia" element={<ProtectedRoute><NewMedia /></ProtectedRoute>} />
+            <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
+            <Route path="/media"   element={<ProtectedRoute><Media /></ProtectedRoute>} />
+
+            {/* Routes de secours */}
+            <Route path="*"       element={<NotFound />} />
+            <Route path="/navbar" element={<Navbar />} />
+        </Routes>
+    );
+}
+
+function App() {
     return (
         <AuthProvider>
-          <Router>
-
-            <Routes>
-              {/* The AuthGate guard handles the initial redirection from the root */}
-              <Route path="/" element={<AuthGate />} />
-
-              {/* Public routes */}
-              <Route path="/auth/route" element={<RouteAuth />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-
-              {/* Protected routes that require authentication */}
-              <Route path="/tab1" element={<ProtectedRoute><Tab1 /></ProtectedRoute>} />
-              <Route path="/tab2" element={<ProtectedRoute><Tab2 /></ProtectedRoute>} />
-              <Route path="/tab3" element={<ProtectedRoute><Tab3 /></ProtectedRoute>} />
-              <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
-              <Route path="/item" element={<ProtectedRoute><Item /></ProtectedRoute>} />
-
-              {/* Utility or "fallback" routes */}
-              <Route path="*" element={<NotFound />} />
-              <Route path="/navbar" element={<Navbar />} />
-            </Routes>
-          </Router>
+            <AppContent />
         </AuthProvider>
     );
 }
