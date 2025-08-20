@@ -1,66 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Fleetbo from 'api/fleetbo';
 import 'assets/css/Navbar.css';
 
-const Navbar                        = () => {
-    const [activeTab, setActiveTab] = useState("Tab1"); 
-    const navbarType                = localStorage.getItem("navbar");
+if (!window.currentActiveTab) {
+  window.currentActiveTab = localStorage.getItem("activeTab") || "Tab1";
+}
 
-    // This function is called to set the active tab.
+const Navbar = () => {
+  const [activeTab, setActiveTab] = useState(window.currentActiveTab);
+  
+  const navbarType = localStorage.getItem("navbar");
+
+  useEffect(() => {
+    localStorage.setItem("activeTab", activeTab);
+    window.currentActiveTab = activeTab;
+  }, [activeTab]);
+
+  useEffect(() => {
     window.activeTab = (tab) => {
-        setActiveTab(tab);
+      setActiveTab(tab);
+      window.currentActiveTab = tab;
     };
-
-    const selectTab = (theView, e) => {
-        if (e) { e.preventDefault(); }
-        try {
-            if (!theView) {
-                console.error("theView invalide");
-                return;
-            }
-
-            // Logic for determining the tab state and call type
-            switch(theView) {
-                case 'tab1':
-                    setActiveTab("Tab1");
-                    Fleetbo.openView(theView, false); //  web
-                    break;
-                case 'Home': //  Native layout name
-                    setActiveTab("Tab2");
-                    Fleetbo.openView(theView, true);  //  Natif
-                    break;
-                case 'tab3':
-                    setActiveTab("Tab3");
-                    Fleetbo.openView(theView, false); //  web
-                    break;
-                default:
-                    console.error(`Onglet inconnu: ${theView}`);
-            }
-        } catch (error) {
-            console.error("Erreur lors de la sélection de l'onglet :", error);
-        }
+    return () => {
+      delete window.activeTab;
     };
+  }, []); 
 
-    const navLinks = (
-        <>
-            <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
-                <i className="fa-solid fa-house"></i>
-            </Link>
-            <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
-                <i className="fa-solid fa-mobile-screen"></i> 
-            </Link>
-            <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
-                <i className="fa-solid fa-user"></i>
-            </Link>
-        </>
-    );
+  const selectTab = (theView, e) => {
+    if (e) { e.preventDefault(); }
+    try {
+      if (!theView) {
+        console.error("theView invalide");
+        return;
+      }
+        
+      switch(theView) {
+        case 'tab1':
+          setActiveTab("Tab1");
+          Fleetbo.openView(theView, false); // web
+          break;
+        case 'tab2':
+          setActiveTab("Tab2");
+          Fleetbo.openView(theView, false); // web
+          break;
+        case 'tab3':
+          setActiveTab("Tab3");
+          Fleetbo.openView(theView, false); // web
+          break;
+        case 'tab4':
+          setActiveTab("Tab4");
+          Fleetbo.openView(theView, false); // web
+          break;
+        default:
+          console.error(`Onglet inconnu: ${theView}`);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la sélection de l'onglet :", error);
+    }
+  };
 
-    return (
-        <div className={navbarType === "header" ? "header" : "footer"}>
-            {navLinks}
-        </div>
-    );
+  const navLinks = (
+    <>
+      <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
+        <i className="fa-solid fa-house"></i>
+      </Link>
+      <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
+        <i className="fa-solid fa-crown"></i>
+      </Link>
+      <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
+        <i className="fa-solid fa-images"></i>
+      </Link>
+      <Link onClick={(e) => selectTab('tab4', e)} className={`nav-link ${activeTab === "Tab4" ? "active" : ""}`}>
+        <i className="fa-solid fa-user"></i>
+      </Link>
+    </>
+  );
+
+  return (
+    <div className={navbarType === "header" ? "header" : "footer"}>
+      {navLinks}
+    </div>
+  );
 };
 
 export default Navbar;
