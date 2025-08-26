@@ -830,6 +830,7 @@ const Fleetbo = {
     o00011: () => Fleetbo.execute("o00011"),
     s0075: (fleetboDB, db, jsonData) => Fleetbo.execute("s0075", fleetboDB, db, jsonData),
     add: (fleetboDB, db, jsonData) => Fleetbo.execute("add", fleetboDB, db, jsonData),
+    addWithId: (fleetboDB, db, jsonData, id) => Fleetbo.execute("add", fleetboDB, db, jsonData, id),
     delete: (fleetboDB, db, id) => Fleetbo.execute("delete", fleetboDB, db, id),
     getAuthUser: (fleetboDB, db) => Fleetbo.execute("getAuthUser", fleetboDB, db),
 
