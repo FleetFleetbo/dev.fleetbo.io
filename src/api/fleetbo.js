@@ -1,5 +1,4 @@
 //src/api/fleetbo.js
-
 /**
  * @file systemHelper.js
  * @description Un système de gestion intégré pour les données Fleetbo Framework.
@@ -551,7 +550,9 @@ import React from 'react';
                 userDetails: userReports
             };
         }
-        async _performDailyFleetboHealthCheck() {
+        async _performDailyFleetboHealthCheck()
+        
+        {
             FleetboLogger.info("Performing internal FleetboSystem health check.");
             const bapps = await this._dataManager.getAllFleetboBapps();
             const users = await this._dataManager.getAllFleetboUsers();
@@ -817,26 +818,31 @@ const Fleetbo = {
             }
         }
     },
-    toHome: () => Fleetbo.execute("toHome"),
-    c0074: () => Fleetbo.execute("c0074"),
-    back: () => Fleetbo.execute("back"),
+    toHome:                () => Fleetbo.execute("toHome"),
+    c0074:                 () => Fleetbo.execute("c0074"),
+    back:                  () => Fleetbo.execute("back"),
     setNavbarVisible:      () => Fleetbo.execute("setNavbarVisible"),
     prepareAndShowModal:   () => Fleetbo.execute("prepareAndShowModal"),
-    openPage: (page) => Fleetbo.execute("openPage", page),
-    openPageId: (page, id) => Fleetbo.execute("openPageId", page, id),
-    openView: (theView, boolean) => Fleetbo.execute("openView", theView, boolean),
-    openGalleryView: () => Fleetbo.execute("openGalleryView"),
-    d0a13: () => Fleetbo.execute("d0a13"),
-    o00011: () => Fleetbo.execute("o00011"),
-    s0075: (fleetboDB, db, jsonData) => Fleetbo.execute("s0075", fleetboDB, db, jsonData),
+    openPage:              (page) => Fleetbo.execute("openPage", page),
+    openPageId:            (page, id) => Fleetbo.execute("openPageId", page, id),
+    openView:              (theView, boolean) => Fleetbo.execute("openView", theView, boolean),
+    openGalleryView:       () => Fleetbo.execute("openGalleryView"),
+    openCamera:            () => Fleetbo.execute("openCamera"),
+    d0a13:                 () => Fleetbo.execute("d0a13"),
+    o00011:                () => Fleetbo.execute("o00011"),
+    log:                   () => Fleetbo.execute("log"),
+    listenToDocs:          (fleetboDB, fleetboTable, authorField) => Fleetbo.execute("listenToDocs", fleetboDB, fleetboTable, authorField),
+    stopListening:         (fleetboDB, fleetboTable) => Fleetbo.execute("stopListening", fleetboDB, fleetboTable),
     add:                   (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("add", fleetboDB, fleetboTable, jsonData),
     addWithId:             (fleetboDB, fleetboTable, jsonData, id) => Fleetbo.execute("addWithId", fleetboDB, fleetboTable, jsonData, id),
     addWithUserId:         (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("addWithUserId", fleetboDB, fleetboTable, jsonData),
     incrementFieldValue:   (fleetboDB, fleetboTable, id, fieldToIncrement, int) => Fleetbo.execute("incrementFieldValue", fleetboDB, fleetboTable, id, fieldToIncrement, int),
-    delete: (fleetboDB, db, id) => Fleetbo.execute("delete", fleetboDB, db, id),
-    getAuthUser: (fleetboDB, db) => Fleetbo.execute("getAuthUser", fleetboDB, db),
+    delete:                (fleetboDB, fleetboTable, id) => Fleetbo.execute("delete", fleetboDB, fleetboTable, id),
     getLatestDoc:          (fleetboDB, fleetboTable) => Fleetbo.execute("getLatestDoc", fleetboDB, fleetboTable),
-    getDocsG:              (fleetboDB, fleetboTable) => { return Fleetbo.execute("getDocsG", fleetboDB, fleetboTable),
+    getAuthUser:           (fleetboDB, fleetboTable) => Fleetbo.execute("getAuthUser", fleetboDB, fleetboTable),
+    getDocsG:              (fleetboDB, fleetboTable) => { return Fleetbo.execute("getDocsG", fleetboDB, fleetboTable);
+    },
+    
     getDocsU: (fleetboDB, db) => Fleetbo.execute("getDocsU", fleetboDB, db),
     getDoc: (fleetboDB, db, id) => Fleetbo.execute("getDoc", fleetboDB, db, id),
     startNotification: (dataNotification) => Fleetbo.execute("startNotification", dataNotification),
