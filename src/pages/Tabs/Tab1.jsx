@@ -76,29 +76,33 @@ const Tab1 = () => {
             return <div className="alert alert-danger">{error}</div>;
         }
         return (
-            <div className="row mt-3">
+            <div className=" mt-3">
                 <h2 className='fw-bolder mb-4'>Items</h2>
                 {data.length > 0 ? (
                     data.map((item) => (
-                        <div key={item.id} className='row mb-3'>
-                            <h5 className="fw-bold text-success mt-2">{item.title}</h5>
-                            <div className="d-flex col-12 align-items-center">
-                                <div className='col-10'>
-                                    <span className="text-dark fw-normal">{item.content}</span>
-                                </div>
-                                <div className='col-2 d-flex justify-content-end'>
-                                    <button onClick={() => Fleetbo.openPageId('item', item.id)} className="logout fs-5 fw-bold me-3">
-                                        <i className="fa-solid fa-eye text-success"></i>
-                                    </button>
-                                    <button onClick={() => deleteItem(item.id)} className="logout fs-5 fw-bold">
-                                        <i className="fa-solid fa-trash text-danger"></i>
-                                    </button>
+                        <div key={item.id} className='col-12'>
+                             <div className="card shadow-sm mb-3">
+                                <div className="card-body">
+                                    <div className="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h5 className="card-title text-success mb-1">{item.title}</h5>
+                                            <p className="card-text text-muted">{item.content}</p>
+                                        </div>
+                                        <div className="d-flex align-items-center ms-3">
+                                            <button onClick={() => Fleetbo.openPageId('item', item.id)} className="logout fs-5 fw-bold me-4" title="Voir">
+                                                <i className="fa-solid fa-eye text-success"></i>
+                                            </button>
+                                            <button onClick={() => deleteItem(item.id)} className="logout fs-5 fw-bold" title="Supprimer">
+                                                <i className="fa-solid fa-trash text-danger"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <p>No data available.</p>
+                    <p className="text-center text-muted mt-5">No data available.</p>
                 )}
             </div>
         );
