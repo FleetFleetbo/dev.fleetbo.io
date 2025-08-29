@@ -65,7 +65,7 @@ const Navbar = () => {
         <i className="fa-solid fa-crown"></i>
       </Link>
       <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
-        <i className="fa-solid fa-users"></i>
+        <i className="fa-solid fa-user"></i>
       </Link>
     </>
   );
