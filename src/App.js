@@ -27,11 +27,11 @@ import NotFound from './pages/NotFound';
 import './assets/css/App.css';
 
 // Hooks
-import { useStartupEffects } from 'hooks/useStartupEffects';
+import { useStartupEffect } from 'hooks/useStartupEffect';
 
 
 function AppContent() {
-    useStartupEffects();
+    useStartupEffect();
     return (
         <Routes>
             {/* Le AuthGate gère la redirection initiale depuis la racine */}
