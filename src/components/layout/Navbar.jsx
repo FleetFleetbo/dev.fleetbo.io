@@ -40,16 +40,12 @@ const Navbar = () => {
           setActiveTab("Tab1");
           Fleetbo.openView(theView, false); // web
           break;
-        case 'tab2':
+        case 'Home':
           setActiveTab("Tab2");
-          Fleetbo.openView(theView, false); // web
+          Fleetbo.openView(theView, true); // native
           break;
         case 'tab3':
           setActiveTab("Tab3");
-          Fleetbo.openView(theView, false); // web
-          break;
-        case 'tab4':
-          setActiveTab("Tab4");
           Fleetbo.openView(theView, false); // web
           break;
         default:
@@ -65,14 +61,11 @@ const Navbar = () => {
       <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
         <i className="fa-solid fa-house"></i>
       </Link>
-      <Link onClick={(e) => selectTab('tab2', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
+      <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
         <i className="fa-solid fa-crown"></i>
       </Link>
       <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
-        <i className="fa-solid fa-images"></i>
-      </Link>
-      <Link onClick={(e) => selectTab('tab4', e)} className={`nav-link ${activeTab === "Tab4" ? "active" : ""}`}>
-        <i className="fa-solid fa-user"></i>
+        <i className="fa-solid fa-users"></i>
       </Link>
     </>
   );
