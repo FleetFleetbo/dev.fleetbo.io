@@ -20,7 +20,7 @@ export const useStartupEffect = () => {
         useEffect(() => {
           if (!window.fleetbo) {
             console.error("L'application doit être exécutée dans le conteneur natif.");
-            //window.location.href = 'https://fleetbo.io'; // Redirection agressive, à n'utiliser qu'en production
+            window.location.href = 'https://fleetbo.io/docs';
           }
         }, []);
 };
