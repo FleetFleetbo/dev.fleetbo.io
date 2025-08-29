@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { history } from 'components/layout/Navigation';
 
-export const useStartupEffects = () => {
+export const useStartupEffect = () => {
     const location = useLocation(); 
     
         // Ce useEffect gère la redirection au démarrage
