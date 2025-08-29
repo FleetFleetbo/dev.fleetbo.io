@@ -829,21 +829,14 @@ const Fleetbo = {
     d0a13: () => Fleetbo.execute("d0a13"),
     o00011: () => Fleetbo.execute("o00011"),
     s0075: (fleetboDB, db, jsonData) => Fleetbo.execute("s0075", fleetboDB, db, jsonData),
-    add: (fleetboDB, db, jsonData) => Fleetbo.execute("add", fleetboDB, db, jsonData),
-    addWithId: (fleetboDB, db, jsonData, id) => Fleetbo.execute("add", fleetboDB, db, jsonData, id),
+    add:                   (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("add", fleetboDB, fleetboTable, jsonData),
+    addWithId:             (fleetboDB, fleetboTable, jsonData, id) => Fleetbo.execute("addWithId", fleetboDB, fleetboTable, jsonData, id),
+    addWithUserId:         (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("addWithUserId", fleetboDB, fleetboTable, jsonData),
+    incrementFieldValue:   (fleetboDB, fleetboTable, id, fieldToIncrement, int) => Fleetbo.execute("incrementFieldValue", fleetboDB, fleetboTable, id, fieldToIncrement, int),
     delete: (fleetboDB, db, id) => Fleetbo.execute("delete", fleetboDB, db, id),
     getAuthUser: (fleetboDB, db) => Fleetbo.execute("getAuthUser", fleetboDB, db),
-
-    getDocsG: (fleetboDB, db) => {
-        console.log(`=== APPEL getDocsG ===`);
-        console.log(`fleetboDB: ${fleetboDB}`);
-        console.log(`db: ${db}`);
-        console.log(`window.fleetbo existe:`, !!window.fleetbo);
-        console.log(`window.fleetbo.getDocsG existe:`, !!(window.fleetbo && window.fleetbo.getDocsG));
-        
-        return Fleetbo.execute("getDocsG", fleetboDB, db);
-    },
-    
+    getLatestDoc:          (fleetboDB, fleetboTable) => Fleetbo.execute("getLatestDoc", fleetboDB, fleetboTable),
+    getDocsG:              (fleetboDB, fleetboTable) => { return Fleetbo.execute("getDocsG", fleetboDB, fleetboTable),
     getDocsU: (fleetboDB, db) => Fleetbo.execute("getDocsU", fleetboDB, db),
     getDoc: (fleetboDB, db, id) => Fleetbo.execute("getDoc", fleetboDB, db, id),
     startNotification: (dataNotification) => Fleetbo.execute("startNotification", dataNotification),
