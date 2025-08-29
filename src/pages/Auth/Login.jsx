@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Fleetbo from 'api/fleetbo';
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
-import logo from 'assets/images/logo.png';
+import logoF from 'assets/images/logoF.png';
 
 
 const Login = () => {
@@ -69,7 +69,7 @@ const Login = () => {
                             <div className='row mt-4 pb-2'>
                                 <img
                                     style={{ height: "95px", width:"110px"}}
-                                    src={logo}
+                                    src={logoF}
                                     alt="logo"
                                 />
                                 <div className='mt-3' style={{ height: "100%" }}>
