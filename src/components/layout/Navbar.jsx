@@ -3,76 +3,56 @@ import { Link } from 'react-router-dom';
 import Fleetbo from 'api/fleetbo';
 import 'assets/css/Navbar.css';
 
-if (!window.currentActiveTab) {
-  window.currentActiveTab = localStorage.getItem("activeTab") || "Tab1";
-}
+// 1. On définit la configuration de la navbar dans un tableau.
+// C'est plus facile à lire et à faire évoluer.
+const navItems = [
+  { id: 'Tab1', view: 'tab1', isNative: false, icon: 'fa-solid fa-house' },
+  { id: 'Tab2', view: 'Home', isNative: true, icon: 'fa-solid fa-crown' },
+  { id: 'Tab3', view: 'tab3', isNative: false, icon: 'fa-solid fa-user' },
+];
 
 const Navbar = () => {
-  const [activeTab, setActiveTab] = useState(window.currentActiveTab);
+  // On initialise l'état avec la valeur sauvegardée, une seule fois.
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem("activeTab") || "Tab1");
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   const navbarType = localStorage.getItem("navbar");
 
+  // Effet pour sauvegarder l'onglet actif à chaque changement.
   useEffect(() => {
     localStorage.setItem("activeTab", activeTab);
-    window.currentActiveTab = activeTab;
   }, [activeTab]);
 
-  useEffect(() => {
-    window.activeTab = (tab) => {
-      setActiveTab(tab);
-      window.currentActiveTab = tab;
-    };
-    return () => {
-      delete window.activeTab;
-    };
-  }, []); 
+  // 2. La fonction de navigation est maintenant beaucoup plus simple.
+  const handleSelectTab = (item) => {
+    // On évite les clics multiples ou sur l'onglet déjà actif.
+    if (isTransitioning || activeTab === item.id) return;
 
-  const selectTab = (theView, e) => {
-    if (e) { e.preventDefault(); }
-    try {
-      if (!theView) {
-        console.error("theView invalide");
-        return;
-      }
-        
-      switch(theView) {
-        case 'tab1':
-          setActiveTab("Tab1");
-          Fleetbo.openView(theView, false); // web
-          break;
-        case 'Home':
-          setActiveTab("Tab2");
-          Fleetbo.openView(theView, true); // native
-          break;
-        case 'tab3':
-          setActiveTab("Tab3");
-          Fleetbo.openView(theView, false); // web
-          break;
-        default:
-          console.error(`Onglet inconnu: ${theView}`);
-      }
-    } catch (error) {
-      console.error("Erreur lors de la sélection de l'onglet :", error);
-    }
+    setIsTransitioning(true);
+    setActiveTab(item.id);
+    
+    // Appel unifié à la couche native.
+    Fleetbo.openView(item.view, item.isNative);
+    
+    // On réactive les clics après une courte durée pour laisser le temps à la transition de se faire.
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
   };
-
-  const navLinks = (
-    <>
-      <Link onClick={(e) => selectTab('tab1', e)} className={`nav-link ${activeTab === "Tab1" ? "active" : ""}`}>
-        <i className="fa-solid fa-house"></i>
-      </Link>
-      <Link onClick={(e) => selectTab('Home', e)} className={`nav-link ${activeTab === "Tab2" ? "active" : ""}`}>
-        <i className="fa-solid fa-crown"></i>
-      </Link>
-      <Link onClick={(e) => selectTab('tab3', e)} className={`nav-link ${activeTab === "Tab3" ? "active" : ""}`}>
-        <i className="fa-solid fa-user"></i>
-      </Link>
-    </>
-  );
 
   return (
     <div className={navbarType === "header" ? "header" : "footer"}>
-      {navLinks}
+      {/* 3. On génère dynamiquement les liens à partir du tableau de configuration. */}
+      {navItems.map(item => (
+        <Link 
+          key={item.id}
+          onClick={() => handleSelectTab(item)}
+          // La classe 'disabled' est plus sémantique pour l'état de transition.
+          className={`nav-link ${activeTab === item.id ? "active" : ""} ${isTransitioning ? "disabled" : ""}`}
+        >
+          <i className={item.icon}></i>
+        </Link>
+      ))}
     </div>
   );
 };
