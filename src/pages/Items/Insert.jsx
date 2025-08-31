@@ -15,7 +15,7 @@ const Insert = () => {
     const [imageURL, setImageURL]                 = useState("");
     const [token, setToken]                       = useState('');
     const [formData, setFormData]                 = useState({
-            withId: "uid", // mandatory ->  withId: "uid" or withId: "id" or withId: "" / "null"
+            id: "uid", // Mandatory: id: "uid" or id: id or id: "" / "null"
             title: "",
             content: "",
             image: ""
