@@ -836,6 +836,7 @@ const Fleetbo = {
     add:                   (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("add", fleetboDB, fleetboTable, jsonData),
     addWithId:             (fleetboDB, fleetboTable, jsonData, id) => Fleetbo.execute("addWithId", fleetboDB, fleetboTable, jsonData, id),
     addWithUserId:         (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("addWithUserId", fleetboDB, fleetboTable, jsonData),
+    addWithLastSelectedImage: (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("addWithLastSelectedImage", fleetboDB, fleetboTable, jsonData),
     incrementFieldValue:   (fleetboDB, fleetboTable, id, fieldToIncrement, int) => Fleetbo.execute("incrementFieldValue", fleetboDB, fleetboTable, id, fieldToIncrement, int),
     delete:                (fleetboDB, fleetboTable, id) => Fleetbo.execute("delete", fleetboDB, fleetboTable, id),
     getLatestDoc:          (fleetboDB, fleetboTable) => Fleetbo.execute("getLatestDoc", fleetboDB, fleetboTable),
