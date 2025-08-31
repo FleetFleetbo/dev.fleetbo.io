@@ -15,6 +15,7 @@ const Insert = () => {
     const [imageURL, setImageURL]                 = useState("");
     const [token, setToken]                       = useState('');
     const [formData, setFormData]                 = useState({
+            withId: "uid", // mandatory ->  withId: "uid" or withId: "id" or withId: "" / "null"
             title: "",
             content: "",
             image: ""
@@ -64,11 +65,7 @@ const Insert = () => {
             return;
         }
 
-        const textData = {
-            title: formData.title,
-            content: formData.content,
-        };
-        const jsonData = JSON.stringify(textData);
+        const jsonData = JSON.stringify(formData); 
         Fleetbo.addWithLastSelectedImage(fleetboDB, db, jsonData);
 
         Fleetbo.getToken();
