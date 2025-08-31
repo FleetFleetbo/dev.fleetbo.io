@@ -84,14 +84,16 @@ const Insert = () => {
 
 
     window.onAddResult = (success) => {
+        setLoading(false); // Très important de stopper le chargement ici
         if (success) {
             setResultMessage('✅ Added successfully.');
             setMessageType('success');
-            return;
+            // On vide le formulaire et l'image uniquement en cas de succès
+            setFormData({ id: "", title: "", content: "", image: "" });
+            setImageURL("");
         } else {
             setResultMessage("❌ Sending error.");
             setMessageType('danger');
-            return;
         }
     };
     
