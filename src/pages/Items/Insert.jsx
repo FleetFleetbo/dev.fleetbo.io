@@ -51,7 +51,7 @@ const Insert = () => {
     }, []);
 
 
-    const handleSubmit = (e) => {
+     const handleSubmit = (e) => {
         setLoading(true);
         e.preventDefault();
         setResultMessage("");
@@ -64,11 +64,17 @@ const Insert = () => {
             return;
         }
 
+        const textData = {
+            title: formData.title,
+            content: formData.content,
+        };
+        const jsonData = JSON.stringify(textData);
+        Fleetbo.addWithLastSelectedImage(fleetboDB, db, jsonData);
+
         Fleetbo.getToken();
         window.getToken = (deviceToken) => {
             setToken(deviceToken);
         };
-
         const notificationData = {
             title: formData.title,
             body: formData.content, 
@@ -76,17 +82,7 @@ const Insert = () => {
             image: ""
         };
         const jsonDataNotification    = JSON.stringify(notificationData); 
-        const jsonData                = JSON.stringify(formData);
-
-        // Insertion
-        setTimeout(() => {
-            Fleetbo.add(fleetboDB, db, jsonData);
-            Fleetbo.startNotification(jsonDataNotification);
-           
-            setFormData({ title: "", content: "", image: "" });
-            setImageURL("");
-            setLoading(false);
-        }, 1000);
+        Fleetbo.startNotification(jsonDataNotification);
     };
 
 
