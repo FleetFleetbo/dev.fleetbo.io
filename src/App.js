@@ -1,8 +1,6 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
-// --- Imports from the new structure ---
-
 // Context and internal logic
 import { AuthProvider } from './context/AuthContext';
 import AuthGate from './components/Internal/AuthGate';
@@ -10,6 +8,7 @@ import AuthGate from './components/Internal/AuthGate';
 // Layout components
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import Navbar from './components/layout/Navbar';
+import ProtectedLayout from './components/layout/ProtectedLayout';
 
 // Application pages
 import Login from "./pages/Auth/Login";
@@ -26,37 +25,40 @@ import NotFound from './pages/NotFound';
 // Global styles
 import './assets/css/App.css';
 
-// Hooks
+//hooks
 import { useStartupEffect } from 'hooks/useStartupEffect';
-
 
 function AppContent() {
     useStartupEffect();
     return (
         <Routes>
-            {/* Le AuthGate gère la redirection initiale depuis la racine */}
+            {/* The AuthGate handles the initial redirect from the root */}
             <Route path="/" element={<AuthGate />} />
 
-            {/* Routes publiques */}
+            {/* Public routes */}
             <Route path="/auth/route" element={<RouteAuth />} />
             <Route path="/register"   element={<Register />} />
             <Route path="/login"      element={<Login />} />
 
-            {/* Routes protégées */}
-            <Route path="/tab1" element={<ProtectedRoute><Tab1 /></ProtectedRoute>} />
-            <Route path="/tab2" element={<ProtectedRoute><Tab2 /></ProtectedRoute>} />
-            <Route path="/tab3" element={<ProtectedRoute><Tab3 /></ProtectedRoute>} />
+             {/* Protected routes using the conditional layout */}
+            <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
+                <Route path="/tab1" element={<Tab1 />} />
+                <Route path="/tab2" element={<Tab2 />} />
+                <Route path="/tab3" element={<Tab3 />} />
+                {/* ... other protected routes ... */}
+            </Route>
 
-            {/* ... vos autres routes protégées ... */}
+            {/* ... other protected routes ... */}
             <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
-            <Route path="/item" element={<ProtectedRoute><Item /></ProtectedRoute>} />
+            <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
-            {/* Routes de secours */}
+            {/* Fallback routes */}
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
         </Routes>
     );
 }
+
 
 function App() {
     return (
