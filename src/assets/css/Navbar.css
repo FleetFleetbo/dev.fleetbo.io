@@ -1,40 +1,40 @@
-/* Styles de base (mobile-first approach) */
+/* Base styles (mobile-first approach) */
 .footer, .header {
   position: fixed;
   width: 100%;
   background: #f2f2f2;
-  display: flex; /* Utilisation de flexbox pour un alignement facile */
-  justify-content: space-around; /* Distribue les icônes équitablement */
+  display: flex; /* Using flexbox for easy alignment */
+  justify-content: space-around; /* Distributes the icons evenly */
   z-index: 1000;
-  box-sizing: border-box; /* S'assure que le padding n'ajoute pas à la largeur */
+  box-sizing: border-box; /* Ensures padding doesn't add to the total width */
 }
 
 .footer {
   bottom: 0;
-  padding: 5px 13px; /* Padding vertical réduit pour les petits écrans */
+  padding: 5px 13px; /* Reduced vertical padding for small screens */
 }
 
 .header {
   top: 0;
   padding: 1px 0;
-  border-bottom: 1px solid #ddd; /* Ajout d'une bordure discrète */
+  border-bottom: 1px solid #ddd; /* Adding a subtle border */
 }
 
 .nav-link {
   color: #222;
-  /* Utilise flex-grow pour que chaque lien prenne une part égale de l'espace */
+  /* Use flex-grow so each link takes an equal share of the space */
   flex-grow: 1;
-  text-align: center; /* Centre l'icône à l'intérieur du lien */
+  text-align: center; /* Centers the icon inside the link */
   
-  padding: 10px 10px; /* Padding vertical et horizontal de base */
-  font-size: 18px; /* Taille d'icône adaptée aux mobiles */
+  padding: 10px 10px; /* Base vertical and horizontal padding */
+  font-size: 18px; /* Icon size suitable for mobile */
   
   cursor: pointer;
   text-decoration: none;
   border-top-left-radius: 8px; 
   border-top-right-radius: 8px; 
   
-  /* Transition douce pour le changement de couleur */
+  /* Smooth transition for color changes */
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
@@ -43,17 +43,17 @@
   color: #fff;
 }
 
-/* --- AJUSTEMENTS POUR ÉCRANS PLUS LARGES --- */
-/* Appliqué à partir de 768px (tablettes et ordinateurs) */
+/* --- ADJUSTMENTS FOR WIDER SCREENS --- */
+/* Applied from 768px upwards (tablets and desktops) */
 @media (min-width: 768px) {
   .nav-link {
-    flex-grow: 0; /* Empêche les liens de s'étirer sur de grands écrans */
-    padding: 10px 40px; /* On remet votre padding original pour les grands écrans */
+    flex-grow: 0; /* Prevents links from stretching on large screens */
+    padding: 10px 40px; /* Restoring the original padding for large screens */
     font-size: 19px;
   }
   
   .footer, .header {
-    justify-content: center; /* Centre la barre de navigation sur les grands écrans */
-    gap: 20px; /* Ajoute un espace entre les icônes */
+    justify-content: center; /* Centers the navigation bar on large screens */
+    gap: 20px; /* Adds a gap between the icons */
   }
 }
