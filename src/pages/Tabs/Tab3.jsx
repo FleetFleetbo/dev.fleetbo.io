@@ -1,104 +1,146 @@
-// src/pages/Tabs/Tab3.jsx
+import React, { useEffect, useState, useCallback } from 'react';
+import Fleetbo from 'api/fleetbo';
+import { fleetboDB } from 'config/fleetboConfig';
+import Loader from 'components/common/Loader';
+import avatarImage from 'assets/images/avatar.png';
+import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
+import { formatFirestoreDate } from 'utils/FormatDate';
 
-import React, { useEffect, useState } from 'react';
-import Fleetbo from '../../api/fleetbo'; 
-import { fleetboDB } from '../../config/fleetboConfig';
-import Loader from '../../components/common/Loader'; 
-import avatarImage from '../../assets/images/avatar.png'; 
 
-
-// --- Composant Header ---
+// --- Header Component ---
 const Tab3Header = () => {
     return (
         <header className='navbar ps-3 pt-3'>
-            <h2 className='fw-bolder'>Tab 3 </h2>
+            <h2 className='fw-bolder'>Tab 3</h2>
+            <div className="navbar-right"> </div>
         </header>
     );
 };
 
-// --- Main component ---
+// --- Main Component ---
 const Tab3 = () => {
-    // --- États du composant ---
+    // --- Component State ---
     const [isLoading, setIsLoading] = useState(true);
-    const [userData, setUserData] = useState(null); 
-    const [error, setError] = useState(null);    
-    const dbName = "users"; 
+    const [userData, setUserData] = useState(null);
+    const [error, setError] = useState(null);
+    const dbName = "users";
 
-    Fleetbo.useLoadingTimeout(isLoading, setIsLoading, setError, 15000);
+    useLoadingTimeout(isLoading, setIsLoading, setError);
+
+    const fetchUserData = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const response = await Fleetbo.getAuthUser(fleetboDB, dbName);
+
+            if (response && response.success && response.data) {
+                const actualUserData = response.data;
+                const rawDate = actualUserData.dateCreated || actualUserData.createdAt || actualUserData.date;
+                
+                // --- 2. USE IMPORTED FUNCTION ---
+                const formattedDate = formatFirestoreDate(rawDate);
+
+                const processedUserData = {
+                    username: actualUserData.username || actualUserData.name || "User",
+                    phoneNumber: actualUserData.phoneNumber || actualUserData.phone || "Phone number not available",
+                    dateCreated: formattedDate,
+                };
+
+                setUserData(processedUserData);
+                
+            } else if (response && response.notFound) {
+                console.warn("User document not found");
+                setError("User document not found. Please contact an administrator.");
+            } else {
+                console.warn("Unexpected response structure:", response);
+                setError("Invalid data format received from the server.");
+            }
+
+        } catch (err) {
+            if (err.message?.includes("non authentifié")) { // Keeping keyword for logic
+                setError("Session expired. Please log in again.");
+            } else if (err.message?.includes("entreprise")) { // Keeping keyword for logic
+                setError("Company configuration missing.");
+            } else {
+                setError(err.message || "Error loading user data.");
+            }
+            setUserData(null);
+        } finally {
+            console.log("=== END fetchUserData ===");
+            setIsLoading(false);
+        }
+    }, [dbName]);
 
     useEffect(() => {
-        let isComponentMounted = true;
+        fetchUserData();
+    }, [fetchUserData]);
 
-        Fleetbo.setDataCallback((jsonData) => {
-            if (!isComponentMounted) {
-                console.warn("Données reçues après le démontage de Tab3. Mise à jour ignorée.");
-                return;
-            }
-
-            try {
-                if (jsonData && jsonData.success && jsonData.data) {
-                    setUserData({
-                        username: jsonData.data.username || "Utilisateur",
-                        phoneNumber: jsonData.data.phoneNumber || "Numéro non disponible",
-                        dateCreated: jsonData.data.dateCreated || ""
-                    });
-                    setError(null);
-                } else {
-                    throw new Error(jsonData.message || "Les données utilisateur sont incomplètes.");
-                }
-            } catch (err) {
-                console.error("Erreur lors du traitement des données de l'utilisateur:", err);
-                setError(err.message);
-                setUserData(null);
-            } finally {
-                setIsLoading(false);
-            }
-        });
-
-        const timer = setTimeout(() => {
-            Fleetbo.getAuthUser(fleetboDB, dbName);
-        }, 100);
-
-        return () => {
-            isComponentMounted = false;
-            clearTimeout(timer);
-            Fleetbo.setDataCallback(null);
-        };
-    }, []);
-
-    // --- Render logic ---
+    // The rendering logic (renderContent) remains exactly the same
     const renderContent = () => {
         if (isLoading) {
             return <Loader />;
         }
+        
         if (error) {
-            return <div className="alert alert-danger">{error}</div>;
+            return (
+                <div className="alert alert-danger d-flex justify-content-between align-items-center">
+                    <span>{error}</span>
+                    <button 
+                        className="btn btn-sm btn-outline-danger" 
+                        onClick={fetchUserData}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Loading..." : "Retry"}
+                    </button>
+                </div>
+            );
         }
+        
         if (userData) {
             return (
-                <div className="container text-center">
+                <div className="container">
                     <img
                         className='img-login'
                         src={avatarImage}
-                        alt="Avatar de l'utilisateur"
+                        alt="User avatar"
+                        style={{ maxWidth: '150px', height: 'auto' }}
                     />
                     <h2 className="text-success fw-bolder mt-2">
                         {userData.username}
                     </h2>
-                    <h5 className="text-dark fw-normal">{userData.phoneNumber}</h5>
-                    <h6 className="text-secondary">
-                        {userData.dateCreated ? `Membre depuis ${userData.dateCreated}` : ""}
+                    <h5 className="text-dark fw-normal">
+                        {userData.phoneNumber} 
+                    </h5>
+                    <h6 className="text-secondary mt-2">
+                        {userData.dateCreated && 
+                        typeof userData.dateCreated === 'string' && 
+                        userData.dateCreated.trim().length > 0
+                            ? `Member since ${userData.dateCreated}` 
+                            : "⚠ No date available"
+                        }
                     </h6>
                     <button
-                        onClick={() => Fleetbo.d0a13()} 
+                        onClick={() => { Fleetbo.logout();  }}
                         className="go mt-3"
+                        style={{ minWidth: '120px' }}
                     >
                         Logout
                     </button>
                 </div>
             );
         }
-        return <div className="alert alert-info">No user data available.</div>;
+        
+        return (
+            <div className="alert alert-info text-center">
+                <p>No user data available.</p>
+                <button 
+                    className="btn btn-primary" 
+                    onClick={fetchUserData}
+                >
+                    Refresh
+                </button>
+            </div>
+        );
     };
 
     return (
@@ -112,3 +154,4 @@ const Tab3 = () => {
 };
 
 export default Tab3;
+
