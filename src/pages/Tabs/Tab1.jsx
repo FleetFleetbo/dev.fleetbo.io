@@ -1,20 +1,22 @@
-// src/pages/Tabs/Tab1.jsx
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Fleetbo from 'api/fleetbo'; 
+import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { fleetboDB } from 'config/fleetboConfig';
 import Loader from 'components/common/Loader'; 
+import { handleGetToken } from 'utils/getToken';
 
-// --- Composant Header ---
+
 const Tab1Header = () => {
+
     return (
         <header className='navbar ps-3 pt-3'>
             <h2 className='fw-bolder'>Tab 1</h2>
             <div className="navbar-right">
-                <button onClick={() => Fleetbo.openPage('insert')} className="logout fs-5 fw-bold">
+                <button onClick={() => Fleetbo.openPage('insert')} className="logout text-success fs-5 me-3 fw-bold">
                     <i className="fa-solid fa-plus"></i>
                 </button>
-                <button onClick={() => Fleetbo.getToken()} className="logout fs-5 fw-bold ms-5">
+                {/* Call the imported function directly on click */}
+                <button onClick={handleGetToken} className="logout fs-5 text-success fw-bold ms-3">
                     <i className="fa-solid fa-bell"></i>
                 </button>
             </div>
@@ -22,78 +24,123 @@ const Tab1Header = () => {
     );
 };
 
-// --- Main component ---
 const Tab1 = () => {
-    // --- États du composant ---
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [error, setError] = useState("");
+    // Use a Set to efficiently track the IDs of items being deleted
+    const [isDeleting, setIsDeleting] = useState(new Set()); 
     const collectionName = "items";
 
-    // --- Hooks ---
-    Fleetbo.useLoadingTimeout(isLoading, setIsLoading, setError);
+    useLoadingTimeout(isLoading, setIsLoading, setError);
 
-    useEffect(() => {
-        let isMounted = true;
-
-        Fleetbo.setDataCallback((parsedData) => {
-            if (!isMounted) return;
-
-            if (parsedData && parsedData.success) {
+    const fetchData = useCallback(async () => {
+        setIsLoading(true);
+        setError("");
+        try {
+            const parsedData = await Fleetbo.getDocsG(fleetboDB, collectionName);
+            if (parsedData.success) {
                 setData(parsedData.data || []);
-                setError("");
             } else {
                 setError(parsedData.message || "Erreur de récupération des données.");
-                console.error("Erreur de récupération des données :", parsedData.message);
             }
+        } catch (err) {
+            setError(err.message || "Une erreur inattendue s'est produite.");
+            console.error("Erreur de récupération des données :", err);
+        } finally {
             setIsLoading(false);
-        });
+        }
+    }, []); // Dependency is empty to create the function only once
 
-        Fleetbo.getDocsG(fleetboDB, collectionName);
+    // useEffect calls the fetch function when the component mounts
+    useEffect(() => { fetchData(); }, [fetchData]);
 
-        window.getToken = (deviceToken) => {
-            if (!isMounted) return;
-            console.log("FCM Token received:", deviceToken);
-        };
-
-        return () => {
-            isMounted = false;
-            Fleetbo.setDataCallback(null);
-            delete window.getToken;
-        };
-    }, []); 
-
-    const deleteItem = (id) => {
-        setData((prevData) => prevData.filter(item => item.id !== id));
-        Fleetbo.delete(fleetboDB, collectionName, id);
+    // Robust delete function with optimistic UI and rollback
+    const deleteItem = async (id) => {
+        if (isDeleting.has(id)) return; // Prevents double-clicks
+        
+        const originalData = [...data];
+        
+        // Optimistic UI update
+        setIsDeleting(prev => new Set(prev).add(id));
+        setData(prevData => prevData.filter(item => item.id !== id));
+        setError("");
+        
+        try {
+            const result = await Fleetbo.delete(fleetboDB, collectionName, id);
+            if (result && result.success === false) {
+                throw new Error(result.message || "La suppression a échoué côté natif.");
+            }
+            console.log(`Item ${id} supprimé avec succès.`);
+        } catch (err) {
+            console.error("Erreur lors de la suppression:", err);
+            // On failure, revert the change and display an error
+            setError(`Erreur de suppression : ${err.message}`);
+            setData(originalData);
+        } finally {
+            // Clean up the deleting state, whether the operation succeeded or failed
+            setIsDeleting(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(id);
+                return newSet;
+            });
+        }
     };
 
     const renderContent = () => {
         if (isLoading) {
             return <Loader />;
         }
+        
         if (error) {
-            return <div className="alert alert-danger">{error}</div>;
+            return (
+                <div className="alert alert-danger d-flex justify-content-between align-items-center">
+                    <span>{error}</span>
+                    <button className="btn btn-outline-danger btn-sm" onClick={fetchData}>
+                        Try again
+                    </button>
+                </div>
+            );
         }
+        
         return (
-            <div className=" mt-3">
-                <h2 className='fw-bolder mb-4'>Items</h2>
+            <div className="mt-3">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2 className='fw-bolder'>Items</h2>
+                    <button className="btn btn-sm btn-outline-secondary" onClick={fetchData} disabled={isLoading}>
+                        <i className="fa-solid fa-refresh me-2"></i>
+                        Refresh
+                    </button>
+                </div>
+                
                 {data.length > 0 ? (
                     data.map((item) => (
                         <div key={item.id} className='col-12'>
-                             <div className="card shadow-sm mb-3">
+                            <div className="card shadow-sm mb-3">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <h5 className="card-title text-success mb-1">{item.title}</h5>
-                                            <p className="card-text text-muted">{item.content}</p>
+                                        <div className="flex-grow-1">
+                                            <h5 className="card-title text-success mb-1">{item.title || 'Sans titre'}</h5>
+                                            <p className="card-text float-start text-muted">{item.content || 'Pas de contenu.'}</p>
                                         </div>
                                         <div className="d-flex align-items-center ms-3">
-                                            <button onClick={() => Fleetbo.openPageId('item', item.id)} className="logout fs-5 fw-bold me-4" title="Voir">
-                                                <i className="fa-solid fa-eye text-success"></i>
+                                            <button 
+                                                onClick={() => Fleetbo.openPageId('item', item.id)} 
+                                                className="btn btn-link text-success fs-5 fw-bold me-2" 
+                                                title="Voir"
+                                                disabled={isDeleting.has(item.id)}>
+                                                <i className="fa-solid fa-eye"></i>
                                             </button>
-                                            <button onClick={() => deleteItem(item.id)} className="logout fs-5 fw-bold" title="Supprimer">
-                                                <i className="fa-solid fa-trash text-danger"></i>
+                                            <button 
+                                                onClick={() => deleteItem(item.id)} 
+                                                className="btn btn-link text-danger fs-5 fw-bold" 
+                                                title="Supprimer"
+                                                disabled={isDeleting.has(item.id)}>
+                                                {isDeleting.has(item.id) ? (
+                                                    <span className="spinner-border spinner-border-sm text-warning" role="status" aria-hidden="true"></span>
+                                                ) : (
+                                                    <i className="fa-solid fa-trash"></i>
+                                                )}
                                             </button>
                                         </div>
                                     </div>
@@ -102,7 +149,13 @@ const Tab1 = () => {
                         </div>
                     ))
                 ) : (
-                    <p className="text-center text-muted mt-5">No data available.</p>
+                    <div className="text-center text-muted mt-5">
+                        <i className="fa-solid fa-inbox fa-3x mb-3"></i>
+                        <p>No items to display.</p>
+                        <button className="btn btn-primary" onClick={() => Fleetbo.openPage('insert')}>
+                            Create first item
+                        </button>
+                    </div>
                 )}
             </div>
         );
