@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Fleetbo from 'api/fleetbo';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'context/AuthContext';
 import { motion } from "framer-motion";
 import logoF from 'assets/images/logoF.png';
 
 
 const Login = () => {
 
-    const navigate                            = useNavigate();
-    const [isLoading, setIsLoading]           = useState(true); 
-    const [loadingLog, setLoadingLog]         = useState(false); 
-    const [loadingLeave, setLoadingLeave]     = useState(false); 
-    const [appInfo, setAppInfo]               = useState(null);
+    const [loadingLog, setLoadingLog]                      = useState(false); 
+    const [loadingLeave, setLoadingLeave]                  = useState(false); 
+    const { login, sessionData, isLoading: isAuthLoading } = useAuth()
 
-    
-    const log = async (e) => {
+    const log = async () => { 
+        setLoadingLog(true);
         try {
-            setLoadingLog(true)
-            Fleetbo.log(); 
+            const loginResult = await Fleetbo.log();
+            login(loginResult);
         } catch (error) {
-            console.log(`Erreur : ${error.message}`);
+            console.error(`Erreur de connexion: ${error.message}`);
         } finally {
-            setTimeout(() => setLoadingLog(false), 500); 
+            setLoadingLog(false);
         }
     };
 
@@ -29,7 +27,7 @@ const Login = () => {
         setLoadingLeave(true);   
 
         try {
-            Fleetbo.d0a13(); 
+            Fleetbo.leave(); 
         } catch (error) {
             console.error(`Erreur : ${error.message}`);
         } finally {
@@ -37,63 +35,45 @@ const Login = () => {
         }
     };
 
-    useEffect(() => {
-            const data = localStorage.getItem('AppInfo');
-            setTimeout(() => {
-                if (data) {
-                    const parsedData = JSON.parse(data);
-
-                    if (parsedData.logged === true) {
-                        navigate('/tab1');
-                    } else {
-                        setAppInfo(parsedData);
-                    }
-                    setIsLoading(false);  
-                } else {
-                    setIsLoading(false); 
-                }
-            }, 100); 
-    }, [appInfo, navigate]);
-
     return (
         <motion.div
-                    transition={{ duration: 0.4 }}
-                    className="form-container"
-                >
-                    <div className="">
-                    {isLoading ? (
-                        <></>
-                        ) : appInfo ? (
+            transition={{ duration: 0.4 }}
+            className="container"
+        >
+            <div className="App-center">
+                {isAuthLoading ? (
+                    <p>Loading session...</p> 
+                ) : sessionData ? ( // Check sessionData 
                     <>
-                        <div className="text-container">
-                            <div className='row mt-4 pb-2'>
+                        <div className="p-3">
+                            <div className='row pb-2'>
                                 <img
-                                    style={{ height: "95px", width:"110px"}}
+                                    style={{ height: "95px", width:"115px"}}
                                     src={logoF}
                                     alt="logo"
                                 />
-                                <div className='mt-3' style={{ height: "100%" }}>
-                                    <h3 className='fw-bolder' style={{ color: "#b37605" }}>{appInfo.appName}</h3>
-                                    <p style={{ textAlign: "left" }}>{appInfo.description}</p>
+                                <div className='mt-4' style={{ height: "100%" }}>
+                                    <h3 className='fw-bolder' style={{ color: "#0E904D" }}>{sessionData.appName || "Welcome"}</h3>
+                                    <p style={{ textAlign: "left" }}>{sessionData.description || "Please log in to continue."}</p>
                                 </div>
                                 
                                 <div className='mt-2' > 
                                     <button onClick={log} className="go mt-2">
-                                        {loadingLog ? "Connexion..." : "Go"}
+                                        {loadingLog ? "Connexion..." : "Login"} <i className="fa-solid fa-arrow-right ms-1"></i> 
+                                    </button>
+                                </div>
+                                <div className="pb-1">
+                                    <button onClick={leaveApp} className="btn-leave">
+                                        {loadingLeave ? "Leaving..." : "Leave"} 
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <div className="pb-1">
-                            <button onClick={leaveApp} className="btn-leave">
-                                <i className="fa-solid fa-power-off"></i> {loadingLeave ? "Leave..." : "Leave"}
-                            </button>
-                        </div>
                     </>
                 ) : (
                     <div>
-                        <p>Information not available 2</p>
+                        {/* Message if sessionData empty */}
+                        <p>Application information could not be loaded.</p>
                     </div>
                 )}
             </div>   
