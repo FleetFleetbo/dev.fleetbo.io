@@ -743,23 +743,45 @@ import React from 'react';
     }
 
 })(); 
-let dataCallback = null;
-const setDataCallback = (callback) => {
-  dataCallback = callback;
-  console.log("Callback de réception de données enregistré avec succès.");
+const responseManager = {
+  pendingPromises: new Map(),
+  generateId: () => `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
 };
-const useLoadingTimeout = (loadingState, setLoadingState, setErrorState, timeoutMs = 15000) => {
-  React.useEffect(() => {
-    if (!loadingState) return;
-    const failsafeTimeout = setTimeout(() => {
-      if (loadingState) {
-        console.warn("Délai d'attente dépassé. La connexion native a pris trop de temps.");
-        setLoadingState(false);
-        setErrorState("Délai d'attente dépassé. Veuillez réessayer.");
-      }
-    }, timeoutMs);
-    return () => clearTimeout(failsafeTimeout);
-  }, [loadingState, setLoadingState, setErrorState, timeoutMs]);
+window.handleFleetboResponse = (responseId, jsonData) => {
+  const promiseActions = responseManager.pendingPromises.get(responseId);
+  if (!promiseActions) {
+    console.error(`No pending promise found for ID: ${responseId}`);
+    return;
+  }
+  try {
+    const parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+    if (parsedData && parsedData.error) {
+      promiseActions.reject(new Error(parsedData.message || 'Unknown native error.'));
+    } else {
+      promiseActions.resolve(parsedData);
+    }
+  } catch (error) {
+    promiseActions.reject(error);
+  } finally {
+    responseManager.pendingPromises.delete(responseId);
+  }
+};
+const execute = (funcName, ...args) => {
+  return new Promise((resolve, reject) => {
+    if (!window.fleetbo || typeof window.fleetbo[funcName] !== 'function') {
+      return reject(new Error(`Native function '${funcName}' is not available.`));
+    }
+    const responseId = responseManager.generateId();
+    responseManager.pendingPromises.set(responseId, { resolve, reject });
+    window.fleetbo[funcName](responseId, ...args);
+  });
+};
+const command = (funcName, ...args) => {
+    if (window.fleetbo && typeof window.fleetbo[funcName] === 'function') {
+        window.fleetbo[funcName](...args);
+    } else {
+        console.error(`Native command '${funcName}' is not available.`);
+    }
 };
 const waitForNativeInterface = (maxAttempts = 50, interval = 100) => {
   return new Promise((resolve, reject) => {
@@ -767,11 +789,11 @@ const waitForNativeInterface = (maxAttempts = 50, interval = 100) => {
     const checkInterface = () => {
       attempts++;
       if (window.fleetbo) {
-        console.log("Interface native détectée après", attempts, "tentatives");
+        console.log("Native interface detected after", attempts, "attempts");
         resolve(true);
       } else if (attempts >= maxAttempts) {
-        console.error("Interface native non disponible après", attempts, "tentatives");
-        reject(new Error("Interface native non disponible"));
+        console.error("Native interface not available after", attempts, "attempts");
+        reject(new Error("Native interface not available"));
       } else {
         setTimeout(checkInterface, interval);
       }
@@ -779,147 +801,90 @@ const waitForNativeInterface = (maxAttempts = 50, interval = 100) => {
     checkInterface();
   });
 };
+let isNativeReady = false;
+export const initializeFleetbo = async () => {
+  if (isNativeReady) {
+    return; 
+  }
+  try {
+    await waitForNativeInterface();
+    isNativeReady = true;
+    console.log("The Fleetbo interface is ready to use.");
+  } catch (error) {
+    console.error("Failed to initialize the Fleetbo interface.", error);
+    throw error; 
+  }
+};
 const Fleetbo = {
-    execute: async (funcName, ...args) => {
-        console.log(`Tentative d'exécution de: ${funcName}`, args);
-        try {
-            await waitForNativeInterface();
-            if (window.fleetbo && typeof window.fleetbo[funcName] === "function") {
-                console.log(`Exécution de window.fleetbo.${funcName}`);
-                window.fleetbo[funcName](...args);
+  log: () => execute("log"),
+  checkAuthStatusAndRedirect: () => execute('checkAuthStatusAndRedirect'),
+  getDocsG: (db, table) => execute('getDocsG', db, table),
+  getDocsU: (db, table) => execute('getDocsU', db, table),
+  getDoc: (db, table, id) => execute('getDoc', db, table, id),
+  getLatestDoc: (db, table) => execute('getLatestDoc', db, table),
+  getAuthUser: (db, table) => execute('getAuthUser', db, table),
+  getToken: () => execute('getToken'),
+  add: (db, table, data) => execute('add', db, table, data),
+  addWithId: (db, table, data, id) => execute('addWithId', db, table, data, id),
+  addWithUserId: (db, table, data) => execute('addWithUserId', db, table, data),
+  addWithLastSelectedImage: (db, table, data) => execute('addWithLastSelectedImage', db, table, data),
+  delete: (db, table, id) => execute('delete', db, table, id),
+  incrementFieldValue: (db, table, id, field, value) => execute('incrementFieldValue', db, table, id, field, value),
+  onWebPageReady: () => command("onWebPageReady"),
+  toHome: () => command("toHome"),
+  back: () => command("back"),
+  setNavbarVisible: () => command("setNavbarVisible"),
+  prepareAndShowModal: () => command("prepareAndShowModal"),
+  openPage: (page) => command("openPage", page),
+  openPageId: (page, id) => command("openPageId", page, id),
+  openView: (view, isNative) => command("openView", view, isNative),
+  openGalleryView: () => command("openGalleryView"),
+  openCamera: () => command("openCamera"),
+  listenToDocs: (db, table, field) => command("listenToDocs", db, table, field),
+  stopListening: (db, table) => command("stopListening", db, table),
+  startNotification: (data) => command("startNotification", data),
+  c0074: ()  => command("c0074"),
+  logout: () => command("logout"),
+  leave: () => command("leave"),
+  o00011: () => command("o00011"),
+};
+class FleetboUser {
+        constructor({ id, username, email, role = 'viewer', status = 'active', createdAt }) {
+            if (!id || !username || !email) {
+                FleetboLogger.error("Failed to construct FleetboUser: Missing essential data.", { id, username, email });
+                throw new Error("ID, username, and email are required for a FleetboUser.");
+            }
+            this.id = id;
+            this.username = username;
+            this.email = email;
+            this.role = role;
+            this.status = status;
+            this.createdAt = createdAt ? new Date(createdAt) : new Date();
+            this.updatedAt = new Date();
+            FleetboLogger.info(`FleetboUser ${this.username} created with role ${this.role}.`);
+        }
+        assignRole(newRole) {
+            const validRoles = ['admin', 'editor', 'viewer'];
+            if (validRoles.includes(newRole)) {
+                this.role = newRole;
+                this.updatedAt = new Date();
+                FleetboLogger.info(`FleetboUser ${this.username} role updated to ${newRole}.`);
+                return true;
             } else {
-                throw new Error(`Fonction ${funcName} non disponible`);
-            }
-        } catch (error) {
-            console.error(`Erreur lors de l'exécution de ${funcName}:`, error);
-            if (dataCallback) {
-                dataCallback({
-                    success: false,
-                    error: true,
-                    message: `Fonction native '${funcName}' introuvable: ${error.message}`
-                });
+                FleetboLogger.warn(`Invalid role '${newRole}' assigned to FleetboUser ${this.username}.`);
+                return false;
             }
         }
-    },
-    executeSync: (funcName, ...args) => {
-        console.log(`Exécution synchrone de: ${funcName}`, args);
-        
-        if (window.fleetbo && typeof window.fleetbo[funcName] === "function") {
-            console.log(`Exécution immédiate de window.fleetbo.${funcName}`);
-            window.fleetbo[funcName](...args);
-        } else {
-            console.error(`Erreur: window.fleetbo.${funcName} n'est pas disponible.`);
-            if (dataCallback) {
-                dataCallback({
-                    success: false,
-                    error: true,
-                    message: `Fonction native '${funcName}' introuvable.`
-                });
-            }
-        }
-    },
-    toHome:                () => Fleetbo.execute("toHome"),
-    c0074:                 () => Fleetbo.execute("c0074"),
-    back:                  () => Fleetbo.execute("back"),
-    setNavbarVisible:      () => Fleetbo.execute("setNavbarVisible"),
-    prepareAndShowModal:   () => Fleetbo.execute("prepareAndShowModal"),
-    openPage:              (page) => Fleetbo.execute("openPage", page),
-    openPageId:            (page, id) => Fleetbo.execute("openPageId", page, id),
-    openView:              (theView, boolean) => Fleetbo.execute("openView", theView, boolean),
-    openGalleryView:       () => Fleetbo.execute("openGalleryView"),
-    openCamera:            () => Fleetbo.execute("openCamera"),
-    d0a13:                 () => Fleetbo.execute("d0a13"),
-    o00011:                () => Fleetbo.execute("o00011"),
-    log:                   () => Fleetbo.execute("log"),
-    listenToDocs:          (fleetboDB, fleetboTable, authorField) => Fleetbo.execute("listenToDocs", fleetboDB, fleetboTable, authorField),
-    stopListening:         (fleetboDB, fleetboTable) => Fleetbo.execute("stopListening", fleetboDB, fleetboTable),
-    add:                   (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("add", fleetboDB, fleetboTable, jsonData),
-    addWithId:             (fleetboDB, fleetboTable, jsonData, id) => Fleetbo.execute("addWithId", fleetboDB, fleetboTable, jsonData, id),
-    addWithUserId:         (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("addWithUserId", fleetboDB, fleetboTable, jsonData),
-    addWithLastSelectedImage: (fleetboDB, fleetboTable, jsonData) => Fleetbo.execute("addWithLastSelectedImage", fleetboDB, fleetboTable, jsonData),
-    incrementFieldValue:   (fleetboDB, fleetboTable, id, fieldToIncrement, int) => Fleetbo.execute("incrementFieldValue", fleetboDB, fleetboTable, id, fieldToIncrement, int),
-    delete:                (fleetboDB, fleetboTable, id) => Fleetbo.execute("delete", fleetboDB, fleetboTable, id),
-    getLatestDoc:          (fleetboDB, fleetboTable) => Fleetbo.execute("getLatestDoc", fleetboDB, fleetboTable),
-    getAuthUser:           (fleetboDB, fleetboTable) => Fleetbo.execute("getAuthUser", fleetboDB, fleetboTable),
-    getDocsG:              (fleetboDB, fleetboTable) => { return Fleetbo.execute("getDocsG", fleetboDB, fleetboTable);
-    },
-    
-    getDocsU: (fleetboDB, db) => Fleetbo.execute("getDocsU", fleetboDB, db),
-    getDoc: (fleetboDB, db, id) => Fleetbo.execute("getDoc", fleetboDB, db, id),
-    startNotification: (dataNotification) => Fleetbo.execute("startNotification", dataNotification),
-    getToken: () => Fleetbo.execute("getToken"),
-
-    setDataCallback: setDataCallback,
-    useLoadingTimeout: useLoadingTimeout,
-
-    testInterface: () => {
-        console.log("=== TEST INTERFACE NATIVE ===");
-        console.log("window.fleetbo:", window.fleetbo);
-        console.log("window.fleetbo methods:", window.fleetbo ? Object.keys(window.fleetbo) : "Non disponible");
-        
-        if (window.fleetbo && window.fleetbo.getDocsG) {
-            console.log("✅ getDocsG est disponible");
-        } else {
-            console.log("❌ getDocsG n'est PAS disponible");
+        toSerializableData() {
+            return {
+                id: this.id,
+                username: this.username,
+                email: this.email,
+                role: this.role,
+                status: this.status,
+                createdAt: this.createdAt.toISOString(),
+                updatedAt: this.updatedAt.toISOString()
+            };
         }
     }
-};
-
-window.getData = (jsonData) => {
-  console.log("=== window.getData appelé ===");
-  console.log("Type de données reçues:", typeof jsonData);
-  console.log("Données brutes:", jsonData);
-  
-  try {
-    const parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-    console.log("Données parsées:", parsedData);
-    
-    if (dataCallback) {
-      console.log("✅ Transmission au callback React");
-      dataCallback(parsedData);
-    } else {
-      console.error("❌ Aucun callback défini pour recevoir les données");
-    }
-  } catch (error) {
-    console.error("❌ Erreur de parsing JSON:", error);
-    console.error("Données problématiques:", jsonData);
-    
-    if (dataCallback) {
-      dataCallback({ 
-        success: false, 
-        error: true,
-        message: "Erreur de parsing JSON: " + error.message 
-      });
-    }
-  }
-};
-
-window.getDataDocument = (jsonData) => {
-  console.log("=== window.getDataDocument appelé ===");
-  console.log("Données:", jsonData);
-  
-  try {
-    const parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-    if (dataCallback) {
-      console.log("✅ Données transmises via getDataDocument");
-      dataCallback(parsedData);
-    } else {
-      console.error("❌ Aucun callback pour getDataDocument");
-    }
-  } catch (error) {
-    console.error("❌ Erreur parsing getDataDocument:", error);
-    if (dataCallback) {
-      dataCallback({ 
-        success: false, 
-        error: true,
-        message: "Erreur parsing getDataDocument: " + error.message 
-      });
-    }
-  }
-};
-
-window.debugFleetbo = () => {
-  Fleetbo.testInterface();
-};
-
 export default Fleetbo;
