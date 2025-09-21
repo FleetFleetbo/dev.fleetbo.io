@@ -1,24 +1,45 @@
+// Dans votre fichier src/context/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import Fleetbo from 'api/fleetbo'; 
 const AuthContext = createContext(null);
+
 export const AuthProvider = ({ children }) => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading]     = useState(true);
+    const [isLoggedIn, setIsLoggedIn]   = useState(false);
     const [sessionData, setSessionData] = useState(null);
+
+
     useEffect(() => {
-        Fleetbo.setDataCallback((data) => {
-            if (data && data.isLoggedIn) {
-                setIsLoggedIn(true);
-                setSessionData(data); 
-            } else {
+        const checkUserSession = async () => {
+            try {
+                
+                const data     = await Fleetbo.checkAuthStatusAndRedirect();
+                setSessionData(data);
+                if (data && data.isLoggedIn) {
+                    setIsLoggedIn(true);
+                    setSessionData(data);
+                } else {
+                    setIsLoggedIn(false); // Le natif aura déjà redirigé
+                }
+            } catch (error) {
+                // Gère les erreurs si le natif rejette la promise
                 setIsLoggedIn(false);
-                setSessionData(null); 
+                setSessionData(null);
+            } finally {
+                setIsLoading(false);
             }
-            setIsLoading(false);
-        });
-        return () => Fleetbo.setDataCallback(null);
+        };
+        checkUserSession();
     }, []);
-    const value = { isLoading, isLoggedIn, sessionData, setSessionData, setIsLoggedIn };
+
+     // NOUVELLE FONCTION POUR GÉRER LA CONNEXION
+    const login = (data) => {
+        setIsLoggedIn(true);
+        setSessionData(data);
+    };
+
+    const value = { isLoading, isLoggedIn, sessionData, setIsLoggedIn, login };
+
     return (
         <AuthContext.Provider value={value}>
             {children}
