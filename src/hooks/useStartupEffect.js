@@ -1,24 +1,30 @@
 //src/hooks/useStartupEffect.js
 
 import { useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
-import Fleetbo from 'api/fleetbo';
-import { useAuth } from 'context/AuthContext'; 
+import { useNavigate, useLocation } from "react-router-dom";
 import { history } from 'components/layout/Navigation';
+import Fleetbo from 'api/fleetbo';
+
 
 export const useStartupEffect = () => {
     const location       = useLocation(); 
-    const { isLoggedIn } = useAuth();
-    const navigate = useNavigate();
+    const navigate       = useNavigate();
+
+    useEffect(() => {
+        window.navigateToTab = (route) => {
+            console.log(`Commande de navigation native reçue pour : ${route}`);
+            navigate(route);
+        };
+        return () => { delete window.navigateToTab; };
+    }, [navigate]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
+            console.log("React: Page rendue. Notification au natif pour la route :", location.pathname);
             Fleetbo.onWebPageReady();
         }, 150);
-
         return () => clearTimeout(timer); 
-    }, [location]);
+    }, [location]); 
 
     useEffect(() => {
         const lastActiveTab = localStorage.getItem("activeTab") || "Tab1";
@@ -27,7 +33,7 @@ export const useStartupEffect = () => {
             console.log(`Synchronisation de la route initiale vers : ${initialRoute}`);
             history.push(initialRoute);
         }
-    }, [location.pathname]); 
+    }, [location.pathname]);  // a verifier
 
     useEffect(() => {
       if (!window.fleetbo) {
@@ -36,15 +42,15 @@ export const useStartupEffect = () => {
       }
     }, []); 
 
-        
     useEffect(() => {
-        if (isLoggedIn) {
-            console.log("Auth state changed to logged IN, navigating...");
-            // On le redirige vers la page d'accueil par défaut ou la dernière page active
-            const lastActiveTab = localStorage.getItem('activeTab') || 'Tab1';
-            const initialRoute = `/${lastActiveTab.toLowerCase()}`;
-            navigate(initialRoute, { replace: true });
-        }
-    }, [isLoggedIn, navigate]);
+        window.navigateToTab = (route) => {
+            console.log(`Commande de navigation native reçue pour : ${route}`);
+            navigate(route);
+        };
+        return () => {
+            delete window.navigateToTab;
+        };
+    }, [navigate]);
+
 
 };
