@@ -1,28 +1,27 @@
 
 import React, { useEffect, useState } from 'react';
-import Fleetbo from '../../api/fleetbo'; 
-import { fleetboDB } from '../../config/fleetboConfig';
+import Fleetbo from 'api/fleetbo'; 
+import { fleetboDB } from 'config/fleetboConfig';
 import {  Link  } from 'react-router-dom';
+import PageConfig from 'components/common/PageConfig';
 
 
 const Insert = () => {
     
     const  db                                     = "items";
-    
     const [loading,  setLoading]                  = useState();
     const [resultMessage, setResultMessage]       = useState();
     const [messageType, setMessageType]           = useState(''); 
     const [imageURL, setImageURL]                 = useState("");
     const [token, setToken]                       = useState('');
     const [formData, setFormData]                 = useState({
-            id: "uid", // Mandatory: id: "uid" or id: id or id: "" / "null"
-            title: "",
-            content: "",
-            image: ""
-            // No need to store current date. Automatic
+        id: "", // Mandatory: id: "uid" or id: id or id: "" / "null"
+        title: "",
+        content: "",
+        image: ""
+        // No need to store current date. Automatic
     });
 
-    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -31,9 +30,7 @@ const Insert = () => {
         }));
     };
 
-
     useEffect(() => {
-
         window.displayImage = (escapedImageBase64) => {
             try {
                 const decodedImageBase64 = decodeURIComponent(escapedImageBase64); 
@@ -51,44 +48,49 @@ const Insert = () => {
         };
     }, []);
 
-
-     const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         setLoading(true);
         e.preventDefault();
         setResultMessage("");
         setMessageType("");
-
+    
         if (!formData.title || !formData.content) {
             setLoading(false);
             setResultMessage('Required fields');
             setMessageType('danger');
             return;
         }
-
-        const jsonData = JSON.stringify(formData); 
-        Fleetbo.addWithLastSelectedImage(fleetboDB, db, jsonData);
-
+    
+        // 1. We only prepare the text data for submission.
+        // We send the complete formData object.
+        const jsonData = JSON.stringify(formData);
+    
+        // 2. We call a new Fleetbo function that tells the native side
+        //    to add this text data WITH the last selected image.
+        //    The native side will handle the upload and linking of the URL.
+        Fleetbo.add(fleetboDB, db, jsonData);
+    
+        // 3. Get the device token to send a notification.
         Fleetbo.getToken();
         window.getToken = (deviceToken) => {
             setToken(deviceToken);
         };
         const notificationData = {
             title: formData.title,
-            body: formData.content, 
+            body: formData.content,
             token: token,
             image: ""
         };
-        const jsonDataNotification    = JSON.stringify(notificationData); 
+        const jsonDataNotification = JSON.stringify(notificationData);
+        // The notification is also handled by the native side after the operation's success.
         Fleetbo.startNotification(jsonDataNotification);
     };
 
-
     window.onAddResult = (success) => {
-        setLoading(false); // Très important de stopper le chargement ici
+        setLoading(false); 
         if (success) {
             setResultMessage('✅ Added successfully.');
             setMessageType('success');
-            // On vide le formulaire et l'image uniquement en cas de succès
             setFormData({ id: "", title: "", content: "", image: "" });
             setImageURL("");
         } else {
@@ -100,14 +102,15 @@ const Insert = () => {
     
     return (
         <>
-            <header className='navbar pt-4'> 
+            <PageConfig navbar="hidden" />
+            <header className='navbar p-3'> 
                 <div className=''> 
-                    <button onClick={() => Fleetbo.back() }  className="logout fs-5 fw-bold">
+                    <button onClick={() => Fleetbo.back() }  className="btn-header text-success fs-5 fw-bold">
                         <i className="fa-solid fa-arrow-left"></i> <span className='ms-3'>Insert </span>
                     </button>
                 </div>
                 <div className="navbar-right">
-                    <button onClick={() => Fleetbo.openGalleryView() }  className="logout fw-bold">
+                    <button onClick={() => Fleetbo.openGalleryView() }  className="btn-header fs-5 text-success fw-bold">
                          <i className="fa-solid fs-5 fa-image"></i>
                     </button>
                 </div>
@@ -119,7 +122,7 @@ const Insert = () => {
                                   
                         <div className='mt-3 mb-3'>
                             <div className='mt-1'>
-                                <h3 className="float-start fw-bolder text-success" style={{ fontFamily: 'arial' }}>
+                                <h3 className="float-start fw-bolder text-dark" style={{ fontFamily: 'arial' }}>
                                     Add item 
                                 </h3>
                             </div>
@@ -197,7 +200,7 @@ const Insert = () => {
                         </div>
        
                         <button
-                                className="go mt-2 mb-2 fw-bold" 
+                                className="btn btn-success w-100 p-2 fs-5 mt-3" 
                                 onClick={handleSubmit} 
                                 type="submit"
                                 disabled={loading}
