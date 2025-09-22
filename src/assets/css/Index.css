@@ -1,14 +1,17 @@
+
 html, body {
   overflow: hidden; 
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 header {
   background: #fff;
   color: #0E904D;
   text-align: left;
 }
+
 .btn-header {
   background: none; 
   border: none; 
