@@ -1,6 +1,7 @@
 // src/pages/Tabs/Tab2.jsx
 
 import React from 'react';
+import PageConfig from 'components/common/PageConfig';
 
 // --- Composant Header ---
 const Tab2Header = () => {
@@ -14,16 +15,15 @@ const Tab2 = () => {
     // --- Render logic ---
     const renderContent = () => {
         return (
-            <div className="container text-center">
-                <h5 className="text-dark fw-normal">Build your interface here..</h5>
-            </div>
+            <div> <h5 className="text-secondary fw-normal">Build your interface here..</h5> </div>
         );
     };
 
     return (
         <>
+            <PageConfig navbar="visible" />
             <Tab2Header />
-            <div className="center-container position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
+            <div className="p-3 d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
             </div>
         </>
