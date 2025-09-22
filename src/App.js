@@ -40,7 +40,7 @@ function AppContent() {
             <Route path="/register"   element={<Register />} />
             <Route path="/login"      element={<Login />} />
 
-             {/* Protected routes using the conditional layout */}
+            {/* Protected routes using the conditional layout */}
             <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
                 <Route path="/tab1" element={<Tab1 />} />
                 <Route path="/tab2" element={<Tab2 />} />
