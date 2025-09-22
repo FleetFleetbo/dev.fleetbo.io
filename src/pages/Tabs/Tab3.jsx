@@ -5,6 +5,7 @@ import Loader from 'components/common/Loader';
 import avatarImage from 'assets/images/avatar.png';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { formatFirestoreDate } from 'utils/FormatDate';
+import PageConfig from 'components/common/PageConfig';
 
 
 // --- Header Component ---
@@ -19,7 +20,6 @@ const Tab3Header = () => {
 
 // --- Main Component ---
 const Tab3 = () => {
-    // --- Component State ---
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
@@ -37,7 +37,6 @@ const Tab3 = () => {
                 const actualUserData = response.data;
                 const rawDate = actualUserData.dateCreated || actualUserData.createdAt || actualUserData.date;
                 
-                // --- 2. USE IMPORTED FUNCTION ---
                 const formattedDate = formatFirestoreDate(rawDate);
 
                 const processedUserData = {
@@ -45,7 +44,6 @@ const Tab3 = () => {
                     phoneNumber: actualUserData.phoneNumber || actualUserData.phone || "Phone number not available",
                     dateCreated: formattedDate,
                 };
-
                 setUserData(processedUserData);
                 
             } else if (response && response.notFound) {
@@ -100,7 +98,6 @@ const Tab3 = () => {
             return (
                 <div className="container">
                     <img
-                        className='img-login'
                         src={avatarImage}
                         alt="User avatar"
                         style={{ maxWidth: '150px', height: 'auto' }}
@@ -121,8 +118,8 @@ const Tab3 = () => {
                     </h6>
                     <button
                         onClick={() => { Fleetbo.logout();  }}
-                        className="go mt-3"
-                        style={{ minWidth: '120px' }}
+                        className="btn btn-success w-100 p-2 fs-5 mt-3"
+                        style={{ fontWeight: '550' }}
                     >
                         Logout
                     </button>
@@ -145,8 +142,9 @@ const Tab3 = () => {
 
     return (
         <>
+            <PageConfig navbar="visible" />
             <Tab3Header />
-            <div className="center-container position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
+            <div className="p-3 d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
             </div>
         </>
