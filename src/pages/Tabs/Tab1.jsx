@@ -2,21 +2,21 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Fleetbo from 'api/fleetbo'; 
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { fleetboDB } from 'config/fleetboConfig';
-import Loader from 'components/common/Loader'; 
 import { handleGetToken } from 'utils/getToken';
+import Loader from 'components/common/Loader'; 
+import PageConfig from 'components/common/PageConfig';
 
 
 const Tab1Header = () => {
 
     return (
-        <header className='navbar ps-3 pt-3'>
+        <header className='navbar ps-3 pe-3 pt-3'>
             <h2 className='fw-bolder'>Tab 1</h2>
             <div className="navbar-right">
-                <button onClick={() => Fleetbo.openPage('insert')} className="logout text-success fs-5 me-3 fw-bold">
+                <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold">
                     <i className="fa-solid fa-plus"></i>
                 </button>
-                {/* Call the imported function directly on click */}
-                <button onClick={handleGetToken} className="logout fs-5 text-success fw-bold ms-3">
+                <button onClick={handleGetToken} className="btn-header fs-5 text-success fw-bold ms-3">
                     <i className="fa-solid fa-bell"></i>
                 </button>
             </div>
@@ -28,12 +28,13 @@ const Tab1 = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [error, setError] = useState("");
-    // Use a Set to efficiently track the IDs of items being deleted
     const [isDeleting, setIsDeleting] = useState(new Set()); 
     const collectionName = "items";
 
+
     useLoadingTimeout(isLoading, setIsLoading, setError);
 
+    // Data fetching function, memoized with useCallback
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         setError("");
@@ -50,18 +51,19 @@ const Tab1 = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []); // Dependency is empty to create the function only once
+    }, []); 
+
 
     // useEffect calls the fetch function when the component mounts
     useEffect(() => { fetchData(); }, [fetchData]);
 
+
     // Robust delete function with optimistic UI and rollback
     const deleteItem = async (id) => {
-        if (isDeleting.has(id)) return; // Prevents double-clicks
+        if (isDeleting.has(id)) return; 
         
         const originalData = [...data];
-        
-        // Optimistic UI update
+
         setIsDeleting(prev => new Set(prev).add(id));
         setData(prevData => prevData.filter(item => item.id !== id));
         setError("");
@@ -163,6 +165,7 @@ const Tab1 = () => {
 
     return (
         <>
+            <PageConfig navbar="visible" />
             <Tab1Header />
             <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
