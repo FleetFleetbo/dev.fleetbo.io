@@ -1,59 +1,68 @@
-/* Base styles (mobile-first approach) */
+/* Styles de base (mobile-first approach) */
+
 .footer, .header {
   position: fixed;
   width: 100%;
   background: #f2f2f2;
-  display: flex; /* Using flexbox for easy alignment */
-  justify-content: space-around; /* Distributes the icons evenly */
+  display: flex;
+  justify-content: space-around; 
   z-index: 1000;
-  box-sizing: border-box; /* Ensures padding doesn't add to the total width */
+  box-sizing: border-box;
 }
 
 .footer {
   bottom: 0;
-  padding: 5px 13px; /* Reduced vertical padding for small screens */
+  padding: 5px 13px; 
 }
 
 .header {
   top: 0;
   padding: 1px 0;
-  border-bottom: 1px solid #ddd; /* Adding a subtle border */
+  border-bottom: 1px solid #ddd; 
 }
 
 .nav-link {
   color: #222;
-  /* Use flex-grow so each link takes an equal share of the space */
   flex-grow: 1;
-  text-align: center; /* Centers the icon inside the link */
+  text-align: center; 
   
-  padding: 10px 10px; /* Base vertical and horizontal padding */
-  font-size: 18px; /* Icon size suitable for mobile */
+  padding: 10px 10px;
+  font-size: 18px;
   
   cursor: pointer;
   text-decoration: none;
   border-top-left-radius: 8px; 
   border-top-right-radius: 8px; 
-  
-  /* Smooth transition for color changes */
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease, color 0.2s ease-in-out;
 }
 
 .nav-link.active {
   background: #0E904D;
+  border-radius: 0%;
   color: #fff;
+  transform: scale(1.1);
 }
 
-/* --- ADJUSTMENTS FOR WIDER SCREENS --- */
-/* Applied from 768px upwards (tablets and desktops) */
+.nav-link.transitioning {
+  opacity: 0.6;
+  pointer-events: none; /* Empêche les clics pendant la transition */
+}
+
+/* Styles pour améliorer l'expérience visuelle */
+.nav-link:hover:not(.transitioning) {
+  transform: scale(1.05);
+}
+
+
 @media (min-width: 768px) {
   .nav-link {
-    flex-grow: 0; /* Prevents links from stretching on large screens */
-    padding: 10px 40px; /* Restoring the original padding for large screens */
+    flex-grow: 0; 
+    padding: 10px 40px; 
     font-size: 19px;
   }
   
   .footer, .header {
-    justify-content: center; /* Centers the navigation bar on large screens */
-    gap: 20px; /* Adds a gap between the icons */
+    justify-content: center; 
+    gap: 20px; 
   }
 }
