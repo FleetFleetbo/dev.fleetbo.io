@@ -1,4 +1,4 @@
-// Dans votre fichier src/context/AuthContext.js
+// src/context/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import Fleetbo from 'api/fleetbo'; 
 const AuthContext = createContext(null);
@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading]     = useState(true);
     const [isLoggedIn, setIsLoggedIn]   = useState(false);
     const [sessionData, setSessionData] = useState(null);
-
 
     useEffect(() => {
         const checkUserSession = async () => {
@@ -19,10 +18,9 @@ export const AuthProvider = ({ children }) => {
                     setIsLoggedIn(true);
                     setSessionData(data);
                 } else {
-                    setIsLoggedIn(false); // Le natif aura déjà redirigé
+                    setIsLoggedIn(false); 
                 }
             } catch (error) {
-                // Gère les erreurs si le natif rejette la promise
                 setIsLoggedIn(false);
                 setSessionData(null);
             } finally {
@@ -32,7 +30,6 @@ export const AuthProvider = ({ children }) => {
         checkUserSession();
     }, []);
 
-     // NOUVELLE FONCTION POUR GÉRER LA CONNEXION
     const login = (data) => {
         setIsLoggedIn(true);
         setSessionData(data);
