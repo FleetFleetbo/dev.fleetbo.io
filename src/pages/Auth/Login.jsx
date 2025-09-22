@@ -6,18 +6,24 @@ import logoF from 'assets/images/logoF.png';
 
 
 const Login = () => {
-
     const [loadingLog, setLoadingLog]                      = useState(false); 
     const [loadingLeave, setLoadingLeave]                  = useState(false); 
-    const { login, sessionData, isLoading: isAuthLoading } = useAuth()
+    const {sessionData, isLoading: isAuthLoading, login }  = useAuth()
 
-    const log = async () => { 
+    const log = async () => {
+        // Prevent multiple clicks while loading
+        if (loadingLog) return;
         setLoadingLog(true);
         try {
-            const loginResult = await Fleetbo.log();
+            // A. Wait for the result from the native function
+            const loginResult = await Fleetbo.log(); // Ensure Fleetbo.log() returns a promise
+            // B. Update the global context with the login data
             login(loginResult);
+            // C. Instruct the native side to orchestrate the navigation
+            const lastActiveTab = localStorage.getItem('activeTab') || 'Tab1';
+            Fleetbo.navigateToMainApp(lastActiveTab.toLowerCase());
         } catch (error) {
-            console.error(`Erreur de connexion: ${error.message}`);
+            console.error(`Login error: ${error.message}`);
         } finally {
             setLoadingLog(false);
         }
@@ -38,32 +44,33 @@ const Login = () => {
     return (
         <motion.div
             transition={{ duration: 0.4 }}
-            className="container"
+            className="p-3 vh-100 d-flex align-items-center justify-content-center"
         >
-            <div className="App-center">
+            <div className="">
                 {isAuthLoading ? (
                     <p>Loading session...</p> 
-                ) : sessionData ? ( // Check sessionData 
+                ) : sessionData ? ( 
                     <>
                         <div className="p-3">
                             <div className='row pb-2'>
                                 <img
-                                    style={{ height: "95px", width:"115px"}}
+                                    className='App-logo'
+                                    style={{borderRadius: "12px"}}
                                     src={logoF}
                                     alt="logo"
                                 />
                                 <div className='mt-4' style={{ height: "100%" }}>
-                                    <h3 className='fw-bolder' style={{ color: "#0E904D" }}>{sessionData.appName || "Welcome"}</h3>
-                                    <p style={{ textAlign: "left" }}>{sessionData.description || "Please log in to continue."}</p>
+                                    <h3 className='fw-bolder text-success'>{sessionData.appName || "Welcome"}</h3>
+                                    <p className='text-dark fs-6' >{sessionData.description || "Please log in to continue."}</p>
                                 </div>
                                 
                                 <div className='mt-2' > 
-                                    <button onClick={log} className="go mt-2">
-                                        {loadingLog ? "Connexion..." : "Login"} <i className="fa-solid fa-arrow-right ms-1"></i> 
+                                    <button onClick={log} className="btn btn-success w-100 p-2 fs-5 mt-3" style={{ fontWeight: '550' }}>
+                                        {loadingLog ? "Connexion..." : "Login"}
                                     </button>
                                 </div>
                                 <div className="pb-1">
-                                    <button onClick={leaveApp} className="btn-leave">
+                                    <button onClick={leaveApp} className="btn btn-link w-100 p-2 fs-6 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
                                         {loadingLeave ? "Leaving..." : "Leave"} 
                                     </button>
                                 </div>
