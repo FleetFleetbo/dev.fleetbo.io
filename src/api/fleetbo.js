@@ -831,6 +831,7 @@ const Fleetbo = {
   delete: (db, table, id) => execute('delete', db, table, id),
   incrementFieldValue: (db, table, id, field, value) => execute('incrementFieldValue', db, table, id, field, value),
   onWebPageReady: () => command("onWebPageReady"),
+  navigateToMainApp: (route) => command("navigateToMainApp", route),
   toHome: () => command("toHome"),
   back: () => command("back"),
   setNavbarVisible: () => command("setNavbarVisible"),
