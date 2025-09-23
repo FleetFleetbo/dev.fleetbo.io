@@ -53,17 +53,14 @@ const Tab1 = () => {
         }
     }, []); 
 
-
     // useEffect calls the fetch function when the component mounts
     useEffect(() => { fetchData(); }, [fetchData]);
-
 
     // Robust delete function with optimistic UI and rollback
     const deleteItem = async (id) => {
         if (isDeleting.has(id)) return; 
         
         const originalData = [...data];
-
         setIsDeleting(prev => new Set(prev).add(id));
         setData(prevData => prevData.filter(item => item.id !== id));
         setError("");
@@ -93,7 +90,6 @@ const Tab1 = () => {
         if (isLoading) {
             return <Loader />;
         }
-        
         if (error) {
             return (
                 <div className="alert alert-danger d-flex justify-content-between align-items-center">
