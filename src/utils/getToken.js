@@ -12,4 +12,3 @@ export const handleGetToken = async () => {
         alert("Erreur lors de la récupération du token.");
     }
 };
-c
