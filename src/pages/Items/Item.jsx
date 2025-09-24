@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Fleetbo from 'api/fleetbo'; 
 import { fleetboDB } from 'config/fleetboConfig';
 import PageConfig from 'components/common/PageConfig';
-
+import Loader from 'components/common/Loader'; 
 
 const ItemHeader = () => {
     return (
