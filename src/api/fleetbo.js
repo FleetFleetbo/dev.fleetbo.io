@@ -849,43 +849,4 @@ const Fleetbo = {
   leave: () => command("leave"),
   o00011: () => command("o00011"),
 };
-class FleetboUser {
-        constructor({ id, username, email, role = 'viewer', status = 'active', createdAt }) {
-            if (!id || !username || !email) {
-                FleetboLogger.error("Failed to construct FleetboUser: Missing essential data.", { id, username, email });
-                throw new Error("ID, username, and email are required for a FleetboUser.");
-            }
-            this.id = id;
-            this.username = username;
-            this.email = email;
-            this.role = role;
-            this.status = status;
-            this.createdAt = createdAt ? new Date(createdAt) : new Date();
-            this.updatedAt = new Date();
-            FleetboLogger.info(`FleetboUser ${this.username} created with role ${this.role}.`);
-        }
-        assignRole(newRole) {
-            const validRoles = ['admin', 'editor', 'viewer'];
-            if (validRoles.includes(newRole)) {
-                this.role = newRole;
-                this.updatedAt = new Date();
-                FleetboLogger.info(`FleetboUser ${this.username} role updated to ${newRole}.`);
-                return true;
-            } else {
-                FleetboLogger.warn(`Invalid role '${newRole}' assigned to FleetboUser ${this.username}.`);
-                return false;
-            }
-        }
-        toSerializableData() {
-            return {
-                id: this.id,
-                username: this.username,
-                email: this.email,
-                role: this.role,
-                status: this.status,
-                createdAt: this.createdAt.toISOString(),
-                updatedAt: this.updatedAt.toISOString()
-            };
-        }
-    }
 export default Fleetbo;
