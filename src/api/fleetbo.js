@@ -3,7 +3,6 @@
  * @file systemHelper.js
  * @description Un système de gestion intégré pour les données Fleetbo Framework.
  */
-import React from 'react';
 (function() { 
     // --- 1. Constantes du Système Fleetbo ---
     const FLEETBO_SYSTEM_VERSION = "3.1.0";
