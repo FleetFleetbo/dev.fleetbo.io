@@ -28,7 +28,7 @@ const Tab3 = () => {
     const fetchUserData = useCallback(async () => {
         setIsLoading(true);
         setError(null);
-        setUserNotFound(false); // NOUVEAU : Réinitialiser l'état au début de la récupération
+        setUserNotFound(false); 
         try {
             const response = await Fleetbo.getAuthUser(fleetboDB, dbName);
 
@@ -80,7 +80,6 @@ const Tab3 = () => {
             return <Loader />;
         }
 
-        // NOUVEAU : Bloc de rendu pour le cas où l'utilisateur n'a pas de profil
         if (userNotFound) {
             return (
                 <div className="container text-center">
@@ -88,7 +87,7 @@ const Tab3 = () => {
                     <h4 className="fw-bold">Welcome!</h4>
                     <p className="text-muted">Your user profile is not yet complete. <br/> Please create it to continue.</p>
                     <button
-                        onClick={() => Fleetbo.openPage('register')} // Action de navigation
+                        onClick={() => Fleetbo.openPage('register')} 
                         className="btn btn-success w-100 p-2 fs-5 mt-3"
                         style={{ fontWeight: '550' }}
                     >
