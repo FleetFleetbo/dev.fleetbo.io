@@ -43,38 +43,38 @@ const Tab1 = () => {
             if (parsedData.success) {
                 setData(parsedData.data || []);
             } else {
-                setError(parsedData.message || "Erreur de récupération des données.");
+                setError(parsedData.message || "Error fetching data.");
             }
         } catch (err) {
-            setError(err.message || "Une erreur inattendue s'est produite.");
-            console.error("Erreur de récupération des données :", err);
+            setError(err.message || "An unexpected error occurred.");
+            console.error("Error fetching data:", err);
         } finally {
             setIsLoading(false);
         }
-    }, []); 
-
+    }, []);
+    
     // useEffect calls the fetch function when the component mounts
     useEffect(() => { fetchData(); }, [fetchData]);
-
+    
     // Robust delete function with optimistic UI and rollback
     const deleteItem = async (id) => {
-        if (isDeleting.has(id)) return; 
-        
+        if (isDeleting.has(id)) return;
+    
         const originalData = [...data];
         setIsDeleting(prev => new Set(prev).add(id));
         setData(prevData => prevData.filter(item => item.id !== id));
         setError("");
-        
+    
         try {
             const result = await Fleetbo.delete(fleetboDB, collectionName, id);
             if (result && result.success === false) {
-                throw new Error(result.message || "La suppression a échoué côté natif.");
+                throw new Error(result.message || "Deletion failed on the native side.");
             }
-            console.log(`Item ${id} supprimé avec succès.`);
+            console.log(`Item ${id} deleted successfully.`);
         } catch (err) {
-            console.error("Erreur lors de la suppression:", err);
+            console.error("Error during deletion:", err);
             // On failure, revert the change and display an error
-            setError(`Erreur de suppression : ${err.message}`);
+            setError(`Deletion error: ${err.message}`);
             setData(originalData);
         } finally {
             // Clean up the deleting state, whether the operation succeeded or failed
@@ -163,7 +163,7 @@ const Tab1 = () => {
         <>
             <PageConfig navbar="visible" />
             <Tab1Header />
-            <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
+            <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 63px)' }}>
                 {renderContent()}
             </div>
         </>
