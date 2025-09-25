@@ -32,27 +32,28 @@ function AppContent() {
     useStartupEffect();
     return (
         <Routes>
-            {/* The AuthGate handles the initial redirect from the root */}
+            {/* Le AuthGate gère la redirection initiale depuis la racine */}
             <Route path="/" element={<AuthGate />} />
 
-            {/* Public routes */}
+            {/* Routes publiques */}
             <Route path="/auth/route" element={<RouteAuth />} />
             <Route path="/register"   element={<Register />} />
             <Route path="/login"      element={<Login />} />
 
-            {/* Protected routes using the conditional layout */}
+            {/* Routes protégées utilisant la mise en page conditionnelle */}
             <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
                 <Route path="/tab1" element={<Tab1 />} />
                 <Route path="/tab2" element={<Tab2 />} />
                 <Route path="/tab3" element={<Tab3 />} />
-                {/* ... other protected routes ... */}
+                {/* ... vos autres routes protégées ... */}
             </Route>
 
-            {/* ... other protected routes ... */}
+            {/* ... vos autres routes protégées ...  */}
             <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
+            
 
-            {/* Fallback routes */}
+            {/* Routes de secours */}
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
         </Routes>
@@ -67,5 +68,8 @@ function App() {
         </AuthProvider>
     );
 }
+
+export default App;
+
 
 export default App;
