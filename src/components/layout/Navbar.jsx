@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Fleetbo from 'api/fleetbo';
 import 'assets/css/Navbar.css';
 
