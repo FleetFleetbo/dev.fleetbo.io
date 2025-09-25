@@ -4,17 +4,15 @@ import { fleetboDB } from 'config/fleetboConfig';
 import { motion } from "framer-motion";
 import { useAuth } from 'context/AuthContext';
 import PageConfig from 'components/common/PageConfig';
-import { useNavigate } from 'react-router-dom';
+
 
 const Register = () => {
 
-    const [loadingLog, setLoadingLog]         = useState(false); 
-    const [loadingLeave, setLoadingLeave]     = useState(false); 
-    const [formData, setFormData]             = useState({ username: "" });
-    const  db                                 = "users";
-    const navigate                            = useNavigate();
-
-    const {sessionData, isLoading: isAuthLoading, }                      = useAuth();
+    const [loadingLog, setLoadingLog]                  = useState(false); 
+    const [loadingLeave, setLoadingLeave]              = useState(false); 
+    const [formData, setFormData]                      = useState({ username: "" });
+    const  db                                          = "users";
+    const {sessionData, isLoading: isAuthLoading, }    = useAuth();
     
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,33 +21,15 @@ const Register = () => {
     const register = async (e) => {
         e.preventDefault();
         if (loadingLog) return;
-    
         setLoadingLog(true);
         try {
-            // We WAIT (await) for the result from the native function
             const result = await Fleetbo.addWithUserId(fleetboDB, db, JSON.stringify(formData));
-    
-            // We only navigate IF the insertion was successful
-            // (result.success comes from the response you send from Kotlin)
             if (result && result.success) {
-                const destinationTab = 'Tab1';
-    
-                // 1. Update localStorage BEFORE dispatching the event
-                localStorage.setItem('activeTab', destinationTab);
-    
-                // Force a re-render of all components that use activeTab
-                window.dispatchEvent(new CustomEvent('storage', {
-                    detail: { key: 'activeTab', newValue: destinationTab }
-                }));
-                
-                // React Router navigation
-                navigate('/tab1');
+                Fleetbo.back() 
             } else {
-                // Handle the case where the insertion failed silently
                 console.error("Registration failed on the native side.");
             }
         } catch (error) {
-            // Handle errors if the promise is rejected
             console.error(`Register error: ${error.message}`);
         } finally {
             setLoadingLog(false);
@@ -58,7 +38,6 @@ const Register = () => {
 
     const leaveApp = async () => { 
         setLoadingLeave(true);   
-
         try {
             Fleetbo.leave(); 
         } catch (error) {
