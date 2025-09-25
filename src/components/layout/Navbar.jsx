@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Fleetbo from 'api/fleetbo';
 import 'assets/css/Navbar.css';
 
-// 1. Define the navbar configuration in an array.
 const navItems = [
   { id: 'Tab1', view: 'tab1', isNative: false, icon: 'fa-solid fa-house' },
   { id: 'Tab2', view: 'tab2', isNative: false, icon: 'fa-solid fa-crown' }, // Example: { view: 'Home', isNative: true } loads a native component
@@ -11,45 +10,34 @@ const navItems = [
 ];
 
 const Navbar = () => {
-  // Initialize the state with the saved value from localStorage, only once.
-  const [activeTab, setActiveTab] = useState(() => localStorage.getItem("activeTab") || "Tab1");
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  
-  const navbarType = localStorage.getItem("navbar");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState('Tab1');
 
-  // Effect to save the active tab to localStorage on each change.
   useEffect(() => {
-    localStorage.setItem("activeTab", activeTab);
-  }, [activeTab]);
+    const currentTab = navItems.find(item => !item.isNative && location.pathname.includes(item.view));
+    if (currentTab) {
+      setActiveTab(currentTab.id);
+      localStorage.setItem("activeTab", currentTab.id);
+    }
+  }, [location]);
 
-  // 2. The navigation function is now much simpler.
   const handleSelectTab = (item) => {
-    if (isTransitioning || activeTab === item.id) return;
-
-    setIsTransitioning(true);
     setActiveTab(item.id);
-    
-    // Unified call to the native layer.
     Fleetbo.openView(item.view, item.isNative);
-    
-    // Re-enable clicks after a short delay to allow the transition to complete.
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 300);
   };
+
+  const navbarType = localStorage.getItem("navbar");
 
   return (
     <div className={navbarType === "header" ? "header" : "footer"}>
-      {/* 3. Dynamically generate links from the configuration array. */}
       {navItems.map(item => (
-        <Link 
+        <button 
           key={item.id}
           onClick={() => handleSelectTab(item)}
-          // The 'disabled' class is more semantic for the transition state.
-          className={`nav-link ${activeTab === item.id ? "active" : ""} ${isTransitioning ? "disabled" : ""}`}
+          className={`nav-link ${activeTab === item.id ? "active" : ""}`}
         >
           <i className={item.icon}></i>
-        </Link>
+        </button>
       ))}
     </div>
   );
