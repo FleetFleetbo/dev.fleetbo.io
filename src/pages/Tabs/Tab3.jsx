@@ -11,10 +11,7 @@ import PageConfig from 'components/common/PageConfig';
 // --- Header Component ---
 const Tab3Header = () => {
     return (
-        <header className='navbar ps-3 pt-3'>
-            <h2 className='fw-bolder'>Tab 3</h2>
-            <div className="navbar-right"> </div>
-        </header>
+        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Tab 3</h2> </header>
     );
 };
 
@@ -23,6 +20,7 @@ const Tab3 = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
+    const [userNotFound, setUserNotFound] = useState(false); 
     const dbName = "users";
 
     useLoadingTimeout(isLoading, setIsLoading, setError);
@@ -30,6 +28,7 @@ const Tab3 = () => {
     const fetchUserData = useCallback(async () => {
         setIsLoading(true);
         setError(null);
+        setUserNotFound(false); // NOUVEAU : Réinitialiser l'état au début de la récupération
         try {
             const response = await Fleetbo.getAuthUser(fleetboDB, dbName);
 
@@ -48,7 +47,9 @@ const Tab3 = () => {
                 
             } else if (response && response.notFound) {
                 console.warn("User document not found");
-                setError("User document not found. Please contact an administrator.");
+                setUserNotFound(true);
+                setError(
+                    "User document not found. Please contact an administrator.");
             } else {
                 console.warn("Unexpected response structure:", response);
                 setError("Invalid data format received from the server.");
@@ -78,6 +79,24 @@ const Tab3 = () => {
         if (isLoading) {
             return <Loader />;
         }
+
+        // NOUVEAU : Bloc de rendu pour le cas où l'utilisateur n'a pas de profil
+        if (userNotFound) {
+            return (
+                <div className="container text-center">
+                    <i className="fa-solid fa-user-plus fa-3x text-success mb-3"></i>
+                    <h4 className="fw-bold">Welcome!</h4>
+                    <p className="text-muted">Your user profile is not yet complete. <br/> Please create it to continue.</p>
+                    <button
+                        onClick={() => Fleetbo.openPage('register')} // Action de navigation
+                        className="btn btn-success w-100 p-2 fs-5 mt-3"
+                        style={{ fontWeight: '550' }}
+                    >
+                        Create Profile
+                    </button>
+                </div>
+            );
+        }
         
         if (error) {
             return (
@@ -105,14 +124,11 @@ const Tab3 = () => {
                     <h2 className="text-success fw-bolder mt-2">
                         {userData.username}
                     </h2>
-                    <h5 className="text-dark fw-normal">
-                        {userData.phoneNumber} 
-                    </h5>
                     <h6 className="text-secondary mt-2">
                         {userData.dateCreated && 
                         typeof userData.dateCreated === 'string' && 
                         userData.dateCreated.trim().length > 0
-                            ? `Member since ${userData.dateCreated}` 
+                            ? `Since ${userData.dateCreated}` 
                             : "⚠ No date available"
                         }
                     </h6>
@@ -144,7 +160,7 @@ const Tab3 = () => {
         <>
             <PageConfig navbar="visible" />
             <Tab3Header />
-            <div className="p-3 d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 150px)' }}>
+            <div className="position-relative d-flex align-items-center text-center" style={{ minHeight: 'calc(100vh - 63px)' }}>
                 {renderContent()}
             </div>
         </>
