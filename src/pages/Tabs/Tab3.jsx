@@ -1,25 +1,41 @@
+/**
+ * Welcome to Tab 3!
+ *
+ * This component demonstrates another core feature of a real-world application:
+ * fetching and displaying data for the *currently logged-in user*.
+ *
+ * Pay attention to `Fleetbo.getAuthUser()`. This single command hides a lot of complexity,
+ * allowing you to build personalized user experiences with ease.
+ */
+
+// --- The Essentials ---
 import React, { useEffect, useState, useCallback } from 'react';
+
+// --- The Fleetbo Magic ✨ ---
 import Fleetbo from 'api/fleetbo';
 import { fleetboDB } from 'config/fleetboConfig';
+
+// --- Utilities & Assets ---
 import Loader from 'components/common/Loader';
 import avatarImage from 'assets/images/avatar.png';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { formatFirestoreDate } from 'utils/FormatDate';
 import PageConfig from 'components/common/PageConfig';
 
-
 // --- Header Component ---
 const Tab3Header = () => {
     return (
-        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Tab 3</h2> </header>
+        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Tab 3 (User)</h2> </header>
     );
 };
 
 // --- Main Component ---
 const Tab3 = () => {
+    // --- State Management ---
     const [isLoading, setIsLoading] = useState(true);
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
+    // A specific state for a specific user flow: when the user is logged in but has no profile document yet.
     const [userNotFound, setUserNotFound] = useState(false); 
     const dbName = "users";
 
@@ -30,14 +46,19 @@ const Tab3 = () => {
         setError(null);
         setUserNotFound(false); 
         try {
+            // 🚀 THE KEY FLEETBO CALL: This command is your shortcut to the current user's data.
+            // Fleetbo handles getting the user's auth ID and fetching the corresponding document for you.
             const response = await Fleetbo.getAuthUser(fleetboDB, dbName);
 
             if (response && response.success && response.data) {
                 const actualUserData = response.data;
-                const rawDate = actualUserData.dateCreated || actualUserData.createdAt || actualUserData.date;
                 
+                // --- Defensive Data Handling: A best practice ---
+                // We handle multiple possible date fields and format them for display.
+                const rawDate = actualUserData.dateCreated || actualUserData.createdAt || actualUserData.date;
                 const formattedDate = formatFirestoreDate(rawDate);
 
+                // We create a clean data object for the UI, with fallbacks to prevent crashes.
                 const processedUserData = {
                     username: actualUserData.username || actualUserData.name || "User",
                     phoneNumber: actualUserData.phoneNumber || actualUserData.phone || "Phone number not available",
@@ -46,26 +67,25 @@ const Tab3 = () => {
                 setUserData(processedUserData);
                 
             } else if (response && response.notFound) {
+                // This is not an error, but a specific case: the user needs to create their profile.
                 console.warn("User document not found");
                 setUserNotFound(true);
-                setError(
-                    "User document not found. Please contact an administrator.");
             } else {
                 console.warn("Unexpected response structure:", response);
                 setError("Invalid data format received from the server.");
             }
 
         } catch (err) {
-            if (err.message?.includes("non authentifié")) { // Keeping keyword for logic
+            // Here, we can handle specific errors returned from the native side.
+            if (err.message?.includes("non authentifié")) { // Keyword for "unauthenticated"
                 setError("Session expired. Please log in again.");
-            } else if (err.message?.includes("entreprise")) { // Keeping keyword for logic
+            } else if (err.message?.includes("entreprise")) { // Keyword for "company"
                 setError("Company configuration missing.");
             } else {
                 setError(err.message || "Error loading user data.");
             }
             setUserData(null);
         } finally {
-            console.log("=== END fetchUserData ===");
             setIsLoading(false);
         }
     }, [dbName]);
@@ -74,12 +94,13 @@ const Tab3 = () => {
         fetchUserData();
     }, [fetchUserData]);
 
-    // The rendering logic (renderContent) remains exactly the same
+    // This function decides what to show on the screen based on our state.
     const renderContent = () => {
         if (isLoading) {
             return <Loader />;
         }
 
+        // The "Create Profile" onboarding flow. This is a great user experience!
         if (userNotFound) {
             return (
                 <div className="container text-center">
@@ -89,7 +110,6 @@ const Tab3 = () => {
                     <button
                         onClick={() => Fleetbo.openPage('register')} 
                         className="btn btn-success w-100 p-2 fs-5 mt-3"
-                        style={{ fontWeight: '550' }}
                     >
                         Create Profile
                     </button>
@@ -104,37 +124,31 @@ const Tab3 = () => {
                     <button 
                         className="btn btn-sm btn-outline-danger" 
                         onClick={fetchUserData}
-                        disabled={isLoading}
                     >
-                        {isLoading ? "Loading..." : "Retry"}
+                        Retry
                     </button>
                 </div>
             );
         }
         
+        // The successful case: we display the user's profile.
         if (userData) {
             return (
                 <div className="container">
                     <img
                         src={avatarImage}
                         alt="User avatar"
-                        style={{ maxWidth: '150px', height: 'auto' }}
+                        style={{ maxWidth: '150px', height: 'auto', borderRadius: '50%' }}
                     />
                     <h2 className="text-success fw-bolder mt-2">
                         {userData.username}
                     </h2>
                     <h6 className="text-secondary mt-2">
-                        {userData.dateCreated && 
-                        typeof userData.dateCreated === 'string' && 
-                        userData.dateCreated.trim().length > 0
-                            ? `Since ${userData.dateCreated}` 
-                            : "⚠ No date available"
-                        }
+                        {userData.dateCreated ? `Since ${userData.dateCreated}` : "Date not available"}
                     </h6>
                     <button
-                        onClick={() => { Fleetbo.logout();  }}
-                        className="btn btn-success w-100 p-2 fs-5 mt-3"
-                        style={{ fontWeight: '550' }}
+                        onClick={() => Fleetbo.logout()}
+                        className="btn btn-outline-danger w-100 p-2 fs-5 mt-4"
                     >
                         Logout
                     </button>
@@ -167,4 +181,3 @@ const Tab3 = () => {
 };
 
 export default Tab3;
-
