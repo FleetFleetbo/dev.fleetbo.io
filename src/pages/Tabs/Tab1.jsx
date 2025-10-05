@@ -31,7 +31,7 @@ import PageConfig from 'components/common/PageConfig';
 const Tab1Header = () => {
     return (
         <header className='navbar ps-3 pe-3 pt-3'>
-            <h2 className='fw-bolder'>Tab 1 (React)</h2>
+            <h2 className='fw-bolder'>Tab 1</h2>
             <div className="navbar-right">
                 {/* Navigation example: Fleetbo.openPage() opens another React page (WebView). */}
                 <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold" title="Add New Item">
