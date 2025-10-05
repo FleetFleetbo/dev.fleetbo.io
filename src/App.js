@@ -18,8 +18,12 @@ import RouteAuth from "./pages/Auth/RouteAuth";
 import Tab1 from "./pages/Tabs/Tab1";
 import Tab2 from "./pages/Tabs/Tab2";
 import Tab3 from "./pages/Tabs/Tab3";
+
+import SetUser from "./pages/Items/User/SetUser";
+
 import Insert from "./pages/Items/Insert";
 import Item from "./pages/Items/Item";
+
 import NotFound from './pages/NotFound';
 
 // Global styles
@@ -49,6 +53,7 @@ function AppContent() {
             </Route>
 
             {/* ... vos autres routes protégées ...  */}
+            <Route path="/setuser"   element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
             <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
             
