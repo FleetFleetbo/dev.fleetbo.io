@@ -211,7 +211,7 @@ const Tab1 = () => {
                     <div className="text-center text-muted mt-5">
                         <i className="fa-solid fa-inbox fa-3x mb-3"></i>
                         <p>No items to display.</p>
-                        <button className="btn btn-primary" onClick={() => Fleetbo.openPage('insert')}>
+                        <button className="btn btn-success ps-2 pe-2" onClick={() => Fleetbo.openPage('insert')}>
                             Create first item
                         </button>
                     </div>
