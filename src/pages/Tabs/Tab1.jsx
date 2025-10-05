@@ -1,4 +1,4 @@
-o)/**
+/**
  * Welcome to your first Fleetbo component!
  *
  * This file (Tab1.js) is a complete, production-ready example
