@@ -9,12 +9,10 @@ import PageConfig from 'components/common/PageConfig';
 const SetUser = () => {
 
     const [loadingLog, setLoadingLog]                  = useState(false); 
-    const [loadingLeave, setLoadingLeave]              = useState(false); 
-
     const [formData, setFormData]                      = useState({ username: "" });
     const  db                                          = "users";
-    const {sessionData, isLoading: isAuthLoading, }    = useAuth();
     
+    const {sessionData, isLoading: isAuthLoading, }    = useAuth();
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -37,16 +35,6 @@ const SetUser = () => {
         }
     };
 
-    const leaveApp = async () => { 
-        setLoadingLeave(true);   
-        try {
-            Fleetbo.leave(); 
-        } catch (error) {
-            console.error(`Erreur : ${error.message}`);
-        } finally {
-            setTimeout(() => setLoadingLeave(false), 500); 
-        }
-    };
 
     return (
         <>
@@ -86,7 +74,7 @@ const SetUser = () => {
                             </div>
                             <div className="pb-1">
                                 <button onClick={() => Fleetbo.back()} className="btn btn-link w-100 p-2 fs-5 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
-                                    {loadingLeave ? "Leaving..." : "back"} 
+                                    Back
                                 </button>
                             </div>
                         </>
