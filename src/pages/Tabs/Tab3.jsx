@@ -113,6 +113,12 @@ const Tab3 = () => {
                     >
                         Create Profile
                     </button>
+                    <button
+                        onClick={() => Fleetbo.logout()}
+                        className="btn btn-outline-success w-100 p-2 fs-5 mt-4"
+                    >
+                        Logout
+                    </button>
                 </div>
             );
         }
