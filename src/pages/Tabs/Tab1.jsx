@@ -1,4 +1,4 @@
-/**
+o)/**
  * Welcome to your first Fleetbo component!
  *
  * This file (Tab1.js) is a complete, production-ready example
@@ -31,7 +31,7 @@ import PageConfig from 'components/common/PageConfig';
 const Tab1Header = () => {
     return (
         <header className='navbar ps-3 pe-3 pt-3'>
-            <h2 className='fw-bolder'>Tab 1</h2>
+            <h2 className='fw-bolder'>Tab 1 (Hello)</h2>
             <div className="navbar-right">
                 {/* Navigation example: Fleetbo.openPage() opens another React page (WebView). */}
                 <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold" title="Add New Item">
@@ -162,7 +162,7 @@ const Tab1 = () => {
 
                 {/* --- Here is the short tutorial paragraph --- */}
                 <div className="alert alert-success-subtle border border-success border-opacity-25 p-3 mb-4">
-                    <h5 className="fw-bold text-success">👋 Welcome to Your First Fleetbo App!</h5>
+                    <h5 className="fw-bold text-success">Welcome to Your First Fleetbo App!</h5>
                     <p className="mb-0">
                         This is a fully functional demo showing how to Create, Read, and Delete items using the Fleetbo API.
                         Click the <i className="fa-solid fa-plus"></i> icon in the header to add your first item, and feel free to explore this file (<strong>Tab1.jsx</strong>) to see how it works!
