@@ -12,7 +12,6 @@ import ProtectedLayout from './components/layout/ProtectedLayout';
 
 // Application pages
 import Login from "./pages/Auth/Login";
-import Register from "./pages/Auth/Register";
 import RouteAuth from "./pages/Auth/RouteAuth";
 
 import Tab1 from "./pages/Tabs/Tab1";
@@ -41,7 +40,6 @@ function AppContent() {
 
             {/* Routes publiques */}
             <Route path="/auth/route" element={<RouteAuth />} />
-            <Route path="/register"   element={<Register />} />
             <Route path="/login"      element={<Login />} />
 
             {/* Routes protégées utilisant la mise en page conditionnelle */}
