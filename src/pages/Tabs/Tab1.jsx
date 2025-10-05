@@ -165,7 +165,7 @@ const Tab1 = () => {
                     <h5 className="fw-bold text-success">👋 Welcome to Your First Fleetbo App!</h5>
                     <p className="mb-0">
                         This is a fully functional demo showing how to Create, Read, and Delete items using the Fleetbo API.
-                        Click the <i className="fa-solid fa-plus"></i> icon in the header to add your first item, and feel free to explore this file (<strong>Tab1.js</strong>) to see how it works!
+                        Click the <i className="fa-solid fa-plus"></i> icon in the header to add your first item, and feel free to explore this file (<strong>Tab1.jsx</strong>) to see how it works!
                     </p>
                 </div>
                 
