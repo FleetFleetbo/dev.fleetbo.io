@@ -108,7 +108,7 @@ const Tab3 = () => {
                     <h4 className="fw-bold">Welcome!</h4>
                     <p className="text-muted">Your user profile is not yet complete. <br/> Please create it to continue.</p>
                     <button
-                        onClick={() => Fleetbo.openPage('register')} 
+                        onClick={() => Fleetbo.openPage('setuser')}
                         className="btn btn-success w-100 p-2 fs-5 mt-3"
                     >
                         Create Profile
@@ -148,7 +148,7 @@ const Tab3 = () => {
                     </h6>
                     <button
                         onClick={() => Fleetbo.logout()}
-                        className="btn btn-outline-danger w-100 p-2 fs-5 mt-4"
+                        className="btn btn-success w-100 p-2 fs-5 mt-4"
                     >
                         Logout
                     </button>
