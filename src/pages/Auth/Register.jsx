@@ -25,7 +25,7 @@ const Register = () => {
         try {
             const result = await Fleetbo.addWithUserId(fleetboDB, db, JSON.stringify(formData));
             if (result && result.success) {
-                Fleetbo.back() 
+                Fleetbo.openPage('login'); // Login page for register on fleetbo backend
             } else {
                 console.error("Registration failed on the native side.");
             }
