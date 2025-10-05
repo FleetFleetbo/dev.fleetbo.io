@@ -19,7 +19,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 // All the powerful functions (database, navigation, etc.) go through here.
 import Fleetbo from 'api/fleetbo'; 
 
-// --- Utilities & Configuration ---
+// --- Template Utilities & Configuration ---
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { fleetboDB } from 'config/fleetboConfig'; // Your database key (from .env)
 import { handleGetToken } from 'utils/getToken';
@@ -34,17 +34,16 @@ const Tab1Header = () => {
             <h2 className='fw-bolder'>Tab 1 (React)</h2>
             <div className="navbar-right">
                 {/* Navigation example: Fleetbo.openPage() opens another React page (WebView). */}
-                <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold">
+                <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold" title="Add New Item">
                     <i className="fa-solid fa-plus"></i>
                 </button>
-                <button onClick={handleGetToken} className="btn-header fs-5 text-success fw-bold ms-3">
+                <button onClick={handleGetToken} className="btn-header fs-5 text-success fw-bold ms-3" title="Get Notification Token">
                     <i className="fa-solid fa-bell"></i>
                 </button>
             </div>
         </header>
     );
 };
-
 
 const Tab1 = () => {
     // --- State Management: The 3 pillars of a robust interface ---
@@ -99,11 +98,11 @@ const Tab1 = () => {
     const deleteItem = async (id) => {
         if (isDeleting.has(id)) return; // Prevents double-clicking
         
-        // 1. We save the current state, in case the deletion fails.
+        // 1. We save the current state, in case the deletion fails (for rollback).
         const originalData = [...data];
         setIsDeleting(prev => new Set(prev).add(id));
 
-        // 2. ✨ IMMEDIATE UI UPDATE. The item disappears instantly for the user.
+        // 2. ✨ IMMEDIATE UI UPDATE. The item disappears instantly for the user, making the app feel incredibly fast.
         setData(prevData => prevData.filter(item => item.id !== id));
         setError("");
         
@@ -131,11 +130,15 @@ const Tab1 = () => {
         }
     };
 
-    // This function handles the display based on the state (loading, error, or success).
+    /**
+     * This function decides what to show on the screen based on our state (loading, error, or success).
+     * It's a clean pattern to keep the main return statement tidy.
+     */
     const renderContent = () => {
         if (isLoading) {
             return <Loader />;
         }
+        
         if (error) {
             return (
                 <div className="alert alert-danger d-flex justify-content-between align-items-center">
@@ -149,35 +152,67 @@ const Tab1 = () => {
         
         return (
             <div className="mt-3">
-                {/* ... (the rest of the JSX to display the list) ... */}
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h2 className='fw-bolder'>Items</h2>
+                    <button className="btn btn-sm btn-outline-secondary" onClick={fetchData} disabled={isLoading}>
+                        <i className="fa-solid fa-refresh me-2"></i>
+                        Refresh
+                    </button>
+                </div>
+
+                {/* --- Here is the short tutorial paragraph --- */}
+                <div className="alert alert-success-subtle border border-success border-opacity-25 p-3 mb-4">
+                    <h5 className="fw-bold text-success">👋 Welcome to Your First Fleetbo App!</h5>
+                    <p className="mb-0">
+                        This is a fully functional demo showing how to Create, Read, and Delete items using the Fleetbo API.
+                        Click the <i className="fa-solid fa-plus"></i> icon in the header to add your first item, and feel free to explore this file (<strong>Tab1.js</strong>) to see how it works!
+                    </p>
+                </div>
+                
                 {data.length > 0 ? (
+                    // We loop over our data array to render each item.
                     data.map((item) => (
                         <div key={item.id} className='col-12'>
-                            {/* ... (JSX for an item card) ... */}
-                            <button 
-                                onClick={() => Fleetbo.openPageId('item', item.id)}
-                                // ...
-                            >
-                                <i className="fa-solid fa-eye"></i>
-                            </button>
-                            <button 
-                                onClick={() => deleteItem(item.id)} 
-                                // ...
-                            >
-                                {isDeleting.has(item.id) ? (
-                                    <span className="spinner-border spinner-border-sm text-warning" role="status"></span>
-                                ) : (
-                                    <i className="fa-solid fa-trash"></i>
-                                )}
-                            </button>
-                            {/* ... */}
+                            <div className="card shadow-sm mb-3">
+                                <div className="card-body">
+                                    <div className="d-flex justify-content-between align-items-start">
+                                        <div className="flex-grow-1">
+                                            <h5 className="card-title text-success mb-1">{item.title || 'Untitled'}</h5>
+                                            <p className="card-text float-start text-muted">{item.content || 'No content.'}</p>
+                                        </div>
+                                        <div className="d-flex align-items-center ms-3">
+                                            {/* Example of navigation with a parameter */}
+                                            <button 
+                                                onClick={() => Fleetbo.openPageId('item', item.id)} 
+                                                className="btn btn-link text-success fs-5 fw-bold me-2" 
+                                                title="View"
+                                                disabled={isDeleting.has(item.id)}>
+                                                <i className="fa-solid fa-eye"></i>
+                                            </button>
+                                            <button 
+                                                onClick={() => deleteItem(item.id)} 
+                                                className="btn btn-link text-danger fs-5 fw-bold" 
+                                                title="Delete"
+                                                disabled={isDeleting.has(item.id)}>
+                                                {isDeleting.has(item.id) ? (
+                                                    <span className="spinner-border spinner-border-sm text-warning" role="status" aria-hidden="true"></span>
+                                                ) : (
+                                                    <i className="fa-solid fa-trash"></i>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))
                 ) : (
+                    // This is the empty state, shown when there's no data.
                     <div className="text-center text-muted mt-5">
+                        <i className="fa-solid fa-inbox fa-3x mb-3"></i>
                         <p>No items to display.</p>
                         <button className="btn btn-primary" onClick={() => Fleetbo.openPage('insert')}>
-                            Create the first item
+                            Create first item
                         </button>
                     </div>
                 )}
@@ -187,10 +222,10 @@ const Tab1 = () => {
 
     return (
         <>
-            {/* This component configures the native navbar of the application. */}
+            {/* This component configures the native shell's UI, like the top navbar. */}
             <PageConfig navbar="visible" />
             <Tab1Header />
-            <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 63px)' }}>
+            <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
             </div>
         </>
