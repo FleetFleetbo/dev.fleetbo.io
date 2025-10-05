@@ -85,8 +85,8 @@ const SetUser = () => {
                                 </div>
                             </div>
                             <div className="pb-1">
-                                <button onClick={leaveApp} className="btn btn-link w-100 p-2 fs-6 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
-                                    {loadingLeave ? "Leaving..." : "Leave"} 
+                                <button onClick={() => Fleetbo.back()} className="btn btn-link w-100 p-2 fs-5 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
+                                    {loadingLeave ? "Leaving..." : "back"} 
                                 </button>
                             </div>
                         </>
