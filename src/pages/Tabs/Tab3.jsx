@@ -13,13 +13,14 @@ import React, { useEffect, useState, useCallback } from 'react';
 
 // --- The Fleetbo Magic  ---
 import { fleetboDB } from 'config/fleetboConfig';
-
 // --- Utilities & Assets ---
 import Loader from 'components/common/Loader';
 import avatarImage from 'assets/images/avatar.png';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { formatFirestoreDate } from 'utils/FormatDate';
 import PageConfig from 'components/common/PageConfig';
+import { UserPlus} from 'lucide-react';
+
 
 // --- Header Component ---
 const Tab3Header = () => {
@@ -103,7 +104,7 @@ const Tab3 = () => {
         if (userNotFound) {
             return (
                 <div className="container text-center">
-                    <i className="fa-solid fa-user-plus fa-3x text-success mb-3"></i>
+                    <UserPlus size={48}  color='green' />
                     <h4 className="fw-bold">Welcome!</h4>
                     <p className="text-muted">Your user profile is not yet complete. <br/> Please create it to continue.</p>
                     <button
