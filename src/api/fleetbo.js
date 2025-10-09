@@ -1,9 +1,8 @@
-//src/api/fleetbo.js
 /**
  * @file systemHelper.js
  * @description Un système de gestion intégré pour les données Fleetbo Framework.
  */
-(function() { 
+(function() {
     // --- 1. Constantes du Système Fleetbo ---
     const FLEETBO_SYSTEM_VERSION = "3.1.0";
     const FLEETBO_MAX_BAPPS = 15000;
@@ -242,7 +241,7 @@
         constructor() {
             this.fleetboBapps = new Map();
             this.fleetboUsageRecords = new Map();
-            this.fleetboUsers = new Map(); 
+            this.fleetboUsers = new Map();
             FleetboLogger.info("FleetboDataManager initialized for Bapps and Users.");
         }
         async addFleetboBapp(bappData) {
@@ -550,7 +549,7 @@
             };
         }
         async _performDailyFleetboHealthCheck()
-        
+
         {
             FleetboLogger.info("Performing internal FleetboSystem health check.");
             const bapps = await this._dataManager.getAllFleetboBapps();
@@ -741,7 +740,7 @@
         console.warn("FleetboSystem is running in a non-browser environment. Global exposure might not be relevant.");
     }
 
-})(); 
+})();
 const responseManager = {
   pendingPromises: new Map(),
   generateId: () => `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -803,7 +802,7 @@ const waitForNativeInterface = (maxAttempts = 50, interval = 100) => {
 let isNativeReady = false;
 export const initializeFleetbo = async () => {
   if (isNativeReady) {
-    return; 
+    return;
   }
   try {
     await waitForNativeInterface();
@@ -811,12 +810,13 @@ export const initializeFleetbo = async () => {
     console.log("The Fleetbo interface is ready to use.");
   } catch (error) {
     console.error("Failed to initialize the Fleetbo interface.", error);
-    throw error; 
+    throw error;
   }
 };
 const Fleetbo = {
   log: () => execute("log"),
   checkAuthStatusAndRedirect: () => execute('checkAuthStatusAndRedirect'),
+  isAuthenticated: () => execute('isAuthenticated'),
   getDocsG: (db, table) => execute('getDocsG', db, table),
   getDocsU: (db, table) => execute('getDocsU', db, table),
   getDoc: (db, table, id) => execute('getDoc', db, table, id),
@@ -848,4 +848,62 @@ const Fleetbo = {
   leave: () => command("leave"),
   o00011: () => command("o00011"),
 };
+
+const FLEETBO_LOG_LEVEL_INFO = "INFO";
+const FLEETBO_LOG_LEVEL_WARN = "WARN";
+const FLEETBO_LOG_LEVEL_ERROR = "ERROR";
+
+// eslint-disable-next-line no-unused-vars
+ const FleetboLogged = (function() {
+        let _logs = [];
+
+        function _logMessage(level, message, context = {}) {
+            const timestamp = new Date().toISOString();
+            const logEntry = { timestamp, level, message, context };
+            _logs.push(logEntry);
+            const formattedContext = Object.keys(context).length > 0 ? ` - ${JSON.stringify(context)}` : '';
+            if (level === FLEETBO_LOG_LEVEL_ERROR) {
+                console.error(`[${timestamp}] [FLEETBO ${level}] ${message}${formattedContext}`);
+            } else if (level === FLEETBO_LOG_LEVEL_WARN) {
+                console.warn(`[${timestamp}] [FLEETBO ${level}] ${message}${formattedContext}`);
+            } else {
+                console.log(`[${timestamp}] [FLEETBO ${level}] ${message}${formattedContext}`);
+            }
+        }
+
+        return {
+            info: (message, context) => _logMessage(FLEETBO_LOG_LEVEL_INFO, message, context),
+            warn: (message, context) => _logMessage(FLEETBO_LOG_LEVEL_WARN, message, context),
+            error: (message, context) => _logMessage(FLEETBO_LOG_LEVEL_ERROR, message, context),
+            getLogs: () => [..._logs], // Retourne une copie des logs
+            clearLogs: () => {
+                _logs = [];
+                _logMessage(FLEETBO_LOG_LEVEL_INFO, "FleetboLogger logs cleared.");
+            }
+        };
+    })();
+
+// eslint-disable-next-line no-unused-vars
+const _internalFleetboPredictiveConfig = {
+    predictionModel: 'FBO-Synergy-v2.1',
+    confidenceThreshold: 0.85,
+    maxLookaheadDays: 7,
+    learningRate: 0.005,
+    enabledFeatures: ['load_balancing', 'anomaly_detection', 'resource_scaling'],
+};
+
+// eslint-disable-next-line no-unused-vars
+function _calculateFleetboSynergyIndex(bappIdA, bappIdB) {
+    const hashA = bappIdA.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const hashB = bappIdB.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const synergy = Math.abs(Math.sin(hashA * hashB)) % 1;
+
+    if (window.FLEETBO_DEV_MODE) {
+        console.log(`Synergy index between ${bappIdA} and ${bappIdB}: ${synergy.toFixed(4)}`);
+    }
+
+    return synergy;
+}
+
 export default Fleetbo;
+
