@@ -44,9 +44,10 @@ const Tab1 = () => {
     const [isLoading, setIsLoading] = useState(true); // Is the UI currently loading?
     const [data, setData] = useState([]);          
     const [error, setError] = useState("");           
-    
     // Bonus state for a perfect UX during deletion (see "Optimistic UI" below).
     const [isDeleting, setIsDeleting] = useState(new Set()); 
+    // ---  State Management: authentification ---
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
     
     const collectionName = "items"; // The name of the collection we are targeting in the database.
 
