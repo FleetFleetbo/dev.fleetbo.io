@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react';
-import Fleetbo from 'api/fleetbo'; 
 import { fleetboDB } from 'config/fleetboConfig';
 import {  Link  } from 'react-router-dom';
 import PageConfig from 'components/common/PageConfig';
