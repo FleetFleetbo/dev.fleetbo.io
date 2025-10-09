@@ -32,39 +32,69 @@ import './assets/css/App.css';
 import { useStartupEffect } from 'hooks/useStartupEffect';
 
 function AppContent() {
-    useStartupEffect();
     return (
         <Routes>
-            {/* Le AuthGate gère la redirection initiale depuis la racine */}
+            {/* The AuthGate handles the initial redirection from the root */}
             <Route path="/" element={<AuthGate />} />
 
-            {/* Routes publiques */}
+            {/* Public routes */}
             <Route path="/auth/route" element={<RouteAuth />} />
             <Route path="/login"      element={<Login />} />
 
-            {/* Routes protégées utilisant la mise en page conditionnelle */}
+            {/* Protected routes using the conditional layout */}
             <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
                 <Route path="/tab1" element={<Tab1 />} />
                 <Route path="/tab2" element={<Tab2 />} />
                 <Route path="/tab3" element={<Tab3 />} />
-                {/* ... vos autres routes protégées ... */}
+                {/* ... your other protected routes ... */}
             </Route>
 
-            {/* ... vos autres routes protégées ...  */}
+            {/* ... your other protected routes ...  */}
             <Route path="/setuser"   element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
             <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
             
 
-            {/* Routes de secours */}
+            {/* Fallback routes */}
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
         </Routes>
     );
 }
 
+// A simple loading screen for initialization
+// The loading screen now also handles an error state.
+const InitializingScreen = ({ error }) => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', padding: '20px', textAlign: 'center' }}>
+    {error ? (
+      <>
+        <i className="fa-solid fa-triangle-exclamation fa-3x text-danger mb-3"></i>
+        <h5 className="text-danger">Connection Failed</h5>
+        <p style={{ marginTop: '1rem', color: '#6c757d' }}>{error}</p>
+        <button className="btn btn-outline-secondary mt-3" onClick={() => window.location.reload()}>
+            Try Again
+        </button>
+      </>
+    ) : (
+      <>
+        <div className="spinner-border text-success" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p style={{ marginTop: '1rem', color: '#6c757d' }}>Connecting to Fleetbo...</p>
+      </>
+    )}
+  </div>
+);
+
 
 function App() {
+    const { isFleetboReady, initializationError } = useStartupEffect();
+
+    // We display the loading screen, either with the indicator or with an error message.
+    if (!isFleetboReady) {
+        return <InitializingScreen error={initializationError} />;
+    }
+    
     return (
         <AuthProvider>
             <AppContent />
