@@ -19,7 +19,8 @@ import { fleetboDB } from 'config/fleetboConfig'; // Your database key (from .en
 import { handleGetToken } from 'utils/getToken';
 import Loader from 'components/common/Loader'; 
 import PageConfig from 'components/common/PageConfig';
-import { Bell, MessageCirclePlus, Inbox } from 'lucide-react';
+import PageConfig from 'components/common/PageConfig';
+import { Bell, MessageCirclePlus, Inbox, Eye, Trash2 } from 'lucide-react';
 
 
 // A simple header for this screen, with examples of Fleetbo navigation.
@@ -217,7 +218,7 @@ const Tab1 = () => {
                                                 className="btn btn-link text-success fs-5 fw-bold me-2" 
                                                 title="View"
                                                 disabled={isDeleting.has(item.id)}>
-                                                <i className="fa-solid fa-eye"></i>
+                                                <Eye />
                                             </button>
                                             <button 
                                                 onClick={() => deleteItem(item.id)} 
@@ -227,7 +228,7 @@ const Tab1 = () => {
                                                 {isDeleting.has(item.id) ? (
                                                     <span className="spinner-border spinner-border-sm text-warning" role="status" aria-hidden="true"></span>
                                                 ) : (
-                                                    <i className="fa-solid fa-trash"></i>
+                                                    <Trash2 />
                                                 )}
                                             </button>
                                         </div>
