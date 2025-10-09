@@ -11,8 +11,7 @@
 // --- The Essentials ---
 import React, { useEffect, useState, useCallback } from 'react';
 
-// --- The Fleetbo Magic ✨ ---
-import Fleetbo from 'api/fleetbo';
+// --- The Fleetbo Magic  ---
 import { fleetboDB } from 'config/fleetboConfig';
 
 // --- Utilities & Assets ---
