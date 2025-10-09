@@ -1,5 +1,3 @@
-import Fleetbo from 'api/fleetbo';
-
 /**
  * Handles fetching the FCM token from Fleetbo and displays it in an alert.
  */
