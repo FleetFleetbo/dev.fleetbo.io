@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { fleetboDB } from 'config/fleetboConfig';
 import PageConfig from 'components/common/PageConfig';
 import Loader from 'components/common/Loader'; 
+import { ArrowLeftCircle } from 'lucide-react'; 
+
 
 const ItemHeader = () => {
     return (
         <header className='navbar ps-3 pt-3'>
             <div>
                 <button onClick={() => Fleetbo.back()} className="btn-header text-success fs-5 fw-bold">
-                    <i className="fa-solid fa-arrow-left"></i> <span className='ms-3'>Item</span>
+                    <ArrowLeftCircle/> <span className='ms-3'>Item</span>
                 </button>
             </div>
         </header>
