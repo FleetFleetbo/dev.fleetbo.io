@@ -1,14 +1,39 @@
 //src/hooks/useStartupEffect.js
 
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { history } from 'components/layout/Navigation';
-import Fleetbo from 'api/fleetbo';
 
 
 export const useStartupEffect = () => {
     const location       = useLocation(); 
     const navigate       = useNavigate();
+
+    const [isFleetboReady, setIsFleetboReady] = useState(false);
+    const [initializationError, setInitializationError] = useState(null);
+
+    useEffect(() => {
+        const startTime = Date.now();
+
+        const checkFleetbo = () => {
+            if (window.Fleetbo) {
+                console.log("Fleetbo API is ready!");
+                setIsFleetboReady(true);
+                return;
+            }
+
+            if (Date.now() - startTime < 10000) {
+                setTimeout(checkFleetbo, 100);
+            } else {
+
+                console.error("Fleetbo initialization timed out.");
+                setInitializationError("Failed to connect to the fleetbo engine interface. ");
+            }
+        };
+
+        checkFleetbo();
+
+    }, []); 
 
     useEffect(() => {
         window.navigateToTab = (route) => {
@@ -52,5 +77,7 @@ export const useStartupEffect = () => {
         };
     }, [navigate]);
 
+    return { isFleetboReady, initializationError };
 
 };
+
