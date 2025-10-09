@@ -13,12 +13,6 @@
 
 // --- The Essentials ---
 import React, { useEffect, useState, useCallback } from 'react';
-
-// --- The Fleetbo Magic ✨ ---
-// This is the Fleetbo API that connects your React code to the native world and your backend.
-// All the powerful functions (database, navigation, etc.) go through here.
-import Fleetbo from 'api/fleetbo'; 
-
 // --- Template Utilities & Configuration ---
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { fleetboDB } from 'config/fleetboConfig'; // Your database key (from .env)
