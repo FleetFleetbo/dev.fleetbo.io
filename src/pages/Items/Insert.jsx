@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { fleetboDB } from 'config/fleetboConfig';
 import {  Link  } from 'react-router-dom';
 import PageConfig from 'components/common/PageConfig';
-
+import { ArrowLeftCircle, Images} from 'lucide-react'; 
 
 const Insert = () => {
     
@@ -88,12 +88,12 @@ const Insert = () => {
     window.onAddResult = (success) => {
         setLoading(false); 
         if (success) {
-            setResultMessage('✅ Added successfully.');
+            setResultMessage(' Added successfully.');
             setMessageType('success');
             setFormData({ id: "", title: "", content: "", image: "" });
             setImageURL("");
         } else {
-            setResultMessage("❌ Sending error.");
+            setResultMessage(" Sending error.");
             setMessageType('danger');
         }
     };
@@ -105,12 +105,12 @@ const Insert = () => {
             <header className='navbar p-3'> 
                 <div className=''> 
                     <button onClick={() => Fleetbo.back() }  className="btn-header text-success fs-5 fw-bold">
-                        <i className="fa-solid fa-arrow-left"></i> <span className='ms-3'>Insert </span>
+                        <ArrowLeftCircle/> <span className='ms-3'>Insert </span>
                     </button>
                 </div>
                 <div className="navbar-right">
                     <button onClick={() => Fleetbo.openGalleryView() }  className="btn-header fs-5 text-success fw-bold">
-                         <i className="fa-solid fs-5 fa-image"></i>
+                         <Images />
                     </button>
                 </div>
             </header>
