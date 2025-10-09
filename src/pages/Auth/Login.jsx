@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Fleetbo from 'api/fleetbo';
 import { useAuth } from 'context/AuthContext';
 import { motion } from "framer-motion";
 import logoF from 'assets/images/logoF.png';
