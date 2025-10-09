@@ -80,9 +80,39 @@ const Tab1 = () => {
             setIsLoading(false);
         }
     }, []); 
-    
-    // We call fetchData() only once, when the component is mounted on the screen.
-    useEffect(() => { fetchData(); }, [fetchData]);
+
+
+    // --- Le useEffect gère maintenant l'authentification AVANT de charger les données ---
+    useEffect(() => {
+        const checkAuthAndFetchData = async () => {
+            setIsLoading(true);
+            setError("");
+            try {
+                // 1. On appelle la fonction native pour vérifier le statut de l'utilisateur.
+                // La fonction Kotlin renverra un JSON { success, isLoggedIn, ... }
+                const authStatus = await Fleetbo.isAuthenticated();
+
+                if (authStatus.success && authStatus.isLoggedIn) {
+                    // 2. Si l'utilisateur est connecté, on met à jour l'état et on charge les données.
+                    setIsAuthenticated(true);
+                    fetchData(); // On lance le chargement des données.
+                } else {
+                    // 3. Si l'utilisateur n'est pas connecté, on met à jour l'état et on affiche une erreur.
+                    setIsAuthenticated(false);
+                    setError("Accès refusé. Veuillez vous connecter.");
+                    setIsLoading(false); // On arrête le chargement car il n'y a rien à charger.
+                }
+            } catch (err) {
+                // 4. En cas d'erreur technique (ex: interface native non dispo), on gère l'échec.
+                setIsAuthenticated(false);
+                setError(err.message || "Impossible de vérifier le statut de connexion.");
+                setIsLoading(false);
+                console.error("Authentication check failed:", err);
+            }
+        };
+
+        checkAuthAndFetchData();
+    }, [fetchData]); // Le dependency array inclut toujours fetchData.
     
     /**
      * Deletes an item.
@@ -142,6 +172,10 @@ const Tab1 = () => {
                     </button>
                 </div>
             );
+        }
+
+        if (!isAuthenticated) {
+            return <div className="alert alert-warning">En attente de vérification de la connexion...</div>
         }
         
         return (
