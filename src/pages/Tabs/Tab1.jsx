@@ -19,6 +19,7 @@ import { fleetboDB } from 'config/fleetboConfig'; // Your database key (from .en
 import { handleGetToken } from 'utils/getToken';
 import Loader from 'components/common/Loader'; 
 import PageConfig from 'components/common/PageConfig';
+import { Bell, MessageCirclePlus, Inbox } from 'lucide-react';
 
 
 // A simple header for this screen, with examples of Fleetbo navigation.
@@ -29,10 +30,10 @@ const Tab1Header = () => {
             <div className="navbar-right">
                 {/* Navigation example: Fleetbo.openPage() opens another React page (WebView). */}
                 <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold" title="Add New Item">
-                    <i className="fa-solid fa-plus"></i>
+                    <MessageCirclePlus />
                 </button>
                 <button onClick={handleGetToken} className="btn-header fs-5 text-success fw-bold ms-3" title="Get Notification Token">
-                    <i className="fa-solid fa-bell"></i>
+                    <Bell /> 
                 </button>
             </div>
         </header>
@@ -238,7 +239,7 @@ const Tab1 = () => {
                 ) : (
                     // This is the empty state, shown when there's no data.
                     <div className="text-center text-muted mt-5">
-                        <i className="fa-solid fa-inbox fa-3x mb-3"></i>
+                        <Inbox size={48} />
                         <p>No items to display.</p>
                         <button className="btn btn-success ps-2 pe-2" onClick={() => Fleetbo.openPage('insert')}>
                             Create first item
