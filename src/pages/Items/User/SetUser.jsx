@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Fleetbo from 'api/fleetbo';
 import { fleetboDB } from 'config/fleetboConfig';
 import { motion } from "framer-motion";
 import { useAuth } from 'context/AuthContext';
