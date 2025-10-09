@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Fleetbo from 'api/fleetbo';
 import 'assets/css/Navbar.css';
 
 const navItems = [
