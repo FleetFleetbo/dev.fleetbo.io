@@ -42,8 +42,8 @@ const Tab1Header = () => {
 const Tab1 = () => {
     // --- State Management: The 3 pillars of a robust interface ---
     const [isLoading, setIsLoading] = useState(true); // Is the UI currently loading?
-    const [data, setData] = useState([]);             // Where we store the received data.
-    const [error, setError] = useState("");           // To display a message in case of a problem.
+    const [data, setData] = useState([]);          
+    const [error, setError] = useState("");           
     
     // Bonus state for a perfect UX during deletion (see "Optimistic UI" below).
     const [isDeleting, setIsDeleting] = useState(new Set()); 
