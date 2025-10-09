@@ -1,6 +1,5 @@
 // src/context/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import Fleetbo from 'api/fleetbo'; 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
