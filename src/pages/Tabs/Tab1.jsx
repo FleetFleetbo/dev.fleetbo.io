@@ -19,7 +19,6 @@ import { fleetboDB } from 'config/fleetboConfig'; // Your database key (from .en
 import { handleGetToken } from 'utils/getToken';
 import Loader from 'components/common/Loader'; 
 import PageConfig from 'components/common/PageConfig';
-import PageConfig from 'components/common/PageConfig';
 import { Bell, MessageCirclePlus, Inbox, Eye, Trash2 } from 'lucide-react';
 
 
