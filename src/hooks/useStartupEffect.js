@@ -58,7 +58,7 @@ export const useStartupEffect = () => {
             console.log(`Synchronisation de la route initiale vers : ${initialRoute}`);
             history.push(initialRoute);
         }
-    }, [location.pathname]);  // a verifier
+    }, [location.pathname]); 
 
     useEffect(() => {
       if (!window.fleetbo) {
@@ -66,16 +66,6 @@ export const useStartupEffect = () => {
         window.location.href = 'https://fleetbo.io/docs';
       }
     }, []); 
-
-    useEffect(() => {
-        window.navigateToTab = (route) => {
-            console.log(`Commande de navigation native reçue pour : ${route}`);
-            navigate(route);
-        };
-        return () => {
-            delete window.navigateToTab;
-        };
-    }, [navigate]);
 
     return { isFleetboReady, initializationError };
 
