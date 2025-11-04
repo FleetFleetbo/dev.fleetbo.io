@@ -1,43 +1,59 @@
 /**
- * Welcome to Tab 3!
+ * === Fleetbo Developer Tutorial: A User Profile Page (Tab3.jsx) ===
  *
  * This component demonstrates another core feature of a real-world application:
  * fetching and displaying data for the *currently logged-in user*.
  *
  * Pay attention to `Fleetbo.getAuthUser()`. This single command hides a lot of complexity,
  * allowing you to build personalized user experiences with ease.
+ *
+ * --- How It Works ---
+ * 1. Data Fetching (`fetchUserData`):
+ * This component calls `await Fleetbo.getAuthUser()` on load. This special
+ * function securely finds the logged-in user's ID and fetches their
+ * corresponding document from the 'users' collection, all in one step.
+ *
+ * 2. Onboarding Flow (`userNotFound`):
+ * If the user is authenticated but *doesn't* have a document in the 'users'
+ * collection (i.e., they are a new user), the API returns `notFound: true`.
+ * The code handles this by showing a "Create Profile" button, which is a
+ * perfect example of a new user "onboarding" flow.
+ *
+ * 3. Data Display (`renderContent`):
+ * The component handles all states: `isLoading`, `error`, `userNotFound`,
+ * and the final success state where the `userData` is displayed.
+ *
+ * --- Your Customization ---
+ * - This is the main "Account" or "Profile" tab for your app.
+ * - You can add more fields to the `processedUserData` object.
+ * - The "Create Profile" button navigates to `setuser`. You can change this
+ * destination or build your own profile creation page.
  */
 
-// --- The Essentials ---
 import React, { useEffect, useState, useCallback } from 'react';
 
-// --- The Fleetbo Magic  ---
 import { fleetboDB } from 'config/fleetboConfig';
-// --- Utilities & Assets ---
 import Loader from 'components/common/Loader';
 import avatarImage from 'assets/images/avatar.png';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { formatFirestoreDate } from 'utils/FormatDate';
 import PageConfig from 'components/common/PageConfig';
-import { UserPlus} from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 
-
-// --- Header Component ---
 const Tab3Header = () => {
     return (
-        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Tab 3 (User)</h2> </header>
+        <header className='navbar ps-3 pt-3'>
+            <h2 className='fw-bolder'>Tab 3 </h2>
+        </header>
     );
 };
 
-// --- Main Component ---
 const Tab3 = () => {
-    // --- State Management ---
-    const [isLoading, setIsLoading] = useState(true);
-    const [userData, setUserData] = useState(null);
-    const [error, setError] = useState(null);
-    // A specific state for a specific user flow: when the user is logged in but has no profile document yet.
+    const [isLoading, setIsLoading]       = useState(true);
+    const [userData, setUserData]         = useState(null);
+    const [error, setError]               = useState(null);
     const [userNotFound, setUserNotFound] = useState(false); 
-    const dbName = "users";
+    const dbName                          = "users";
 
     useLoadingTimeout(isLoading, setIsLoading, setError);
 
@@ -46,19 +62,14 @@ const Tab3 = () => {
         setError(null);
         setUserNotFound(false); 
         try {
-            // 🚀 THE KEY FLEETBO CALL: This command is your shortcut to the current user's data.
-            // Fleetbo handles getting the user's auth ID and fetching the corresponding document for you.
             const response = await Fleetbo.getAuthUser(fleetboDB, dbName);
 
             if (response && response.success && response.data) {
                 const actualUserData = response.data;
                 
-                // --- Defensive Data Handling: A best practice ---
-                // We handle multiple possible date fields and format them for display.
-                const rawDate = actualUserData.dateCreated || actualUserData.createdAt || actualUserData.date;
-                const formattedDate = formatFirestoreDate(rawDate);
+                const rawDate        = actualUserData.dateCreated || actualUserData.createdAt || actualUserData.date;
+                const formattedDate  = formatFirestoreDate(rawDate);
 
-                // We create a clean data object for the UI, with fallbacks to prevent crashes.
                 const processedUserData = {
                     username: actualUserData.username || actualUserData.name || "User",
                     phoneNumber: actualUserData.phoneNumber || actualUserData.phone || "Phone number not available",
@@ -67,7 +78,6 @@ const Tab3 = () => {
                 setUserData(processedUserData);
                 
             } else if (response && response.notFound) {
-                // This is not an error, but a specific case: the user needs to create their profile.
                 console.warn("User document not found");
                 setUserNotFound(true);
             } else {
@@ -76,10 +86,9 @@ const Tab3 = () => {
             }
 
         } catch (err) {
-            // Here, we can handle specific errors returned from the native side.
-            if (err.message?.includes("non authentifié")) { // Keyword for "unauthenticated"
+            if (err.message?.includes("non authentifié")) {
                 setError("Session expired. Please log in again.");
-            } else if (err.message?.includes("entreprise")) { // Keyword for "company"
+            } else if (err.message?.includes("entreprise")) {
                 setError("Company configuration missing.");
             } else {
                 setError(err.message || "Error loading user data.");
@@ -94,13 +103,11 @@ const Tab3 = () => {
         fetchUserData();
     }, [fetchUserData]);
 
-    // This function decides what to show on the screen based on our state.
     const renderContent = () => {
         if (isLoading) {
             return <Loader />;
         }
 
-        // The "Create Profile" onboarding flow. This is a great user experience!
         if (userNotFound) {
             return (
                 <div className="container text-center">
@@ -137,7 +144,6 @@ const Tab3 = () => {
             );
         }
         
-        // The successful case: we display the user's profile.
         if (userData) {
             return (
                 <div className="container">
