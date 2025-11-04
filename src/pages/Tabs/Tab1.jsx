@@ -1,34 +1,48 @@
 /**
- * Welcome to your first Fleetbo component!
+ * === Fleetbo Developer Tutorial: A Full CRUD Page (Tab1.jsx) ===
  *
- * This file (Tab1.js) is a complete, production-ready example
- * of a dynamic list (CRUD) that communicates with your Fleetbo backend.
+ * This file is a complete, production-ready example of a dynamic list
+ * with Create, Read, and Delete (CRUD) functionality. It communicates
+ * securely with your Fleetbo backend.
  *
- * Notice how simple and readable the calls to the Fleetbo API are.
- * Our goal is to let you focus on React; we'll handle the rest.
+ * --- How It Works ---
+ * 1. PageConfig:
+ * The <PageConfig navbar="visible" /> component at the bottom tells the
+ * native shell how to render its UI. "visible" shows the bottom tab bar.
+ * You can set this to navbar="none" for full-screen pages (like "Insert" or "Item").
  *
- * Have fun!
- * - The Fleetbo Team
+ * 2. Auth Check (`useEffect`):
+ * This component first calls `await Fleetbo.isAuthenticated()` to ensure
+ * the user is logged in *before* fetching any data. This is a critical
+ * security best practice.
+ *
+ * 3. Data Fetching (`fetchData`):
+ * It uses `await Fleetbo.getDocsG(...)` to securely read the entire
+ * "items" collection from Firestore. No complex fetch or headers needed.
+ *
+ * 4. Optimistic UI (`deleteItem`):
+ * When deleting, the UI updates *instantly* (removing the item from the list)
+ * *before* waiting for the backend. If the backend fails, it "rewinds"
+ * and adds the item back. This makes the app feel incredibly fast.
+ *
+ * --- Your Customization ---
+ * - This is the main template for any "list" page in your app.
+ * - You can customize the `collectionName` to fetch other data.
+ * - You can customize the `renderContent` to change how your list looks.
  */
-
-// --- The Essentials ---
 import React, { useEffect, useState, useCallback } from 'react';
-// --- Template Utilities & Configuration ---
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
-import { fleetboDB } from 'config/fleetboConfig'; // Your database key (from .env)
+import { fleetboDB } from 'config/fleetboConfig';
 import { handleGetToken } from 'utils/getToken';
 import Loader from 'components/common/Loader'; 
 import PageConfig from 'components/common/PageConfig';
-import { Bell, MessageCirclePlus, Inbox, Eye, Trash2 } from 'lucide-react';
+import { Bell, MessageCirclePlus, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
 
-
-// A simple header for this screen, with examples of Fleetbo navigation.
 const Tab1Header = () => {
     return (
         <header className='navbar ps-3 pe-3 pt-3'>
-            <h2 className='fw-bolder'>Tab 1 (Hello)</h2>
+            <h2 className='fw-bolder'>Home</h2>
             <div className="navbar-right">
-                {/* Navigation example: Fleetbo.openPage() opens another React page (WebView). */}
                 <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold" title="Add New Item">
                     <MessageCirclePlus />
                 </button>
@@ -41,36 +55,25 @@ const Tab1Header = () => {
 };
 
 const Tab1 = () => {
-    // --- State Management: The 3 pillars of a robust interface ---
-    const [isLoading, setIsLoading] = useState(true); // Is the UI currently loading?
-    const [data, setData] = useState([]);          
-    const [error, setError] = useState("");           
-    // Bonus state for a perfect UX during deletion (see "Optimistic UI" below).
-    const [isDeleting, setIsDeleting] = useState(new Set()); 
-    // ---  State Management: authentification ---
+    const [isLoading, setIsLoading]             = useState(true);
+    const [data, setData]                       = useState([]);          
+    const [error, setError]                     = useState("");           
+    const [isDeleting, setIsDeleting]           = useState(new Set()); 
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     
-    const collectionName = "items"; // The name of the collection we are targeting in the database.
+    const collectionName = "items";
 
-    // This custom hook handles cases where loading might be infinite (e.g., network issues).
     useLoadingTimeout(isLoading, setIsLoading, setError);
 
-    /**
-     * This is where we fetch our data.
-     * We use useCallback for performance optimization, a React best practice.
-     */
     const fetchData = useCallback(async () => {
-        setIsLoading(true); // First, we tell the UI that we are loading.
+        setIsLoading(true);
         setError("");
 
         try {
-            // 🚀 THE KEY FLEETBO CALL: It's this simple to read an entire collection.
-            // No `fetch`, no headers, no URL management. Just a clear command.
-            // Security and authentication are handled for you.
             const parsedData = await Fleetbo.getDocsG(fleetboDB, collectionName);
             
             if (parsedData.success) {
-                setData(parsedData.data || []); // We update our state with the received data.
+                setData(parsedData.data || []);
             } else {
                 setError(parsedData.message || "Error fetching data.");
             }
@@ -78,76 +81,57 @@ const Tab1 = () => {
             setError(err.message || "An unexpected error occurred.");
             console.error("Error fetching data:", err);
         } finally {
-            // Whatever happens (success or failure), we stop loading.
             setIsLoading(false);
         }
     }, []); 
 
-
-    // --- Le useEffect gère maintenant l'authentification AVANT de charger les données ---
     useEffect(() => {
         const checkAuthAndFetchData = async () => {
             setIsLoading(true);
             setError("");
             try {
-                // 1. On appelle la fonction native pour vérifier le statut de l'utilisateur.
-                // La fonction Kotlin renverra un JSON { success, isLoggedIn, ... }
                 const authStatus = await Fleetbo.isAuthenticated();
 
                 if (authStatus.success && authStatus.isLoggedIn) {
-                    // 2. Si l'utilisateur est connecté, on met à jour l'état et on charge les données.
                     setIsAuthenticated(true);
-                    fetchData(); // On lance le chargement des données.
+                    fetchData();
                 } else {
-                    // 3. Si l'utilisateur n'est pas connecté, on met à jour l'état et on affiche une erreur.
                     setIsAuthenticated(false);
-                    setError("Accès refusé. Veuillez vous connecter.");
-                    setIsLoading(false); // On arrête le chargement car il n'y a rien à charger.
+                    setError("Access denied. Please log in.");
+                    setIsLoading(false);
                 }
             } catch (err) {
-                // 4. En cas d'erreur technique (ex: interface native non dispo), on gère l'échec.
                 setIsAuthenticated(false);
-                setError(err.message || "Impossible de vérifier le statut de connexion.");
+                setError(err.message || "Could not verify connection status.");
                 setIsLoading(false);
                 console.error("Authentication check failed:", err);
             }
         };
 
         checkAuthAndFetchData();
-    }, [fetchData]); // Le dependency array inclut toujours fetchData.
+    }, [fetchData]);
     
-    /**
-     * Deletes an item.
-     * This function uses a technique called "Optimistic UI".
-     * It's a best practice for an ultra-responsive user experience.
-     */
     const deleteItem = async (id) => {
-        if (isDeleting.has(id)) return; // Prevents double-clicking
+        if (isDeleting.has(id)) return;
         
-        // 1. We save the current state, in case the deletion fails (for rollback).
         const originalData = [...data];
         setIsDeleting(prev => new Set(prev).add(id));
 
-        // 2. ✨ IMMEDIATE UI UPDATE. The item disappears instantly for the user, making the app feel incredibly fast.
         setData(prevData => prevData.filter(item => item.id !== id));
         setError("");
         
         try {
-            // 3. We send the delete command to the backend in the background.
             const result = await Fleetbo.delete(fleetboDB, collectionName, id);
 
-            // If the backend returns an error, we "throw" it to be caught by the `catch` block.
             if (result && result.success === false) {
                 throw new Error(result.message || "Deletion failed on the native side.");
             }
             console.log(`Item ${id} deleted successfully.`);
         } catch (err) {
             console.error("Error during deletion:", err);
-            // 4. 🚑 FAILURE! We "rewind" the interface by restoring the original data.
             setError(`Deletion error: ${err.message}`);
             setData(originalData);
         } finally {
-            // 5. We clean up the deleting state, whether the operation succeeded or failed.
             setIsDeleting(prev => {
                 const newSet = new Set(prev);
                 newSet.delete(id);
@@ -156,10 +140,6 @@ const Tab1 = () => {
         }
     };
 
-    /**
-     * This function decides what to show on the screen based on our state (loading, error, or success).
-     * It's a clean pattern to keep the main return statement tidy.
-     */
     const renderContent = () => {
         if (isLoading) {
             return <Loader />;
@@ -177,30 +157,28 @@ const Tab1 = () => {
         }
 
         if (!isAuthenticated) {
-            return <div className="alert alert-warning">En attente de vérification de la connexion...</div>
+            return <div className="alert alert-warning">Waiting for connection verification...</div>
         }
         
         return (
             <div className="mt-3">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2 className='fw-bolder'>Items</h2>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={fetchData} disabled={isLoading}>
-                        <i className="fa-solid fa-refresh me-2"></i>
+                    <button className="btn btn-sm btn-outline-secondary d-flex align-items-center" onClick={fetchData} disabled={isLoading}>
+                        <RefreshCcw size={16} className="me-2" />
                         Refresh
                     </button>
                 </div>
 
-                {/* --- Here is the short tutorial paragraph --- */}
                 <div className="alert alert-success-subtle border border-success border-opacity-25 p-3 mb-4">
                     <h5 className="fw-bold text-success">Welcome to Your First Fleetbo App!</h5>
                     <p className="mb-0">
                         This is a fully functional demo showing how to Create, Read, and Delete items using the Fleetbo API.
-                        Click the <i className="fa-solid fa-plus"></i> icon in the header to add your first item, and feel free to explore this file (<strong>Tab1.jsx</strong>) to see how it works!
+                        Click the <MessageCirclePlus size={16} className="mx-1"/> icon in the header to add your first item.
                     </p>
                 </div>
                 
                 {data.length > 0 ? (
-                    // We loop over our data array to render each item.
                     data.map((item) => (
                         <div key={item.id} className='col-12'>
                             <div className="card shadow-sm mb-3">
@@ -211,7 +189,6 @@ const Tab1 = () => {
                                             <p className="card-text float-start text-muted">{item.content || 'No content.'}</p>
                                         </div>
                                         <div className="d-flex align-items-center ms-3">
-                                            {/* Example of navigation with a parameter */}
                                             <button 
                                                 onClick={() => Fleetbo.openPageId('item', item.id)} 
                                                 className="btn btn-link text-success fs-5 fw-bold me-2" 
@@ -237,9 +214,8 @@ const Tab1 = () => {
                         </div>
                     ))
                 ) : (
-                    // This is the empty state, shown when there's no data.
                     <div className="text-center text-muted mt-5">
-                        <Inbox size={48} />
+                        <Inbox size={48} className="mb-3" />
                         <p>No items to display.</p>
                         <button className="btn btn-success ps-2 pe-2" onClick={() => Fleetbo.openPage('insert')}>
                             Create first item
@@ -252,7 +228,6 @@ const Tab1 = () => {
 
     return (
         <>
-            {/* This component configures the native shell's UI, like the top navbar. */}
             <PageConfig navbar="visible" />
             <Tab1Header />
             <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
