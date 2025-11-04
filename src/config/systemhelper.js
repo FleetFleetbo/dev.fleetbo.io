@@ -808,7 +808,7 @@ const initializeFleetbo = async () => {
   }
 };
 const Fleetbo = {
-  log: () => execute("log"),
+  log: (page) => execute("log", page),
   checkAuthStatusAndRedirect: () => execute('checkAuthStatusAndRedirect'),
   isAuthenticated: () => execute('isAuthenticated'),
   getDocsG: (db, table) => execute('getDocsG', db, table),
