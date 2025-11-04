@@ -1,21 +1,43 @@
-// src/pages/Tabs/Tab2.jsx
+/**
+ * === Fleetbo Developer Tutorial: A Blank Page (Tab2.jsx) ===
+ *
+ * This file is a clean, blank template for a standard page in your app.
+ * It's the perfect starting point for building a new feature.
+ *
+ * --- How It Works ---
+ * 1. PageConfig:
+ * The <PageConfig navbar="visible" /> component at the bottom tells the
+ * native shell to show the bottom tab bar.
+ *
+ * 2. Header:
+ * The <Tab2Header /> component is a simple header for this page.
+ *
+ * 3. Content:
+ * The `renderContent` function is where you will add your
+ * custom React components to build your page.
+ *
+ * --- Your Customization ---
+ * - You can copy and paste this file to create new pages (e.g., Tab4, Profile, etc.).
+ * - Start building your feature by replacing the content inside `renderContent`.
+ */
 
 import React from 'react';
 import PageConfig from 'components/common/PageConfig';
 
-// --- Composant Header ---
 const Tab2Header = () => {
     return (
-        <header className='navbar ps-3 pt-3'> <h2 className='fw-bolder'>Tab 2</h2> </header>
+        <header className='navbar ps-3 pt-3'>
+            <h2 className='fw-bolder'>Tab 2</h2>
+        </header>
     );
 };
 
-// --- Main component ---
 const Tab2 = () => {
-    // --- Render logic ---
     const renderContent = () => {
         return (
-            <div> <h5 className="text-secondary fw-normal">Build your interface here..</h5> </div>
+            <div>
+                <h5 className="text-secondary fw-normal">Build your interface here...</h5>
+            </div>
         );
     };
 
