@@ -228,7 +228,7 @@ const Tab1 = () => {
 
     return (
         <>
-            <PageConfig navbar="visible" />
+            <PageConfig navbar="show" />
             <Tab1Header />
             <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
