@@ -43,7 +43,7 @@ const Tab2 = () => {
 
     return (
         <>
-            <PageConfig navbar="visible" />
+            <PageConfig navbar="show" />
             <Tab2Header />
             <div className="p-3 d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
