@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { history } from 'components/layout/Navigation';
 
-
 export const useStartupEffect = () => {
     const location       = useLocation(); 
     const navigate       = useNavigate();
@@ -44,12 +43,10 @@ export const useStartupEffect = () => {
     }, [navigate]);
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            console.log("React: Page rendue. Notification au natif pour la route :", location.pathname);
-            Fleetbo.onWebPageReady();
-        }, 150);
-        return () => clearTimeout(timer); 
+        console.log("React: Page rendue. Notification au natif pour la route :", location.pathname);
+        Fleetbo.onWebPageReady();
     }, [location]); 
+
 
     useEffect(() => {
         const lastActiveTab = localStorage.getItem("activeTab") || "Tab1";
@@ -70,4 +67,3 @@ export const useStartupEffect = () => {
     return { isFleetboReady, initializationError };
 
 };
-
