@@ -70,8 +70,8 @@ function AppContent() {
             </Route>
 
             <Route path="/setuser"   element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
-            <Route path="/insert" element={<ProtectedRoute><Insert /></ProtectedRoute>} />
-            <Route path="/item"   element={<ProtectedRoute><Item /></ProtectedRoute>} />
+            <Route path="/insert"    element={<ProtectedRoute><Insert /></ProtectedRoute>} />
+            <Route path="/item/:id"  element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
