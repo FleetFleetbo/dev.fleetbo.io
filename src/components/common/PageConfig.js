@@ -5,7 +5,7 @@ import React from 'react';
  * This invisible component is used to communicate the page's configuration
  * to the native Fleetbo shell.
  * @param {object} props
- * @param {'visible' | 'none'} props.navbar - Defines the navbar's visibility.
+ * @param {'show' | 'none'} props.navbar - Defines the navbar's visibility.
  */
 const PageConfig = ({ navbar }) => {
     return (
