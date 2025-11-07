@@ -1,4 +1,29 @@
+/**
+ * === Fleetbo Developer Tutorial: A Detail Page (Item.jsx) ===
+ *
+ * This file is an example of a "detail" page that displays a single item.
+ * It is designed to work with dynamic routing and the native bridge.
+ *
+ * --- How It Works ---
+ * 1. PageConfig:
+ * <PageConfig navbar="none" /> tells the native shell to hide
+ * the main navigation bar, as this is a secondary page.
+ *
+ * 2. useParams:
+ * Uses the `useParams` hook from React Router to read the item's ID
+ * directly from the URL (e.g., /item/ID-123).
+ *
+ * 3. Data Fetching (`useEffect`):
+ * Uses `await Fleetbo.getDoc(...)` with the URL's ID to
+ * securely fetch a single document from Firestore.
+ *
+ * 4. Native Navigation (`Fleetbo.back`):
+ * The "Back" button does not use React Router. It calls `Fleetbo.back()`,
+ * asking the native container to handle the back navigation,
+ * which is more reliable on mobile.
+ */
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom'; 
 import { fleetboDB } from 'config/fleetboConfig';
 import PageConfig from 'components/common/PageConfig';
 import Loader from 'components/common/Loader'; 
@@ -21,36 +46,40 @@ const Item = () => {
     const [itemData, setItemData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    
+    const { id } = useParams(); 
 
     useEffect(() => {
-        // This function will be called by the native side with the item ID
-        window.getParam = (id) => {
-            if (id) {
-                // Assuming fleetboDB is available in this scope
-                Fleetbo.getDoc(fleetboDB, "items", id);
-            } else {
+        const fetchData = async (itemId) => {
+            setLoading(true);
+            setError("");
+            
+            if (!itemId) {
                 setError("No item ID was provided.");
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await Fleetbo.getDoc(fleetboDB, "items", itemId);
+
+                if (response.success && response.data) {
+                    setItemData(response.data);
+                } else {
+                    const errorMessage = response.message || "Error fetching the document.";
+                    setError(errorMessage);
+                }
+            } catch (err) {
+                setError(err.message || "An unexpected error occurred.");
+                console.error("Error fetching item:", err);
+            } finally {
                 setLoading(false);
             }
         };
 
-        // Set up the callback to receive data from the native side
-        Fleetbo.setDataCallback((response) => {
-            if (response.success && response.data) {
-                setItemData(response.data);
-            } else {
-                const errorMessage = response.message || "Error fetching the document.";
-                setError(errorMessage);
-            }
-            setLoading(false);
-        });
+        fetchData(id);
 
-        // Cleanup function to remove global functions when the component unmounts
-        return () => {
-            delete window.getParam;
-            Fleetbo.setDataCallback(null); // Clear the callback
-        };
-    }, []); // Empty dependency array ensures this runs only once on mount
+    }, [id]);
 
     const renderContent = () => {
         if (loading) {
@@ -79,7 +108,7 @@ const Item = () => {
 
     return (
         <>
-            <PageConfig navbar="hidden" /> 
+            <PageConfig navbar="none" /> 
             <ItemHeader />
             <div className="p-3">
                 {renderContent()}
