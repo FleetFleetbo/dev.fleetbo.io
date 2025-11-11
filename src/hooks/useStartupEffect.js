@@ -29,7 +29,6 @@ export const useStartupEffect = () => {
                 setInitializationError("Failed to connect to the fleetbo engine interface. ");
             }
         };
-
         checkFleetbo();
 
     }, []); 
@@ -41,12 +40,6 @@ export const useStartupEffect = () => {
         };
         return () => { delete window.navigateToTab; };
     }, [navigate]);
-
-    useEffect(() => {
-        console.log("React: Page rendue. Notification au natif pour la route :", location.pathname);
-        Fleetbo.onWebPageReady();
-    }, [location]); 
-
 
     useEffect(() => {
         const lastActiveTab = localStorage.getItem("activeTab") || "Tab1";
@@ -63,7 +56,6 @@ export const useStartupEffect = () => {
         window.location.href = 'https://fleetbo.io/docs';
       }
     }, []); 
-
     return { isFleetboReady, initializationError };
 
 };
