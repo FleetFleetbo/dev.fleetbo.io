@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { fleetboDB } from 'config/fleetboConfig';
 import {  Link  } from 'react-router-dom';
-import PageConfig from 'components/common/PageConfig';
 import { ArrowLeftCircle, Images} from 'lucide-react'; 
 
 const Insert = () => {
@@ -101,7 +100,6 @@ const Insert = () => {
     
     return (
         <>
-            <PageConfig navbar="hidden" />
             <header className='navbar p-3'> 
                 <div className=''> 
                     <button onClick={() => Fleetbo.back() }  className="btn-header text-success fs-5 fw-bold">
