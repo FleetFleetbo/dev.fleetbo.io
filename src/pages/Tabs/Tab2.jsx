@@ -5,10 +5,15 @@
  * It's the perfect starting point for building a new feature.
  *
  * --- How It Works ---
- * 1. Header:
+ * 1. PageConfig:
+ * The <PageConfig navbar="show" /> component at the bottom tells the
+ * native shell how to render its UI. "visible" shows the bottom tab bar.
+ * You can set this to navbar="none" for full-screen pages (like "Insert" or "Item").
+ *
+ * 2. Header:
  * The <Tab2Header /> component is a simple header for this page.
  *
- * 2. Content:
+ * 3. Content:
  * The `renderContent` function is where you will add your
  * custom React components to build your page.
  *
@@ -18,6 +23,7 @@
  */
 
 import React from 'react';
+import PageConfig from 'components/common/PageConfig';
 
 const Tab2Header = () => {
     return (
@@ -38,6 +44,7 @@ const Tab2 = () => {
 
     return (
         <>
+            <PageConfig navbar="show" />
             <Tab2Header />
             <div className="p-3 d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
