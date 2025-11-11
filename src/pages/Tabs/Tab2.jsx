@@ -5,14 +5,11 @@
  * It's the perfect starting point for building a new feature.
  *
  * --- How It Works ---
- * 1. PageConfig:
- * The <PageConfig navbar="visible" /> component at the bottom tells the
- * native shell to show the bottom tab bar.
  *
- * 2. Header:
+ * 1. Header:
  * The <Tab2Header /> component is a simple header for this page.
  *
- * 3. Content:
+ * 2. Content:
  * The `renderContent` function is where you will add your
  * custom React components to build your page.
  *
@@ -43,7 +40,6 @@ const Tab2 = () => {
 
     return (
         <>
-            <PageConfig navbar="show" />
             <Tab2Header />
             <div className="p-3 d-flex align-items-center justify-content-center text-center" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
