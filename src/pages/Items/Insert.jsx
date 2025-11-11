@@ -97,7 +97,6 @@ const Insert = () => {
         }
     };
     
-    
     return (
         <>
             <header className='navbar p-3'> 
