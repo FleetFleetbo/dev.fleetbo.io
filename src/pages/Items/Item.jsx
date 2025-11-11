@@ -4,20 +4,15 @@
  * This file is an example of a "detail" page that displays a single item.
  * It is designed to work with dynamic routing and the native bridge.
  *
- * --- How It Works ---
- * 1. PageConfig:
- * <PageConfig navbar="none" /> tells the native shell to hide
- * the main navigation bar, as this is a secondary page.
- *
- * 2. useParams:
+ * 1. useParams:
  * Uses the `useParams` hook from React Router to read the item's ID
  * directly from the URL (e.g., /item/ID-123).
  *
- * 3. Data Fetching (`useEffect`):
+ * 2. Data Fetching (`useEffect`):
  * Uses `await Fleetbo.getDoc(...)` with the URL's ID to
  * securely fetch a single document from Firestore.
  *
- * 4. Native Navigation (`Fleetbo.back`):
+ * 3. Native Navigation (`Fleetbo.back`):
  * The "Back" button does not use React Router. It calls `Fleetbo.back()`,
  * asking the native container to handle the back navigation,
  * which is more reliable on mobile.
@@ -108,7 +103,6 @@ const Item = () => {
 
     return (
         <>
-            <PageConfig navbar="none" /> 
             <ItemHeader />
             <div className="p-3">
                 {renderContent()}
