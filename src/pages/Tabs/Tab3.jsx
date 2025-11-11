@@ -9,7 +9,7 @@
  *
  * --- How It Works ---
  * 1. PageConfig:
- * The <PageConfig navbar="visible" /> component at the bottom tells the
+ * The <PageConfig navbar="show" /> component at the bottom tells the
  * native shell how to render its UI. "visible" shows the bottom tab bar.
  * You can set this to navbar="none" for full-screen pages (like "Insert" or "Item").
  *
