@@ -8,18 +8,23 @@
  * allowing you to build personalized user experiences with ease.
  *
  * --- How It Works ---
- * 1. Data Fetching (`fetchUserData`):
+ * 1. PageConfig:
+ * The <PageConfig navbar="visible" /> component at the bottom tells the
+ * native shell how to render its UI. "visible" shows the bottom tab bar.
+ * You can set this to navbar="none" for full-screen pages (like "Insert" or "Item").
+ *
+ * 2. Data Fetching (`fetchUserData`):
  * This component calls `await Fleetbo.getAuthUser()` on load. This special
  * function securely finds the logged-in user's ID and fetches their
  * corresponding document from the 'users' collection, all in one step.
  *
- * 2. Onboarding Flow (`userNotFound`):
+ * 3. Onboarding Flow (`userNotFound`):
  * If the user is authenticated but *doesn't* have a document in the 'users'
  * collection (i.e., they are a new user), the API returns `notFound: true`.
  * The code handles this by showing a "Create Profile" button, which is a
  * perfect example of a new user "onboarding" flow.
  *
- * 3. Data Display (`renderContent`):
+ * 4. Data Display (`renderContent`):
  * The component handles all states: `isLoading`, `error`, `userNotFound`,
  * and the final success state where the `userData` is displayed.
  *
@@ -31,8 +36,8 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
-
 import { fleetboDB } from 'config/fleetboConfig';
+import PageConfig from 'components/common/PageConfig';
 import Loader from 'components/common/Loader';
 import avatarImage from 'assets/images/avatar.png';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
@@ -182,6 +187,7 @@ const Tab3 = () => {
 
     return (
         <>
+            <PageConfig navbar="show" />
             <Tab3Header />
             <div className="position-relative d-flex align-items-center text-center" style={{ minHeight: 'calc(100vh - 63px)' }}>
                 {renderContent()}
