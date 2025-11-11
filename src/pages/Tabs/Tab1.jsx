@@ -38,11 +38,8 @@ const Tab1Header = () => {
         <header className='navbar ps-3 pe-3 pt-3'>
             <h2 className='fw-bolder'>Home</h2>
             <div className="navbar-right">
-                <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 me-3 fw-bold" title="Add New Item">
+                <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 ms-3 fw-bold" title="Add New Item">
                     <MessageCirclePlus />
-                </button>
-                <button onClick={handleGetToken} className="btn-header fs-5 text-success fw-bold ms-3" title="Get Notification Token">
-                    <Bell /> 
                 </button>
             </div>
         </header>
