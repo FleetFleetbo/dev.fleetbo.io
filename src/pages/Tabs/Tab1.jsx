@@ -29,9 +29,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { fleetboDB } from 'config/fleetboConfig';
-import { handleGetToken } from 'utils/getToken';
 import Loader from 'components/common/Loader'; 
-import { Bell, MessageCirclePlus, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
+import { MessageCirclePlus, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
 
 const Tab1Header = () => {
     return (
