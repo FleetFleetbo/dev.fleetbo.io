@@ -6,21 +6,17 @@
  * securely with your Fleetbo backend.
  *
  * --- How It Works ---
- * 1. PageConfig:
- * The <PageConfig navbar="visible" /> component at the bottom tells the
- * native shell how to render its UI. "visible" shows the bottom tab bar.
- * You can set this to navbar="none" for full-screen pages (like "Insert" or "Item").
  *
- * 2. Auth Check (`useEffect`):
+ * 1. Auth Check (`useEffect`):
  * This component first calls `await Fleetbo.isAuthenticated()` to ensure
  * the user is logged in *before* fetching any data. This is a critical
  * security best practice.
  *
- * 3. Data Fetching (`fetchData`):
+ * 2. Data Fetching (`fetchData`):
  * It uses `await Fleetbo.getDocsG(...)` to securely read the entire
  * "items" collection from Firestore. No complex fetch or headers needed.
  *
- * 4. Optimistic UI (`deleteItem`):
+ * 3. Optimistic UI (`deleteItem`):
  * When deleting, the UI updates *instantly* (removing the item from the list)
  * *before* waiting for the backend. If the backend fails, it "rewinds"
  * and adds the item back. This makes the app feel incredibly fast.
@@ -228,7 +224,6 @@ const Tab1 = () => {
 
     return (
         <>
-            <PageConfig navbar="show" />
             <Tab1Header />
             <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
