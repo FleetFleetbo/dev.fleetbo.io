@@ -183,7 +183,6 @@ const Tab3 = () => {
 
     return (
         <>
-            <PageConfig navbar="show" />
             <Tab3Header />
             <div className="position-relative d-flex align-items-center text-center" style={{ minHeight: 'calc(100vh - 63px)' }}>
                 {renderContent()}
