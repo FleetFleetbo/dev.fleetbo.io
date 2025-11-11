@@ -14,10 +14,7 @@ const PageConfig = ({ navbar }) => {
         if (navbarState !== 'show' && navbarState !== 'visible') {
             navbarState = 'none';
         }
-
-        console.log(`React [PageConfig]: Page [${route}] peinte. Notif native. Config: [${navbarState}]`);
-
-        // Envoie l'info au natif
+        
         if (window.Fleetbo && typeof window.Fleetbo.onWebPageReady === 'function') {
             Fleetbo.onWebPageReady(route, navbarState);
         }
