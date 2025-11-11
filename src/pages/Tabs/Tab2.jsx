@@ -5,7 +5,6 @@
  * It's the perfect starting point for building a new feature.
  *
  * --- How It Works ---
- *
  * 1. Header:
  * The <Tab2Header /> component is a simple header for this page.
  *
@@ -19,7 +18,6 @@
  */
 
 import React from 'react';
-import PageConfig from 'components/common/PageConfig';
 
 const Tab2Header = () => {
     return (
