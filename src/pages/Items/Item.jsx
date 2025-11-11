@@ -20,7 +20,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; 
 import { fleetboDB } from 'config/fleetboConfig';
-import PageConfig from 'components/common/PageConfig';
 import Loader from 'components/common/Loader'; 
 import { ArrowLeftCircle } from 'lucide-react'; 
 
