@@ -31,7 +31,6 @@ import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { fleetboDB } from 'config/fleetboConfig';
 import { handleGetToken } from 'utils/getToken';
 import Loader from 'components/common/Loader'; 
-import PageConfig from 'components/common/PageConfig';
 import { Bell, MessageCirclePlus, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
 
 const Tab1Header = () => {
