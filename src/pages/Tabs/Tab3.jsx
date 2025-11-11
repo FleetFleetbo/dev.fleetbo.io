@@ -37,7 +37,6 @@ import Loader from 'components/common/Loader';
 import avatarImage from 'assets/images/avatar.png';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import { formatFirestoreDate } from 'utils/FormatDate';
-import PageConfig from 'components/common/PageConfig';
 import { UserPlus } from 'lucide-react';
 
 const Tab3Header = () => {
