@@ -144,12 +144,6 @@ const Tab1 = () => {
                                             </div>
                                             <div className="d-flex align-items-center ms-3">
                                                 <button 
-                                                    onClick={() => Fleetbo.openPageId('item', item.id)} 
-                                                    className="btn btn-link text-success fs-5 fw-bold me-2" 
-                                                    disabled={isDeleting.has(item.id)}>
-                                                    <Eye />
-                                                </button>
-                                                <button 
                                                     onClick={() => deleteItem(item.id)} 
                                                     className="btn btn-link text-danger fs-5 fw-bold" 
                                                     disabled={isDeleting.has(item.id)}>
