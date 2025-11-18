@@ -25,7 +25,7 @@ const SetUser = () => {
             if (result && result.success) {
                 Fleetbo.back();
             } else {
-                console.error("Registration failed on the native side.");
+                console.error("Registration failed on Fleetbo engine.");
             }
         } catch (error) {
             console.error(`Register error: ${error.message}`);
@@ -37,7 +37,7 @@ const SetUser = () => {
 
     return (
         <>
-            <PageConfig navbar="hidden" />
+            <PageConfig navbar="none" />
             <motion.div
                 transition={{ duration: 0.4 }}
                 className="p-3 vh-100 d-flex align-items-center justify-content-center"
@@ -69,12 +69,12 @@ const SetUser = () => {
                                             </button>
                                         </div>
                                     </form>
+                                    <div className="pb-1">
+                                        <button onClick={() => Fleetbo.back()} className="btn btn-link w-100 p-2 fs-5 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
+                                            Back
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="pb-1">
-                                <button onClick={() => Fleetbo.back()} className="btn btn-link w-100 p-2 fs-5 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
-                                    Back
-                                </button>
                             </div>
                         </>
                     ) : (
