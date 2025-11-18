@@ -12,30 +12,70 @@ export const useStartupEffect = () => {
     const [initializationError, setInitializationError] = useState(null);
 
     useEffect(() => {
-        const startTime = Date.now();
+        let timer = null;
+        let requester = null; 
 
-        const checkFleetbo = () => {
-            if (window.Fleetbo) {
-                console.log("Fleetbo API is ready!");
-                setIsFleetboReady(true);
-                return;
-            }
+        const onFleetboReady = () => {
+            clearTimeout(timer);
+            clearInterval(requester);
+            window.removeEventListener('message', handleMessage);
+            setIsFleetboReady(true);
+        };
+        const handleMessage = (event) => {
+            if (event.data.type === 'FLEETBO_DELIVER_ENGINE') {
+                try {
+                    const scriptEl = document.createElement('script');
+                    scriptEl.id = 'fleetbo-native-engine';
+                    scriptEl.innerHTML = event.data.code;
+                    document.head.appendChild(scriptEl);
 
-            if (Date.now() - startTime < 10000) {
-                setTimeout(checkFleetbo, 100);
-            } else {
-
-                console.error("Fleetbo initialization timed out.");
-                setInitializationError("Failed to connect to the fleetbo engine interface. ");
+                    if (window.Fleetbo) {
+                        onFleetboReady();
+                    } else {
+                        throw new Error("Fleetbo object missing.");
+                    }
+                } catch (e) {
+                    setInitializationError("Failed to execute the fleetbo engine.");
+                }
             }
         };
-        checkFleetbo();
+
+        timer = setTimeout(() => {
+            if (!isFleetboReady) {
+                setInitializationError("Failed to connect to the fleetbo engine.");
+                clearInterval(requester);
+                window.removeEventListener('message', handleMessage);
+            }
+        }, 10000);
+
+        if (window.fleetbo && typeof window.fleetbo.log === 'function') {
+            window.Fleetbo = window.fleetbo;       
+            onFleetboReady();
+        } else if (window.self !== window.top) {
+            window.addEventListener('message', handleMessage);
+            requester = setInterval(() => {
+                if (window.Fleetbo) { 
+                    onFleetboReady();
+                    return;
+                }
+                if (window.parent) {
+                    window.parent.postMessage({ type: 'FLEETBO_REQUEST_ENGINE' }, '*');
+                }
+            }, 250);
+        } else {
+             setInitializationError("FLEETBO ENGINE NOT RECOGNIZED BY YOUR APPLICATION.");
+             clearTimeout(timer);
+        }
+        return () => {
+            clearTimeout(timer);
+            clearInterval(requester);
+            window.removeEventListener('message', handleMessage);
+        };
 
     }, []); 
 
     useEffect(() => {
         window.navigateToTab = (route) => {
-            console.log(`Commande de navigation native reçue pour : ${route}`);
             navigate(route);
         };
         return () => { delete window.navigateToTab; };
@@ -45,14 +85,13 @@ export const useStartupEffect = () => {
         const lastActiveTab = localStorage.getItem("activeTab") || "Tab1";
         const initialRoute = `/${lastActiveTab.toLowerCase()}`;
         if (location.pathname === '/' && initialRoute !== '/tab1') { 
-            console.log(`Synchronisation de la route initiale vers : ${initialRoute}`);
             history.push(initialRoute);
         }
     }, [location.pathname]); 
 
     useEffect(() => {
-      if (!window.fleetbo) {
-        console.error("L'application doit être exécutée dans le conteneur natif.");
+      const isTopWindow = (window.self === window.top);
+      if (!window.Fleetbo && isTopWindow) {
         window.location.href = 'https://fleetbo.io/docs';
       }
     }, []); 
