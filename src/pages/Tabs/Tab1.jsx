@@ -1,35 +1,30 @@
 /**
- * === Fleetbo Developer Tutorial: A Full CRUD Page (Tab1.jsx) ===
+ * === Fleetbo Developer Guide: The Standard List Page (Tab1.jsx) ===
  *
- * This file is a complete, production-ready example of a dynamic list
- * with Create, Read, and Delete (CRUD) functionality. It communicates
- * securely with your Fleetbo backend.
+ * This file demonstrates the "Engine-First" architecture.
+ * Your React component acts as a view layer for the Fleetbo Data Engine.
  *
- * --- How It Works ---
- * 1. PageConfig:
- * The <PageConfig navbar="show" /> component at the bottom tells the
- * native shell how to render its UI. "visible" shows the bottom tab bar.
- * You can set this to navbar="none" for full-screen pages (like "Insert" or "Item").
+ * --- Core Concepts ---
+ * 1. Native UI Control (`<PageConfig />`):
+ * Directives sent to the OS to control native elements.
+ * - navbar="show": Instructs the Engine to render the native TabBar.
+ * - navbar="none": Requests full immersive mode.
  *
- * 2. Auth Check (`useEffect`):
- * This component first calls `await Fleetbo.isAuthenticated()` to ensure
- * the user is logged in *before* fetching any data. This is a critical
- * security best practice.
+ * 2. Direct Data Pipeline (`getDocsG`):
+ * Instead of HTTP requests, we open a direct pipe to the Fleetbo Engine.
+ * `await Fleetbo.getDocsG(...)` retrieves secure objects instantly from the core.
  *
- * 3. Data Fetching (`fetchData`):
- * It uses `await Fleetbo.getDocsG(...)` to securely read the entire
- * "items" collection from Firestore. No complex fetch or headers needed.
+ * 3. The "Zero-Latency" Pattern (Optimistic UI):
+ * We update the UI instantly, then notify the Engine in the background.
+ * 1. User taps Delete -> Item vanishes (Instant feedback).
+ * 2. The Engine receives the delete order asynchronously.
+ * 3. If the Engine reports a failure, the UI reverts automatically.
  *
- * 4. Optimistic UI (`deleteItem`):
- * When deleting, the UI updates *instantly* (removing the item from the list)
- * *before* waiting for the backend. If the backend fails, it "rewinds"
- * and adds the item back. This makes the app feel incredibly fast.
- *
- * --- Your Customization ---
- * - This is the main template for any "list" page in your app.
- * - You can customize the `collectionName` to fetch other data.
- * - You can customize the `renderContent` to change how your list looks.
+ * --- Developer Note ---
+ * You are abstracted from the backend logic. Focus purely on the UI state.
+ * The Fleetbo Engine guarantees data integrity and security.
  */
+
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import PageConfig from 'components/common/PageConfig';
