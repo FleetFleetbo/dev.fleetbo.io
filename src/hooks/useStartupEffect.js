@@ -71,7 +71,7 @@ export const useStartupEffect = () => {
             clearInterval(requester);
             window.removeEventListener('message', handleMessage);
         };
-
+    // eslint-disable-next-line
     }, []); 
 
     useEffect(() => {
