@@ -1,6 +1,5 @@
 // src/context/AuthContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import Fleetbo from 'config/systemhelper'; 
 
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
@@ -10,8 +9,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const checkUserSession = async () => {
-            try {
-                
+            try { 
                 const data     = await Fleetbo.checkAuthStatusAndRedirect();
                 setSessionData(data);
                 if (data && data.isLoggedIn) {
@@ -34,7 +32,6 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(true);
         setSessionData(data);
     };
-
     const value = { isLoading, isLoggedIn, sessionData, setIsLoggedIn, login };
 
     return (
