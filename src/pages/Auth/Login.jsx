@@ -38,7 +38,7 @@ import { useAuth } from 'context/AuthContext';
 import { motion } from "framer-motion";
 import logo from 'assets/images/logo.png';
 import 'assets/css/Login.css';
-import Fleetbo from 'config/systemhelper';
+import PageConfig from 'components/common/PageConfig';
 
 const DEFAULT_TAB = 'tab1'; 
 
@@ -70,7 +70,7 @@ const Login = () => {
         setLoadingLeave(true);   
 
         try {
-            Fleetbo.leave(); 
+            Fleetbo.logout(); 
         } catch (error) {
             console.error(`Error: ${error.message}`);
             setLoadingLeave(false); 
@@ -84,9 +84,8 @@ const Login = () => {
             return (
                 <div className="text-center">
                     <div className="spinner-border text-success" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                        <span className="visually-hidden">.</span>
                     </div>
-                    <p className="mt-3 text-muted">Loading app data...</p>
                 </div>
             );
         }
@@ -108,7 +107,7 @@ const Login = () => {
                     
                     <button 
                         onClick={handleSecureConnection} 
-                        className="btn btn-success" 
+                        className="btn p-2 fs-6 btn-success" 
                         disabled={loadingLog || loadingLeave}
                     >
                         {loadingLog ? (
@@ -144,16 +143,19 @@ const Login = () => {
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="login-passerelle-container"
-        >
-            <div className="login-passerelle-box">
-                {renderContent()}
-            </div>   
-        </motion.div>
+        <>
+            <PageConfig navbar="none" />  // None = No Navbar  & Show = Navbar
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="login-passerelle-container"
+            >
+                <div className="login-passerelle-box">
+                    {renderContent()}
+                </div>   
+            </motion.div>
+        </>
     );
 };
 
