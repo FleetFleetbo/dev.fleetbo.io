@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { fleetboDB } from 'config/fleetboConfig';
 import {  Link  } from 'react-router-dom';
+import PageConfig from 'components/common/PageConfig';
 import { ArrowLeftCircle, Images} from 'lucide-react'; 
 
 const Insert = () => {
@@ -29,24 +30,46 @@ const Insert = () => {
     };
 
     useEffect(() => {
+        const handleMessage = (event) => {
+            if (event.data.type === 'INJECT_IMAGE') {
+                try {
+                    const imageBase64 = event.data.imageBase64;
+                    setImageURL(imageBase64);
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        image: imageBase64,
+                    }));
+                } catch (error) {
+                    console.error("Error receiving injected image:", error);
+                }
+            }
+        };
+
         window.displayImage = (escapedImageBase64) => {
             try {
-                const decodedImageBase64 = decodeURIComponent(escapedImageBase64); 
+                const decodedImageBase64 = escapedImageBase64
+                    .replace(/\\n/g, '\n')
+                    .replace(/\\'/g, "'")
+                    .replace(/\\\\/g, '\\');
+
                 setImageURL(decodedImageBase64);
                 setFormData((prevData) => ({
                     ...prevData,
                     image: decodedImageBase64,
                 }));
             } catch (error) {
-                console.error("Error decoding image:", error);
+                console.error("Error decoding native image:", error);
             }
         };
-        return () => {
-            window.displayImage = undefined;   delete window.getToken;
-        };
-    }, []);
 
-    const handleSubmit = (e) => {
+        window.addEventListener('message', handleMessage);
+        return () => {
+            window.removeEventListener('message', handleMessage);
+            window.displayImage = undefined;
+        };
+    }, []); 
+
+    const handleSubmit = async (e) => { 
         setLoading(true);
         e.preventDefault();
         setResultMessage("");
@@ -59,46 +82,40 @@ const Insert = () => {
             return;
         }
     
-        // 1. We only prepare the text data for submission.
-        // We send the complete formData object.
         const jsonData = JSON.stringify(formData);
-    
-        // 2. We call a new Fleetbo function that tells the native side
-        //    to add this text data WITH the last selected image.
-        //    The native side will handle the upload and linking of the URL.
-        Fleetbo.add(fleetboDB, db, jsonData);
-    
-        // 3. Get the device token to send a notification.
-        Fleetbo.getToken();
-        window.getToken = (deviceToken) => {
-            setToken(deviceToken);
-        };
-        const notificationData = {
-            title: formData.title,
-            body: formData.content,
-            token: token,
-            image: ""
-        };
-        const jsonDataNotification = JSON.stringify(notificationData);
-        // The notification is also handled by the native side after the operation's success.
-        Fleetbo.startNotification(jsonDataNotification);
-    };
 
-    window.onAddResult = (success) => {
-        setLoading(false); 
-        if (success) {
+        try {
+
+            const addResult = await Fleetbo.add(fleetboDB, db, jsonData);
+
+            setLoading(false);
             setResultMessage(' Added successfully.');
             setMessageType('success');
             setFormData({ id: "", title: "", content: "", image: "" });
             setImageURL("");
-        } else {
-            setResultMessage(" Sending error.");
+
+            const tokenResult = await Fleetbo.getToken();
+
+            const notificationData = {
+                title: formData.title,
+                body: formData.content,
+                token: tokenResult.token, 
+                image: ""
+            };
+            const jsonDataNotification = JSON.stringify(notificationData);
+
+            Fleetbo.startNotification(jsonDataNotification);
+
+        } catch (error) {
+            setLoading(false);
+            setResultMessage(`Sending error: ${error.message}`);
             setMessageType('danger');
         }
     };
     
     return (
         <>
+            <PageConfig navbar="none" />
             <header className='navbar p-3'> 
                 <div className=''> 
                     <button onClick={() => Fleetbo.back() }  className="btn-header text-success fs-5 fw-bold">
@@ -115,23 +132,13 @@ const Insert = () => {
             <div className="p-3" >
                 <div className="p-2 mt-2">          
                     <form onSubmit={handleSubmit} >
-                                  
-                        <div className='mt-3 mb-3'>
-                            <div className='mt-1'>
-                                <h3 className="float-start fw-bolder text-dark" style={{ fontFamily: 'arial' }}>
-                                    Add item 
-                                </h3>
-                            </div>
-                        </div>
-                        <br /> <br />
-
                                        
                         <div className="mt-3 mb-4" style={{ width: '100%' }}>
                             <div
                                 className="bg-light d-flex align-items-center justify-content-center"
                                 style={{
-                                    width: '100px',
-                                    height: '90px',
+                                    width: '75px',
+                                    height: '70px',
                                     borderRadius: '9%',
                                     position: 'relative',
                                 }}
