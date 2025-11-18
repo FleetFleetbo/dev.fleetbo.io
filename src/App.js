@@ -52,11 +52,11 @@ import NotFound from './pages/NotFound';
 // Global styles
 import './assets/css/App.css';
 
-//hooks
 import { useStartupEffect } from 'hooks/useStartupEffect';
 
 function AppContent() {
     return (
+        // Add Routes
         <Routes>
             <Route path="/" element={<AuthGate />} />
 
@@ -100,14 +100,19 @@ const InitializingScreen = ({ error }) => (
   </div>
 );
 
-
 function App() {
     const { isFleetboReady, initializationError } = useStartupEffect();
+    const isNavbarRoute = window.location.pathname === '/navbar';
 
     if (!isFleetboReady) {
+        if (isNavbarRoute) {
+            return null;
+        }
         return <InitializingScreen error={initializationError} />;
     }
-    
+    if (isNavbarRoute) {
+        return <AppContent />;
+    }
     return (
         <AuthProvider>
             <AppContent />
