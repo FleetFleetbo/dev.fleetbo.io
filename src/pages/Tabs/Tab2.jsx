@@ -28,7 +28,7 @@ import PageConfig from 'components/common/PageConfig';
 const Tab2Header = () => {
     return (
         <header className='navbar ps-3 pt-3'>
-            <h2 className='fw-bolder'>Tab 2</h2>
+            <h2 className='fw-bolder'>Interface</h2>
         </header>
     );
 };
