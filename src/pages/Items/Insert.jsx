@@ -12,7 +12,6 @@ const Insert = () => {
     const [resultMessage, setResultMessage]       = useState();
     const [messageType, setMessageType]           = useState(''); 
     const [imageURL, setImageURL]                 = useState("");
-    const [token, setToken]                       = useState('');
     const [formData, setFormData]                 = useState({
         id: "", // Mandatory: id: "uid" or id: id or id: "" / "null"
         title: "",
@@ -86,7 +85,7 @@ const Insert = () => {
 
         try {
 
-            const addResult = await Fleetbo.add(fleetboDB, db, jsonData);
+            await Fleetbo.add(fleetboDB, db, jsonData);
 
             setLoading(false);
             setResultMessage(' Added successfully.');
