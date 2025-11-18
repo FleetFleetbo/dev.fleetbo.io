@@ -1,36 +1,23 @@
 /**
- * === Fleetbo Developer Tutorial: The Secure Handoff (Login.jsx) ===
+ * === Fleetbo Developer Guide: The Authentication Gateway (Login.jsx) ===
  *
- * This component acts as a secure "handoff" screen after a user
- * has successfully authenticated (e.g., Phone Auth).
+ * This component is the ignition key for your application.
+ * It establishes the secure link with the Fleetbo Native Engine.
  *
- * --- How It Works ---
- * 1. Purpose:
- * This page is not a traditional login form. It's a simple,
- * one-click step to securely initialize the React application's
- * connection.
+ * --- Core Concepts ---
+ * 1. Starting the Engine (`Fleetbo.log`):
+ * We don't manage tokens here. We send a `log` command to the Engine.
+ * The Engine then takes over to:
+ * - Identify the user via secure hardware protocols.
+ * - Initialize the encrypted storage layer.
  *
- * 2. The `handleSecureConnection` Function (Redirect):
- * When the user clicks "Activate Connection," this function:
- * a. Reads the user's *last active web tab* from localStorage (e.g., 'tab1' or 'tab3').
- * b. If no tab is found, it defaults to 'tab1'.
- * c. It calls the `Fleetbo.log(pageToLoad)` function.
+ * 2. Zero-Config Auth:
+ * No SDKs to configure. The Fleetbo Engine handles the entire authentication
+ * lifecycle (Biometrics, Refresh Cycles, Network Security) autonomously.
  *
- * 3. The Fleetbo Side (`log` function):
- * The `Fleetbo.log` function receives the *page name*.
- * It updates the user's "logged" status in the database, sets the
- * user info, and forces the app redirection: `window.location.href = '/${pageToLoad}'`.
- *
- * 4. The `leaveApp` Function:
- * This is an "escape hatch" in case the user landed here
- * by mistake. It calls the `Fleetbo.leave()` function.
- *
- * 5. Customization:
- * This is just a template. You can replace this simple "Activate"
- * button with your own custom form (e.g., a "Create Profile"
- * form). After your form is successfully submitted,
- * just call `await Fleetbo.log(...)` (as done in `handleSecureConnection`)
- * to complete the login and trigger the Fleetbo redirection.
+ * 3. Engine-Driven Navigation:
+ * Upon success, the Javascript layer yields control. The Engine performs
+ * a native transition to the main app context.
  */
 
 import React, { useState } from 'react';
