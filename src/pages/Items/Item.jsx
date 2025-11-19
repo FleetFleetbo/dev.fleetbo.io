@@ -1,22 +1,3 @@
-/**
- * === Fleetbo Developer Tutorial: A Detail Page (Item.jsx) ===
- *
- * This file is an example of a "detail" page that displays a single item.
- * It is designed to work with dynamic routing and the native bridge.
- *
- * 1. useParams:
- * Uses the `useParams` hook from React Router to read the item's ID
- * directly from the URL (e.g., /item/ID-123).
- *
- * 2. Data Fetching (`useEffect`):
- * Uses `await Fleetbo.getDoc(...)` with the URL's ID to
- * securely fetch a single document from Firestore.
- *
- * 3. Native Navigation (`Fleetbo.back`):
- * The "Back" button does not use React Router. It calls `Fleetbo.back()`,
- * asking the native container to handle the back navigation,
- * which is more reliable on mobile.
- */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; 
 import { fleetboDB } from 'config/fleetboConfig';
@@ -38,8 +19,8 @@ const ItemHeader = () => {
 
 const Item = () => {
     const [itemData, setItemData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [loading, setLoading]   = useState(true);
+    const [error, setError]       = useState("");
     
     const { id } = useParams(); 
 
