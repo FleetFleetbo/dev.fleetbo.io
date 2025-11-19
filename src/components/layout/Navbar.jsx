@@ -67,6 +67,7 @@ const Navbar          = () => {
   }, [location]);
 
   const handleSelectTab = (item) => {
+    setActiveTab(item.id); 
     Fleetbo.openView(item.view, item.isNative);
   };
 
