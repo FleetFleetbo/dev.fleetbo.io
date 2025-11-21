@@ -1,3 +1,75 @@
 .App-logo {
   width: 130px;
 }
+.btn-header {
+    /* 1. Remove background and border */
+    background-color: transparent !important;
+    border: none !important;
+    
+    /* 2. Remove visual effect on hover and click */
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    
+    /* 3. Remove padding (if Bootstrap adds it by default) */
+    padding: 0 !important; 
+    
+    /* 4. Ensure correct cursor (if necessary) */
+    cursor: pointer;
+    
+    /* 5. Handle hover and focus states to prevent any effect */
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        transform: none !important;
+        /* If you want a slight color change on hover, 
+           define it here, for example: color: green; */
+    }
+}
+
+.fb-button {
+  /* ... (all your current fb-button CSS) ... */
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1.1rem;
+  background-color: #0E904D;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  font-family:Arial, Helvetica, sans-serif
+  /* ... (base button styles) ... */
+}
+
+/* Logout style: inherits via cascade and modifies colors */
+.fb-button-logout {
+  background-color: transparent; 
+  color: #0E904D;
+  border-color: transparent;
+  margin-top: 1.2rem; 
+}
+
+.fb-button-refresh {
+  
+  /* 1. Dimensions and Spacing (btn-sm) */
+  padding: 0.25rem 0.5rem; 
+  font-size: 0.875rem;   
+  line-height: 1.5;     
+  
+  /* 2. Style (btn-outline-secondary) */
+  background-color: transparent;
+  color: #6c757d;   
+  border: 1px solid #6c757d;  
+  border-radius: 0.19rem;    
+  
+  /* 4. Animation/Transition suppression (to avoid previous issues) */
+  transition: none !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.fb-name{
+  color: #0E904D;
+}
