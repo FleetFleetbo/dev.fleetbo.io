@@ -131,7 +131,7 @@ const Login = () => {
 
     return (
         <>
-            <PageConfig navbar="none" />  // None = No Navbar  & Show = Navbar
+            <PageConfig navbar="none" />  
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
