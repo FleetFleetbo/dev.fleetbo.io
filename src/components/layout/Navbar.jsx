@@ -4,7 +4,7 @@ import 'assets/css/Navbar.css';
 
 const navItems = [
   { id: 'Tab1', view: 'tab1', isNative: false, icon: 'fa-solid fa-house' },
-  { id: 'Tab2', view: 'tab2', isNative: false,  icon: 'fa-solid fa-crown' }, // Example: { view: 'Home', isNative: true } loads a native component
+  { id: 'Tab2', view: 'tab2', isNative: false, icon: 'fa-solid fa-crown' },
   { id: 'Tab3', view: 'tab3', isNative: false, icon: 'fa-solid fa-user' },
 ];
 
