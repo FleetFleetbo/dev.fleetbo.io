@@ -1,58 +1,49 @@
-/* Styles de base (mobile-first approach) */
+/* Navbar.css */
 
 .footer, .header {
   position: fixed;
   width: 100%;
-  background: #f2f2f2;
   display: flex;
   justify-content: space-around; 
   z-index: 1000;
   box-sizing: border-box;
+
+  background: rgba(249, 249, 249, 0.85); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
 }
 
 .footer {
   bottom: 0;
   padding: 5px 13px; 
+  border-top: 1px solid rgba(0, 0, 0, 0.15); 
 }
 
 .header {
   top: 0;
   padding: 1px 0;
-  border-bottom: 1px solid #ddd; 
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); 
 }
 
 .nav-link {
-  color: #222;
   flex-grow: 1;
   text-align: center; 
-  
   padding: 10px 10px;
   font-size: 18px;
-  
   cursor: pointer;
   text-decoration: none;
-  border-top-left-radius: 8px; 
-  border-top-right-radius: 8px; 
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease, color 0.2s ease-in-out;
+  background: none; 
+  border: none;  
+  color: #8e8e93; 
+  transition: color 0.15s ease-in-out;
 }
 
 .nav-link.active {
-  background: #0E904D;
-  border-radius: 0%;
-  color: #fff;
-  transform: scale(1.1);
-}
+  color: #0E904D; 
 
-.nav-link.transitioning {
-  opacity: 0.6;
-  pointer-events: none; /* Empêche les clics pendant la transition */
+  background: none;
+  border-radius: 0; 
 }
-
-/* Styles pour améliorer l'expérience visuelle */
-.nav-link:hover:not(.transitioning) {
-  transform: scale(1.05);
-}
-
 
 @media (min-width: 768px) {
   .nav-link {
