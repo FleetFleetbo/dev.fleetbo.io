@@ -70,7 +70,17 @@ const Tab1 = () => {
     }, []); 
 
     useEffect(() => {
-        fetchData();
+        let isMounted = true; 
+        // On encapsule l'appel
+        const load = async () => {
+            if (!isMounted) return;
+            await fetchData();
+        };
+        load();
+        // Fonction de nettoyage
+        return () => {
+            isMounted = false;
+        };
     }, [fetchData]);
     
     const deleteItem = async (id) => {
