@@ -16,11 +16,11 @@ window.navigateToTab = (route) => {
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-  <React.StrictMode>
+  <>
     <HistoryRouter history={history}>
       <App />
     </HistoryRouter>
-  </React.StrictMode>
+  </>
 );
 
 serviceWorkerRegistration.register();
