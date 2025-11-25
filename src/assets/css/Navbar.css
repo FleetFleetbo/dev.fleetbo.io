@@ -16,15 +16,11 @@
 .footer {
   bottom: 0;
   padding: 5px 13px; 
-  /* Ligne de séparation fine, typique d'iOS */
-  border-top: 1px solid rgba(0, 0, 0, 0.15); 
 }
 
 .header {
   top: 0;
   padding: 1px 0;
-  /* Ligne de séparation fine, typique d'iOS */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15); 
 }
 
 .nav-link {
