@@ -1,22 +1,33 @@
 
-html, body {
-  overflow: hidden; 
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-header {
-  background: #fff;
-  color: #0E904D;
-  text-align: left;
+* {
+    cursor: inherit !important; 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.btn-header {
-  background: none; 
-  border: none; 
-  font-size: 18px;
+::-webkit-scrollbar { width: 0px; background: transparent; }
+
+@media (hover: hover) {
+    .btn:hover, a:hover {
+        background-color: inherit !important;
+        color: inherit !important;
+        border-color: inherit !important;
+    }
 }
+
+.btn:active, a:active { opacity: 0.7; transform: scale(0.98); }
+header { background: #fff; color: #0E904D; text-align: left; }
 
 
 
