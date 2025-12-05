@@ -64,13 +64,13 @@ const SetUser = () => {
                                                 placeholder='' required />
                                         </div>
                                         <div> 
-                                            <button type="submit" className="btn btn-success w-100 p-2 fs-5" style={{ fontWeight: '550' }}>
+                                            <button type="submit" className="btn btn-success w-100 p-2 fs-6">
                                                 {loadingLog ? "Loading..." : "Create"}
                                             </button>
                                         </div>
                                     </form>
                                     <div className="pb-1">
-                                        <button onClick={() => Fleetbo.back()} className="btn btn-link w-100 p-2 fs-5 text-secondary text-decoration-none mt-3" style={{ fontWeight: '550' }}>
+                                        <button onClick={() => Fleetbo.back()} className="btn btn-link w-100 p-2 fs-6 text-secondary text-decoration-none mt-3">
                                             Back
                                         </button>
                                     </div>
@@ -78,9 +78,7 @@ const SetUser = () => {
                             </div>
                         </>
                     ) : (
-                        <div>
-                            <p>Information not available</p>
-                        </div>
+                        <div> <p>Information not available</p> </div>
                     )}
                 </div>   
             </motion.div>
