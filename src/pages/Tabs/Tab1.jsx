@@ -111,16 +111,11 @@ const Tab1 = () => {
         }
         
         return (
-            <div className="pb-1"> {/* Padding bottom pour le scroll infini */}
+            <div className="pb-1"> 
                 
                 <div 
                     className="d-flex justify-content-between align-items-center px-3 py-2 sticky-top shadow-sm"
-                    style={{ 
-                        top: '70px',       // Juste en dessous du header
-                        zIndex: 1010,      // Au dessus des cartes
-                        backgroundColor: '#fff', // Opaque pour cacher le scroll dessous
-                        borderBottom: '1px solid #e9ecef'
-                    }}
+                    style={{ top: '70px', zIndex: 1010, backgroundColor: '#fff', borderBottom: '1px solid #e9ecef' }}
                 >
                     <span className='text-muted small fw-bold'>{data.length} Publications</span>
                     <button className="btn-header text-success text-decoration-none p-0 d-flex align-items-center" onClick={fetchData} disabled={isLoading}>
@@ -130,15 +125,13 @@ const Tab1 = () => {
                 </div>
 
                 
-                {/* Conteneur de liste avec marge en haut pour ne pas être caché par la barre fixe */}
                 <div className="px-3 mt-3">
                     {data.length > 0 ? (
                         data.map((item) => {
                             return (
                                 <div key={item.id} className='col-12 mb-3'>
-                                    {/* CARTE PUBLICATION STYLE */}
+                                    {/* CARD */}
                                     <div className="card shadow-sm border-0 rounded-4 overflow-hidden bg-white">
-                                        {/* IMAGE */}
                                         {item.image ? (
                                             <div 
                                                 className="w-100 bg-light d-flex align-items-center justify-content-center" 
@@ -162,7 +155,7 @@ const Tab1 = () => {
                                             </div>
                                         )}
 
-                                        {/* CONTENU */}
+                                        {/* CONTENT */}
                                         <div className="card-body px-3 pt-3 pb-1">
                                             <h6 className="mb-0 fw-bold text-dark">{item.title || 'Untitled Post'}</h6>
                                             <p className="card-text text-secondary text-truncate">
