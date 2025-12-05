@@ -64,7 +64,7 @@ const Tab3 = () => {
         Fleetbo.logout();
     };
 
-    // 3. Button Component Logout réutilisable 
+    // 3. Button Component Logout  
     const LogoutButton = () => (
         <button
             onClick={handleLogout}
@@ -101,7 +101,7 @@ const Tab3 = () => {
                         Your user profile is not yet complete.<br/>
                         Please create it to continue.
                     </p>
-                    <button onClick={() => Fleetbo.openPage('setuser')} className="fb-button mb-2">
+                    <button onClick={() => Fleetbo.openPage('setuser')} className="btn btn-success mb-2">
                         Create Profile
                     </button>
                     <LogoutButton />
