@@ -102,17 +102,17 @@ const InitializingScreen = ({ error }) => (
 
 function App() {
     const { isFleetboReady, initializationError } = useStartupEffect();
+    
     const isNavbarRoute = window.location.pathname === '/navbar';
 
-    if (!isFleetboReady) {
-        if (isNavbarRoute) {
-            return null;
-        }
-        return <InitializingScreen error={initializationError} />;
-    }
     if (isNavbarRoute) {
         return <AppContent />;
     }
+
+    if (!isFleetboReady) {
+        return <InitializingScreen error={initializationError} />;
+    }
+
     return (
         <AuthProvider>
             <AppContent />
