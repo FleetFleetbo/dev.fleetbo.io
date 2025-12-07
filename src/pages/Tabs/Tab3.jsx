@@ -68,7 +68,7 @@ const Tab3 = () => {
     const LogoutButton = () => (
         <button
             onClick={handleLogout}
-            className="fb-button-logout mt-3 w-100" 
+            className="btn btn-link w-100 fs-6 mt-3 text-secondary" 
             disabled={isLoggingOut}
         >
             {isLoggingOut ? (
