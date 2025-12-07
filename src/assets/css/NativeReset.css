@@ -1,8 +1,7 @@
 /* ============================================================
     FLEETBO NATIVE RESET 
-    ============================================================ */
+   ============================================================ */
 
-/* Disables all visual changes on hover/focus for buttons, achieving a native look. */
 .btn {
     --bs-btn-hover-color: var(--bs-btn-color);
     --bs-btn-active-color: var(--bs-btn-color);
@@ -14,7 +13,6 @@
     text-decoration: none;
 }
 
-/* Forces native look by disabling all hover/focus effects on buttons and links. */
 .btn:hover, 
 .btn:focus,
 a:hover,
@@ -29,7 +27,6 @@ a:focus {
     transform: none !important;
 }
 
-/* Specific case for transparent buttons (e.g., btn-link) */
 .btn-link:hover, 
 .btn-link:focus,
 .fb-button:hover,
@@ -39,19 +36,14 @@ a:focus {
     color: inherit !important; 
 }
 
-/* This is the only authorized effect, simulating a native press action. */
 .btn:active, 
 a:active, 
 .card:active {
-    /* Changes global opacity */
     opacity: 0.6 !important; 
-    
-    /* Small physical reduction effect */
     transform: scale(0.97) !important; 
     transition: transform 0.05s ease, opacity 0.05s ease !important;
 }
 
-/* Removes the default blue focus halo (shadow and outline) from form elements. */
 .form-control:focus, 
 input:focus, 
 textarea:focus {
