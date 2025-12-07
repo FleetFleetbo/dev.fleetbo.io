@@ -11,6 +11,7 @@
     --bs-btn-hover-border-color: var(--bs-btn-border-color);
     --bs-btn-active-border-color: var(--bs-btn-border-color);
     box-shadow: none !important;
+    text-decoration: none;
 }
 
 /* Forces native look by disabling all hover/focus effects on buttons and links. */
