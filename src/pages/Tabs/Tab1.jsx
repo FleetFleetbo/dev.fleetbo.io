@@ -30,7 +30,7 @@ import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import PageConfig from 'components/common/PageConfig';
 import { fleetboDB } from 'config/fleetboConfig';
 import Loader from 'components/common/Loader'; 
-import { MessageCirclePlus, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
+import { MessageCirclePlus, ImageIcon, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
 
 const Tab1Header = () => {
     return (
