@@ -124,8 +124,7 @@ const Tab1 = () => {
                     </button>
                 </div>
 
-                
-                <div className="px-3 mt-3">
+                <div className="ps-3 pe-3 pt-2 mt-3">
                     {data.length > 0 ? (
                         data.map((item) => {
                             return (
@@ -213,7 +212,7 @@ const Tab1 = () => {
         <>
             <PageConfig navbar="show" />
             <Tab1Header />
-            <div className="p-3 position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
+            <div className="position-relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
                 {renderContent()}
             </div>
         </>
