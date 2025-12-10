@@ -43,9 +43,10 @@ import Tab2 from "./pages/Tabs/Tab2";
 import Tab3 from "./pages/Tabs/Tab3";
 
 import SetUser from "./pages/Items/User/SetUser";
-
 import Insert from "./pages/Items/Insert";
 import Item from "./pages/Items/Item";
+
+import QuickMock from "./pages/mocks/Quick";
 
 import NotFound from './pages/NotFound';
 
@@ -72,6 +73,8 @@ function AppContent() {
             <Route path="/setuser"   element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
             <Route path="/insert"    element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item/:id"  element={<ProtectedRoute><Item /></ProtectedRoute>} />
+
+            <Route path="/quick" element={<QuickMock />} />
 
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
