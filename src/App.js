@@ -83,7 +83,7 @@ function AppContent() {
             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
               DO NOT DELETE THE ANCHOR BELOW.
-              New pages generated via 'npm run page' will be inserted here.
+              New pages generated via 'npm run fleetbo page NamePage' will be inserted here.
                ======================================================================= */}
             {/* FLEETBO_ROUTES */}
 
