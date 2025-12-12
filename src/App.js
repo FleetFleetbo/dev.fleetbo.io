@@ -47,10 +47,14 @@ import Insert from "./pages/Items/Insert";
 import Item from "./pages/Items/Item";
 
 import QuickMock from "./pages/mocks/Quick";
-
 import NotFound from './pages/NotFound';
 
-// Global styles
+/* =======================================================================
+    FLEETBO AUTO-GENERATION ZONE
+    DO NOT DELETE OR MODIFY THE SECTION BELOW.
+   ======================================================================= */
+// FLEETBO_IMPORTS
+
 import './assets/css/App.css';
 
 import { useStartupEffect } from 'hooks/useStartupEffect';
@@ -75,6 +79,13 @@ function AppContent() {
             <Route path="/item/:id"  element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
             <Route path="/quick" element={<QuickMock />} />
+
+            {/* =======================================================================
+              FLEETBO DYNAMIC ROUTES
+              DO NOT DELETE THE ANCHOR BELOW.
+              New pages generated via 'npm run page' will be inserted here.
+               ======================================================================= */}
+            {/* FLEETBO_ROUTES */}
 
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
