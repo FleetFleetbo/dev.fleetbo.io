@@ -59,22 +59,15 @@ const Item = () => {
     const renderContent = () => {
         if (loading) {
             return (
-                <div className='center-container'>
-                    <Loader />
-                </div>
+                <div className='center-container'> <Loader /></div>
             );
         }
 
-        if (error) {
-            return <div className="alert alert-danger">{error}</div>;
-        }
+        if (error) { return <div className="alert alert-danger">{error}</div>;}
 
         if (itemData) {
             return (
-                <div>
-                    <h2>{itemData.title}</h2>
-                    <h5 className='fw-normal text-secondary'>{itemData.content}</h5>
-                </div>
+                <div> <h2>{itemData.title}</h2>   <h5 className='fw-normal text-secondary'>{itemData.content}</h5> </div>
             );
         }
 
