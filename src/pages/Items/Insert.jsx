@@ -1,229 +1,160 @@
-
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fleetboDB } from 'config/fleetboConfig';
-import {  Link  } from 'react-router-dom';
 import PageConfig from 'components/common/PageConfig';
-import { ArrowLeftCircle, Images} from 'lucide-react'; 
+import { ArrowLeftCircle, Images, Camera } from 'lucide-react';
+
+const InsertHeader = ({ onBack, onGallery }) => {
+    return (
+        <header className='navbar ps-3 pt-3'>
+            <div>
+                <button onClick={onBack} className="btn-header text-success fs-5 fw-bold d-flex align-items-center">
+                    <ArrowLeftCircle/> <span className='ms-3'>Insert</span>
+                </button>
+            </div>
+            <div className="navbar-right pe-3">
+                <button onClick={onGallery} className="btn-header fs-5 text-success fw-bold">
+                     <Images />
+                </button>
+            </div>
+        </header>
+    );
+};
 
 const Insert = () => {
-    
-    const  db                                     = "items";
-    const [loading,  setLoading]                  = useState();
-    const [resultMessage, setResultMessage]       = useState();
-    const [messageType, setMessageType]           = useState(''); 
-    const [imageURL, setImageURL]                 = useState("");
-    const [formData, setFormData]                 = useState({
-        id: "", // Mandatory: id: "uid" or id: id or id: "" / "null"
-        title: "",
-        content: "",
-        image: ""
-        // No need to store current date. Automatic
-    });
+    const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    const [loading, setLoading]       = useState(false);
+    const [title, setTitle]           = useState("");
+    const [content, setContent]       = useState("");
+    const [message, setMessage]       = useState(null);
+    
+    const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
         const handleMessage = (event) => {
-            if (event.data.type === 'INJECT_IMAGE') {
-                try {
-                    const imageBase64 = event.data.imageBase64;
-                    setImageURL(imageBase64);
-                    setFormData((prevData) => ({
-                        ...prevData,
-                        image: imageBase64,
-                    }));
-                } catch (error) {
-                    console.error("Error receiving injected image:", error);
+            const message = event.data;
+
+            if (message && message.type === 'FLEETBO_RESULT') {
+                
+                console.log(`📦 Reçu résultat (${message.kind})`, message.data);
+
+                switch (message.kind) {
+                    
+                    case 'IMAGE_SELECTED':
+                        setSelectedImage(message.data);
+                        break;
+
+                    case 'USER_SELECTED':
+                        break;
+
+                    case 'PRODUCT_ADDED':
+                        break;
+
+                    default:
+                        console.warn("Type de résultat inconnu :", message.kind);
                 }
             }
         };
 
-        window.displayImage = (escapedImageBase64) => {
-            try {
-                const decodedImageBase64 = escapedImageBase64
-                    .replace(/\\n/g, '\n')
-                    .replace(/\\'/g, "'")
-                    .replace(/\\\\/g, '\\');
-
-                setImageURL(decodedImageBase64);
-                setFormData((prevData) => ({
-                    ...prevData,
-                    image: decodedImageBase64,
-                }));
-            } catch (error) {
-                console.error("Error decoding native image:", error);
-            }
-        };
-
         window.addEventListener('message', handleMessage);
-        return () => {
-            window.removeEventListener('message', handleMessage);
-            window.displayImage = undefined;
-        };
-    }, []); 
+        return () => window.removeEventListener('message', handleMessage);
+    }, []);
 
-    const handleSubmit = async (e) => { 
-        setLoading(true);
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setResultMessage("");
-        setMessageType("");
-    
-        if (!formData.title || !formData.content) {
-            setLoading(false);
-            setResultMessage('Required fields');
-            setMessageType('danger');
+        setMessage(null);
+
+        if (!title || !content) {
+            setMessage({ type: 'danger', text: "Title and Description are required." });
             return;
         }
-    
-        const jsonData = JSON.stringify(formData);
+
+        setLoading(true);
+        const jsonData = JSON.stringify({ title, content });
 
         try {
+            if (selectedImage) {
+                await Fleetbo.addWithLastSelectedImage(fleetboDB, "items", jsonData);
+            } else {
+                await Fleetbo.add(fleetboDB, "items", jsonData);
+            }
 
-            await Fleetbo.add(fleetboDB, db, jsonData);
+            setMessage({ type: 'success', text: "Item added successfully!" });
+            setTitle(""); setContent(""); setSelectedImage(null);
+            
+            Fleetbo.getToken().then(res => {
+                if(res.token) Fleetbo.startNotification(JSON.stringify({ title, body: content, token: res.token, image: "" }));
+            }).catch(() => {});
 
+        } catch (err) {
+            setMessage({ type: 'danger', text: "Error: " + err.message });
+        } finally {
             setLoading(false);
-            setResultMessage(' Added successfully.');
-            setMessageType('success');
-            setFormData({ id: "", title: "", content: "", image: "" });
-            setImageURL("");
-
-            const tokenResult = await Fleetbo.getToken();
-
-            const notificationData = {
-                title: formData.title,
-                body: formData.content,
-                token: tokenResult.token, 
-                image: ""
-            };
-            const jsonDataNotification = JSON.stringify(notificationData);
-
-            Fleetbo.startNotification(jsonDataNotification);
-
-        } catch (error) {
-            setLoading(false);
-            setResultMessage(`Sending error: ${error.message}`);
-            setMessageType('danger');
         }
     };
-    
+
     return (
         <>
             <PageConfig navbar="none" />
-            <header className='navbar p-3'> 
-                <div className=''> 
-                    <button onClick={() => Fleetbo.back() }  className="btn-header text-success fs-5 fw-bold">
-                        <ArrowLeftCircle/> <span className='ms-3'>Insert </span>
-                    </button>
-                </div>
-                <div className="navbar-right">
-                    <button onClick={() => Fleetbo.openGalleryView() }  className="btn-header fs-5 text-success fw-bold">
-                         <Images />
-                    </button>
-                </div>
-            </header>
+            
+            <InsertHeader 
+                onBack={()    => navigate(-1)} 
+                onGallery={() => Fleetbo.openPage('quick') } 
+            />
 
-            <div className="p-3" >
-                <div className="p-2 mt-2">          
-                    <form onSubmit={handleSubmit} >
-                                       
-                        <div className="mt-3 mb-4" style={{ width: '100%' }}>
-                            <div
-                                className="bg-light d-flex align-items-center justify-content-center"
-                                style={{
-                                    width: '75px',
-                                    height: '70px',
-                                    borderRadius: '9%',
-                                    position: 'relative',
-                                }}
+            <div className="p-3 fade-in">
+                <form onSubmit={handleSubmit} className="p-2 mt-2">
+                    
+                    <div className="d-flex justify-content-center mb-4">
+                        <div className="position-relative p-1" style={{ width: '90px', height: '90px' }}>
+                            <img 
+                                src={selectedImage || `https://placehold.co/100x100?text=No+Img`} 
+                                className="w-100 h-100 rounded shadow-sm bg-light" 
+                                style={{ objectFit: 'cover' }}
+                                alt="Preview" 
+                            />
+                            
+                            <div 
+                                onClick={() => Fleetbo.openPage('quick') }
+                                className="position-absolute bottom-0 end-0 bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                style={{ width: '30px', height: '30px', cursor: 'pointer', opacity: 0.9 }}
                             >
-                                {/* Image */}
-                                <img
-                                    id="imageView"
-                                    src={imageURL || `${process.env.PUBLIC_URL}/logo512.png`}
-                                    alt="default"
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        borderRadius: '9%',
-                                        objectFit: 'cover', 
-                                    }}
-                                />
-       
-                                    {/* Gallery photo  */}
-                                    <Link
-                                        onClick={() => Fleetbo.openGalleryView() } 
-                                        style={{
-                                            position: 'absolute',
-                                            bottom: '1px',
-                                            right: '1px',
-                                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                            borderRadius: '20%',
-                                            padding: '7px',
-                                            paddingLeft: '13px',
-                                            paddingRight: '13px',
-                                            color: '#fff',
-                                        }}
-                                    >
-                                        <i className="fa fa-camera" style={{ fontSize: '17px' }}></i>
-                                    </Link>
+                                <Camera size={16} />
                             </div>
                         </div>
-  
-                        <div className="mb-3">
-                            <label className="float-start fs-5 mb-2">Title</label>
-                            <input
-                                type='text'
-                                className="form-control input"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                                           
-                            />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="fw-bold mb-1 text-secondary small">TITLE</label>
+                        <input 
+                            type='text' className="form-control form-control-lg small" 
+                            value={title} onChange={e => setTitle(e.target.value)} 
+                            placeholder="Ex: My Project"
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="fw-bold mb-1 text-secondary small">DESCRIPTION</label>
+                        <textarea 
+                            className="form-control" rows={4} 
+                            value={content} onChange={e => setContent(e.target.value)} 
+                            placeholder="Enter details..."
+                        />
+                    </div>
+
+                    <button className="btn btn-success w-100 py-3 fw-bold shadow-sm" type="submit" disabled={loading}>
+                        {loading ? 'Sending...' : 'Add Item'}
+                    </button>
+                    
+                    {message && (
+                        <div className={`alert mt-3 py-2 text-center ${message.type === 'danger' ? 'alert-danger' : 'alert-success'}`}>
+                            {message.text}
                         </div>
-       
-                        <div className="mb-3">
-                            <label className="float-start fs-5 mb-2">Description</label>
-                            <textarea
-                                type="text"
-                                name="content"
-                                value={formData.content}
-                                onChange={handleChange}
-                                className="form-control input"
-                                rows={4}
-                                           
-                            >
-                            </textarea>
-                        </div>
-       
-                        <button
-                                className="btn btn-success w-100 p-2 fs-5 mt-3" 
-                                onClick={handleSubmit} 
-                                type="submit"
-                                disabled={loading}
-                        >
-                                {loading ? 'Loading...' : 'Add'} 
-                        </button>
-                        <div className="text-success fw-normal mt-1" style={{ height: '20px'}}>
-                                {resultMessage && (
-                                    <div className={`input-box mt-3 fs-6 text-${messageType === 'success' ? 'success' : 'danger'}`}>
-                                        {resultMessage}  
-                                    </div>
-                                )}
-                        </div>
-       
-                    </form>
-                </div>
-          
+                    )}
+                </form>
             </div>
         </>
     );
 };
-
 export default Insert;
-
