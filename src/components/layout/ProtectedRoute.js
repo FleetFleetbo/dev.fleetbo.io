@@ -9,14 +9,8 @@ const ProtectedRoute                = ({ children }) => {
     const { isLoggedIn, isLoading } = useAuth();
     const location                  = useLocation();
 
-    if (isLoading) {
-        return <Loader />;
-    }
-
-    if (!isLoggedIn) {
-        // If user not connected -> Login page
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
+    if (isLoading) { return null; }
+    if (!isLoggedIn) {  return <Navigate to="/login" state={{ from: location }} replace />; }
 
     return children;
 };
