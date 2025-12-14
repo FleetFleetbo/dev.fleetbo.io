@@ -7,8 +7,7 @@ import 'assets/css/Native.css';
 import App from './App'; 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-const history = createBrowserHistory(); 
-
+const history     = createBrowserHistory(); 
 const rootElement = document.getElementById('root');
 
 window.navigateToTab = (route) => {
