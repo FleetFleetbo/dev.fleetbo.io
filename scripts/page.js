@@ -61,7 +61,7 @@ const injectIntoAppJs = (pageName, importPath, routePath) => {
 
     let content = fs.readFileSync(APP_JS_PATH, 'utf8');
 
-    if (!content.includes('// FLEETBO_IMPORTS') || !content.includes('// FLEETBO_ROUTES')) {
+    if (!content.includes('// FLEETBO_IMPORTS') || (!content.includes('// FLEETBO_ROUTES') && !content.includes('{/* FLEETBO_ROUTES */}'))) {
         console.log(`${YELLOW}⚠️  Anchors not found in App.js. Skipping auto-wiring.${RESET}`);
         return false;
     }
