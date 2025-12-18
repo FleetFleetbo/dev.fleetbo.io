@@ -47,6 +47,7 @@ import Insert from "./pages/Items/Insert";
 import Item from "./pages/Items/Item";
 
 import QuickMock from "./pages/mocks/Quick";
+import SampleMock from "./pages/mocks/SampleMock";
 import NotFound from './pages/NotFound';
 
 /* =======================================================================
@@ -63,22 +64,23 @@ function AppContent() {
     return (
         // Add Routes
         <Routes>
-            <Route path="/" element={<AuthGate />} />
+            <Route path="/"                element={<AuthGate />} />
 
-            <Route path="/auth/route" element={<RouteAuth />} />
-            <Route path="/login"      element={<Login />} />
+            <Route path="/auth/route"      element={<RouteAuth />} />
+            <Route path="/login"           element={<Login />} />
 
-            <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
-                <Route path="/tab1" element={<Tab1 />} />
-                <Route path="/tab2" element={<Tab2 />} />
-                <Route path="/tab3" element={<Tab3 />} />
+            <Route                         element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
+                <Route path="/tab1"        element={<Tab1 />} />
+                <Route path="/tab2"        element={<Tab2 />} />
+                <Route path="/tab3"        element={<Tab3 />} />
             </Route>
 
-            <Route path="/setuser"   element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
-            <Route path="/insert"    element={<ProtectedRoute><Insert /></ProtectedRoute>} />
-            <Route path="/item/:id"  element={<ProtectedRoute><Item /></ProtectedRoute>} />
+            <Route path="/setuser"         element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
+            <Route path="/insert"          element={<ProtectedRoute><Insert /></ProtectedRoute>} />
+            <Route path="/item/:id"        element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
-            <Route path="/quick" element={<QuickMock />} />
+            <Route path="/quick"           element={<QuickMock />} />
+            <Route path="/mocks/sample"    element={<SampleMock />} />
 
             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
