@@ -2,9 +2,23 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
+
 const ARGS = process.argv.slice(2); 
-const COMMAND = ARGS[0];
-const TARGET_NAME = ARGS[1];
+
+let PLATFORM = 'web';
+let COMMAND = '';
+let TARGET_NAME = '';
+
+if (['android', 'ios'].includes(ARGS[0])) {
+    PLATFORM = ARGS[0];
+    COMMAND = ARGS[1];
+    TARGET_NAME = ARGS[2];
+} else {
+    PLATFORM = 'web';
+    COMMAND = ARGS[0];
+    TARGET_NAME = ARGS[1];
+}
+
 const APP_JS_PATH = path.join(__dirname, '../src/App.js');
 
 const GREEN = '\x1b[32m';
@@ -13,7 +27,10 @@ const BLUE = '\x1b[36m';
 const YELLOW = '\x1b[33m';
 const RESET = '\x1b[0m';
 
-const getTemplate = (pageName) => `import React, { useState, useEffect } from 'react';
+// --- TEMPLATES ---
+
+// 1. Template React (Web/Hybride)
+const getWebTemplate = (pageName) => `import React, { useState, useEffect } from 'react';
 import { fleetboDB } from 'config/fleetboConfig';
 import PageConfig from 'components/common/PageConfig';
 import Loader from 'components/common/Loader';
@@ -56,6 +73,42 @@ const ${pageName} = () => {
 export default ${pageName};
 `;
 
+// 2. Template Android (Kotlin)
+const getAndroidTemplate = (moduleName) => `package com.fleetbo.user.modules
+
+import android.content.Context
+import com.fleetbo.sdk.FleetboModule
+
+// @Fleetbo Deploy
+// @Fleetbo ModuleName: ${moduleName}
+
+class ${moduleName}Module(context: Context, communicator: Any) : FleetboModule(context, communicator) {
+
+    // Example action called from React: Fleetbo.exec('${moduleName}', 'hello', { name: 'User' })
+    fun hello(responseId: String, params: String) {
+        // Logic here...
+        sendSuccess(responseId, "{ \\"message\\": \\"Hello from Android Native!\\" }")
+    }
+}
+`;
+
+// 3. Template iOS (Swift)
+const getIosTemplate = (moduleName) => `import Foundation
+import FleetboSDK
+
+// @Fleetbo Deploy
+// @Fleetbo ModuleName: ${moduleName}
+
+class ${moduleName}Module: FleetboModule {
+    
+    // Example action called from React: Fleetbo.exec('${moduleName}', 'hello', { name: 'User' })
+    func hello(_ responseId: String, _ params: String) {
+        // Logic here...
+        self.sendSuccess(responseId, "{ \\"message\\": \\"Hello from iOS Native!\\" }")
+    }
+}
+`;
+
 const injectIntoAppJs = (pageName, importPath, routePath) => {
     if (!fs.existsSync(APP_JS_PATH)) return false;
 
@@ -87,13 +140,9 @@ const injectIntoAppJs = (pageName, importPath, routePath) => {
     return injected;
 };
 
-const runPageGenerator = (inputPath) => {
+const runWebGenerator = (inputPath) => {
     if (!inputPath) {
-        const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-        rl.question(`${BLUE}🧬 Enter Page Path (e.g. admin/Settings): ${RESET}`, (n) => { 
-            if(n) runPageGenerator(n); 
-            rl.close(); 
-        });
+        askNameAndRun('Enter Page Path (e.g. admin/Settings):', runWebGenerator);
         return;
     }
 
@@ -113,38 +162,97 @@ const runPageGenerator = (inputPath) => {
         process.exit(1);
     }
 
-    fs.writeFileSync(filePath, getTemplate(pageName));
+    fs.writeFileSync(filePath, getWebTemplate(pageName));
 
     const routePath = subDir ? `${subDir}/${pageName.toLowerCase()}` : `${pageName.toLowerCase()}`;
     const injected = injectIntoAppJs(pageName, subDir, routePath);
 
     console.log(`
-${GREEN} FLEETBO PAGE GENERATED${RESET}
+       ${GREEN} FLEETBO WEB PAGE GENERATED${RESET}
     📂 ${BLUE}src/pages/${subDir ? subDir + '/' : ''}${pageName}.jsx${RESET}`);
 
     if (injected) {
         console.log(` App.js updated: Route /${routePath}`);
-    } else {
-        console.log(` Add route manually in App.js`);
     }
 };
 
+const runAndroidGenerator = (name) => {
+    if (!name) {
+        askNameAndRun('Enter Android Module Name (e.g. Printer):', runAndroidGenerator);
+        return;
+    }
+    const moduleName = name.charAt(0).toUpperCase() + name.slice(1);
+    const targetDir = path.join(__dirname, '../public/native/android');
+    const filePath = path.join(targetDir, `${moduleName}.kt`);
+
+    if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+    
+    if (fs.existsSync(filePath)) {
+        console.log(`${RED}  Error: Android module "${moduleName}" already exists!${RESET}`);
+        process.exit(1);
+    }
+
+    fs.writeFileSync(filePath, getAndroidTemplate(moduleName));
+    console.log(`
+        ${GREEN} FLEETBO ANDROID MODULE GENERATED${RESET}
+    📂  ${BLUE}public/native/android/${moduleName}.kt${RESET} `);
+};
+
+const runIosGenerator = (name) => {
+    if (!name) {
+        askNameAndRun('Enter iOS Module Name (e.g. Printer):', runIosGenerator);
+        return;
+    }
+    const moduleName = name.charAt(0).toUpperCase() + name.slice(1);
+    const targetDir = path.join(__dirname, '../public/native/ios');
+    const filePath = path.join(targetDir, `${moduleName}.swift`);
+
+    if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+
+    if (fs.existsSync(filePath)) {
+        console.log(`${RED}  Error: iOS module "${moduleName}" already exists!${RESET}`);
+        process.exit(1);
+    }
+
+    fs.writeFileSync(filePath, getIosTemplate(moduleName));
+    console.log(`
+${GREEN} FLEETBO iOS MODULE GENERATED${RESET}
+    🍏 ${BLUE}public/native/ios/${moduleName}.swift${RESET}
+    ℹ️  Don't forget to implement it in your Fleetbo Registry!`);
+};
+
+const askNameAndRun = (question, callback) => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    rl.question(`${BLUE}🧬 ${question} ${RESET}`, (n) => { 
+        if(n) callback(n); 
+        rl.close(); 
+    });
+};
+
 const main = () => {
-    switch (COMMAND) {
-        case 'page':
-        case 'g': 
-            runPageGenerator(TARGET_NAME);
-            break;
-        
-        default:
-            console.log(`
-                ${BLUE}🧬 FLEETBO CLI${RESET}
-                -------------------
-                Usage:
-                ${GREEN}npm run fleetbo page [Name]${RESET}
-                ${GREEN}npm run fleetbo page [Folder/Name]${RESET}
-            `);
-            break;
+    // Dispatch 
+    if (COMMAND === 'page' || COMMAND === 'g') {
+        switch (PLATFORM) {
+            case 'android':
+                runAndroidGenerator(TARGET_NAME);
+                break;
+            case 'ios':
+                runIosGenerator(TARGET_NAME);
+                break;
+            case 'web':
+            default:
+                runWebGenerator(TARGET_NAME);
+                break;
+        }
+    } else {
+        console.log(`
+            ${BLUE}🧬 FLEETBO CLI${RESET}
+            -------------------
+            Usage:
+            ${GREEN}npm run fleetbo page [Name]${RESET}             (Create React Page)
+            ${GREEN}npm run fleetbo android page [Name]${RESET}     (Create Android Module)
+            ${GREEN}npm run fleetbo ios page [Name]${RESET}         (Create iOS Module)
+        `);
     }
 };
 
