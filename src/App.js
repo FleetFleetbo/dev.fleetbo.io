@@ -56,6 +56,8 @@ import NotFound from './pages/NotFound';
    ======================================================================= */
 // FLEETBO_IMPORTS
 
+// FLEETBO_MORE_IMPORTS
+
 import './assets/css/App.css';
 
 import { useStartupEffect } from 'hooks/useStartupEffect';
@@ -82,12 +84,20 @@ function AppContent() {
             <Route path="/quick"           element={<QuickMock />} />
             <Route path="/mocks/sample"    element={<SampleMock />} />
 
-            {/* =======================================================================
+
+             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
               DO NOT DELETE THE ANCHOR BELOW.
               New pages generated via 'npm run fleetbo page NamePage' will be inserted here.
-               ======================================================================= */}
-            {/* FLEETBO_ROUTES */}
+              ======================================================================= */}
+              {/* FLEETBO_ROUTES */}
+
+             {/* =======================================================================
+              FLEETBO DYNAMIC ROUTES
+              DO NOT DELETE THE ANCHOR BELOW.
+              New pages generated via 'npm run fleetbo alex' will be inserted here.
+              ======================================================================= */}
+              {/* FLEETBO_DYNAMIC ROUTES */}
 
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Navbar />} />
