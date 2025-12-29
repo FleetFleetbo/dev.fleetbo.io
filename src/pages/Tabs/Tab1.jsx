@@ -194,7 +194,7 @@ const Tab1 = () => {
                             </div>
                             <h5 className="fw-bold text-dark">No publications yet</h5>
                             <p className="small mb-4">Start by adding your first item.</p>
-                            <button className="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm" onClick={() => Fleetbo.openPage('quick')}>
+                            <button className="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm" onClick={() => Fleetbo.openPage('insert')}>
                                 <MessageCirclePlus size={18} className="me-2"/> Add
                             </button>
                         </div>
