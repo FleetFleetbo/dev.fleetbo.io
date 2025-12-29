@@ -30,15 +30,15 @@ import { useLoadingTimeout } from 'hooks/useLoadingTimeout';
 import PageConfig from 'components/common/PageConfig';
 import { fleetboDB } from 'config/fleetboConfig';
 import Loader from 'components/common/Loader'; 
-import { MessageCirclePlus, ImageIcon, Inbox, Eye, Trash2, RefreshCcw } from 'lucide-react';
+import { MessageCirclePlus, ImageIcon, Inbox, Eye, Trash2, Bell, RefreshCcw } from 'lucide-react';
 
 const Tab1Header = () => {
     return (
         <header className='navbar ps-3 pe-3 pt-3 bg-white sticky-top border-bottom' style={{ zIndex: 1020, top: 0, height: '70px' }}>
             <h2 className='fw-bolder fb-name text-dark mb-0'>Feed</h2>
             <div className="navbar-right">
-                <button onClick={() => Fleetbo.openPage('insert')} className="btn-header text-success fs-5 fw-bold" title="Add New Item">
-                    <MessageCirclePlus />
+                <button onClick={() => Fleetbo.exec('Device', 'playSound', { id: 'pop' }) } className="btn-header text-success fs-5 fw-bold" title="Add New Item">
+                    <Bell />
                 </button>
             </div>
         </header>
