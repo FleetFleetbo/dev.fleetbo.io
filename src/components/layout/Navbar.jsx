@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Home, Crown, User } from 'lucide-react';
 import 'assets/css/Navbar.css';
 
+const ICON_MAP = {
+  Home: Home,
+  Crown: Crown,
+  User: User
+};
 const navItems = [
-  { id: 'Tab1', view: 'tab1', isNative: false, icon: 'fa-solid fa-house' },
-  { id: 'Tab2', view: 'Sample', isNative: true,  icon: 'fa-solid fa-crown' }, 
-  { id: 'Tab3', view: 'tab3', isNative: false, icon: 'fa-solid fa-user' },
+  { id: 'Tab1', view: 'tab1',   isNative: false, icon: 'Home' },
+  { id: 'Tab2', view: 'Sample', isNative: true,  icon: 'Crown' }, 
+  { id: 'Tab3', view: 'tab3',   isNative: false, icon: 'User' },
 ];
 
 const Navbar = () => {
   const location = useLocation();
-
   const getNavbarType = () => {
-
     const params = new URLSearchParams(window.location.search);
     if (params.get('type') === 'header') return 'header';
     if (params.get('type') === 'footer') return 'footer';
-
     const savedType = localStorage.getItem("navbar");
     if (savedType) return savedType;
-
     return 'footer';
   };
 
   const [navbarType, setNavbarType] = useState(getNavbarType);
-
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
     const activeRoute = params.get('activeRoute');
@@ -37,11 +38,9 @@ const Navbar = () => {
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
-
   useEffect(() => {
     const handleMessage = (event) => {
         if (!event.data) return;
-
         const { type, route, navbarMode } = event.data;
         if (type === 'SET_ACTIVE_ROUTE') {
             const matchedTab = navItems.find(item => !item.isNative && route.includes(`/${item.view}`));
@@ -67,17 +66,28 @@ const Navbar = () => {
     if (window.Fleetbo) {  window.Fleetbo.openView(item.view, item.isNative); } else { console.warn("Fleetbo engine not found"); }
   };
 
-  return (
+   return (
     <div className={navbarType === "header" ? "header" : "footer"}>
-      {navItems.map(item => (
-        <button 
-          key={item.id}
-          onClick={() => handleSelectTab(item)}
-          className={`nav-link ${activeTab === item.id ? "active" : ""}`}
-        >
-          <i className={item.icon}></i>
-        </button>
-      ))}
+      {navItems.map((item) => {
+        const IconComponent = ICON_MAP[item.icon];
+
+        return (
+          <button 
+            key={item.id}
+            onClick={() => handleSelectTab(item)}
+            className={`nav-link ${activeTab === item.id ? "active" : ""}`}
+          >
+            {IconComponent ? (
+              <IconComponent 
+                size={24} 
+                strokeWidth={activeTab === item.id ? 2.5 : 1.5} 
+              />
+            ) : (
+              <span>Icon Error</span>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 };
