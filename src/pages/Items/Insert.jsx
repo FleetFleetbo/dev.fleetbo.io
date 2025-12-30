@@ -24,11 +24,10 @@ const InsertHeader = ({ onBack, onGallery }) => {
 const Insert = () => {
     const navigate = useNavigate();
 
-    const [loading, setLoading]       = useState(false);
-    const [title, setTitle]           = useState("");
-    const [content, setContent]       = useState("");
-    const [message, setMessage]       = useState(null);
-    
+    const [loading, setLoading]             = useState(false);
+    const [title, setTitle]                 = useState("");
+    const [content, setContent]             = useState("");
+    const [message, setMessage]             = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
@@ -36,13 +35,11 @@ const Insert = () => {
             const message = event.data;
 
             if (message && message.type === 'FLEETBO_RESULT') {
-                
-                console.log(`📦 Reçu résultat (${message.kind})`, message.data);
-
+                  
                 switch (message.kind) {
                     
                     case 'IMAGE_SELECTED':
-                        setSelectedImage(message.data);
+                        setSelectedImage(message.data.url);
                         break;
 
                     case 'USER_SELECTED':
