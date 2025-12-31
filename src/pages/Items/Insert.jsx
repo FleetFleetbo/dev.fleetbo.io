@@ -38,14 +38,14 @@ const Insert = () => {
                   
                 switch (message.kind) {
                     
-                    case 'IMAGE_SELECTED':
+                    case 'F_IMAGE':
                         setSelectedImage(message.data.url);
                         break;
 
-                    case 'USER_SELECTED':
+                    case 'F_USER':
                         break;
 
-                    case 'PRODUCT_ADDED':
+                    case 'F_PRODUCT':
                         break;
 
                     default:
