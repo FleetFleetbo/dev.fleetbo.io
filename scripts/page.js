@@ -5,7 +5,6 @@ const ARGS = process.argv.slice(2);
 const PLATFORM = ARGS[0];
 const COMMAND = ARGS[0]; 
 const TARGET_NAME = ARGS[1];
-
 const APP_JS_PATH = path.join(__dirname, '../src/App.js');
 const GREEN = '\x1b[32m';
 const RED = '\x1b[31m';
@@ -36,6 +35,7 @@ const ${pageName} = () => {
 
     useEffect(() => {
         // loadData();
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -54,34 +54,26 @@ const ${pageName} = () => {
 
 export default ${pageName};
 `;
-
 const injectIntoAppJs = (pageName, importPath, routePath) => {
     if (!fs.existsSync(APP_JS_PATH)) return false;
-
     let content = fs.readFileSync(APP_JS_PATH, 'utf8');
-
     if (!content.includes('// FLEETBO_IMPORTS') || (!content.includes('// FLEETBO_ROUTES') && !content.includes('{/* FLEETBO_ROUTES */}'))) {
         console.log(`${YELLOW}⚠️  Anchors not found in App.js. Skipping auto-wiring.${RESET}`);
         return false;
     }
-
     const cleanImport = importPath ? `/${importPath}` : '';
     const importLine = `import ${pageName} from './pages${cleanImport}/${pageName}';`; 
     const routeLine = `<Route path="/${routePath}" element={<${pageName} />} />`;
-
     let injected = false;
-
     if (!content.includes(importLine)) {
         content = content.replace('// FLEETBO_IMPORTS', `${importLine}\n// FLEETBO_IMPORTS`);
         injected = true;
     }
-
     if (!content.includes(routeLine)) {
         const anchor = content.includes('{/* FLEETBO_ROUTES */}') ? '{/* FLEETBO_ROUTES */}' : '// FLEETBO_ROUTES';
         content = content.replace(anchor, `${routeLine}\n        ${anchor}`);
         injected = true;
     }
-
     if (injected) fs.writeFileSync(APP_JS_PATH, content);
     return injected;
 };
@@ -91,18 +83,15 @@ const runWebGenerator = (inputPath) => {
         askNameAndRun('Enter Page Path (e.g. admin/Settings):', runWebGenerator);
         return;
     }
-
     const parts = inputPath.split(/[/\\]/); 
     const rawName = parts.pop(); 
     const subDir = parts.join('/'); 
-
     const pageName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
     const baseDir = path.join(__dirname, '../src/pages');
     const targetDir = path.join(baseDir, subDir);
     const filePath = path.join(targetDir, `${pageName}.jsx`);
 
     if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
-
     if (fs.existsSync(filePath)) {
         console.log(`${RED}  Error: Page "${pageName}" already exists!${RESET}`);
         process.exit(1);
@@ -118,7 +107,6 @@ const runWebGenerator = (inputPath) => {
         console.log(` App.js updated: Route /${routePath}`);
     }
 };
-
 const askNameAndRun = (question, callback) => {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
     rl.question(`${BLUE}🧬 ${question} ${RESET}`, (n) => { 
@@ -126,7 +114,6 @@ const askNameAndRun = (question, callback) => {
         rl.close(); 
     });
 };
-
 const main = () => {
     if (COMMAND === 'page' || COMMAND === 'g') {
         runWebGenerator(TARGET_NAME); 
@@ -136,7 +123,6 @@ const main = () => {
             -------------------
             Usage:
             ${GREEN}npm run fleetbo page [Name]${RESET}      (Create Fleetbo JS Page)
-            
             ${YELLOW}Note: Use "npm run fleetbo alex" for native infrastructure power modules.${RESET}
         `);
     }
