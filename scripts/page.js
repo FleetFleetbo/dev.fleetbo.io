@@ -29,7 +29,7 @@ const RESET = '\x1b[0m';
 
 // --- TEMPLATES ---
 
-// 1. Template React (Web/Hybride)
+// 1. Template Fleetbo JS
 const getWebTemplate = (pageName) => `import React, { useState, useEffect } from 'react';
 import { fleetboDB } from 'config/fleetboConfig';
 import PageConfig from 'components/common/PageConfig';
@@ -84,7 +84,7 @@ import com.fleetbo.sdk.FleetboModule
 
 class ${moduleName}Module(context: Context, communicator: Any) : FleetboModule(context, communicator) {
 
-    // Example action called from React: Fleetbo.exec('${moduleName}', 'hello', { name: 'User' })
+    // Example action called from Fleetbo: Fleetbo.exec('${moduleName}', 'hello', { name: 'User' })
     fun hello(responseId: String, params: String) {
         // Logic here...
         sendSuccess(responseId, "{ \\"message\\": \\"Hello from Android Native!\\" }")
@@ -101,7 +101,7 @@ import FleetboSDK
 
 class ${moduleName}Module: FleetboModule {
     
-    // Example action called from React: Fleetbo.exec('${moduleName}', 'hello', { name: 'User' })
+    // Example action called from Fleetbo: Fleetbo.exec('${moduleName}', 'hello', { name: 'User' })
     func hello(_ responseId: String, _ params: String) {
         // Logic here...
         self.sendSuccess(responseId, "{ \\"message\\": \\"Hello from iOS Native!\\" }")
