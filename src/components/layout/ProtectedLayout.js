@@ -2,7 +2,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-
 const ProtectedLayout = () => {
     return (
         <div className="app-container">
@@ -12,5 +11,4 @@ const ProtectedLayout = () => {
         </div>
     );
 };
-
 export default ProtectedLayout;
