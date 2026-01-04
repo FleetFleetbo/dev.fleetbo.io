@@ -81,7 +81,7 @@ function AppContent() {
             <Route path="/insert"          element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item/:id"        element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
-            <Route path="/quick"           element={<QuickMock />} />
+            <Route path="/mocks/quick"     element={<QuickMock />} />
             <Route path="/mocks/sample"    element={<SampleMock />} />
 
 
