@@ -1,8 +1,10 @@
 // src/pages/NotFound.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 const NotFound = () => {
+  const handleRefreshNavigation = (e) => {
+    e.preventDefault();
+    window.location.href = '/tab1';
+  };
   return (
     <div className="d-flex justify-content-center align-items-center text-center vh-100 bg-light">
       <div>
@@ -10,12 +12,14 @@ const NotFound = () => {
         <p className="lead text-muted">
           Page not found.
         </p>
-        <Link to="/main" className="btn btn-success w-100 mt-3">
+        <button 
+          onClick={handleRefreshNavigation} 
+          className="btn btn-success w-100 mt-3"
+        >
           Go Home
-        </Link>
+        </button>
       </div>
     </div>
   );
 };
-
 export default NotFound;
