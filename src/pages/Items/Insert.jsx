@@ -31,31 +31,11 @@ const Insert = () => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     useEffect(() => {
-        const handleMessage = (event) => {
-            const message = event.data;
-
-            if (message && message.type === 'FLEETBO_RESULT') {
-                  
-                switch (message.kind) {
-                    
-                    case 'F_IMAGE':
-                        setSelectedImage(message.data.url);
-                        break;
-
-                    case 'F_USER':
-                        break;
-
-                    case 'F_PRODUCT':
-                        break;
-
-                    default:
-                        console.warn("Type de résultat inconnu :", message.kind);
-                }
-            }
-        };
-
-        window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
+        const cleanup = Fleetbo.on('F_IMAGE', (data) => {
+            console.log("Signal reçu d'Alex : Image sélectionnée");
+            setSelectedImage(data.url);
+        });
+        return cleanup; 
     }, []);
 
     const handleSubmit = async (e) => {
