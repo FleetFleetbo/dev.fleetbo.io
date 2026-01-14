@@ -3,11 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Home, Crown, User } from 'lucide-react';
 import 'assets/css/Navbar.css';
 
-const ICON_MAP = {
-  Home: Home,
-  Crown: Crown,
-  User: User
-};
+
 const navItems = [
   { id: 'Tab1', view: 'tab1',   isNative: false, label: 'Tab1' },
   { id: 'Tab2', view: 'Sample', isNative: true,  label: 'Tab2' }, 
@@ -69,8 +65,6 @@ const Navbar = () => {
    return (
     <div className={navbarType === "header" ? "header" : "footer"}>
       {navItems.map((item) => {
-        const IconComponent = ICON_MAP[item.icon];
-
         return (
           <button 
             key={item.id}
