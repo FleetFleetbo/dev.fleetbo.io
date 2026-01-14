@@ -61,7 +61,7 @@ const Tab1 = () => {
         try {
             const response = await Fleetbo.getDocsG(fleetboDB, collectionName);
             if (response.success) { 
-                // Tri par date (récent en haut)
+                // Sort by date
                 const sortedData = (response.data || []).sort((a, b) => {
                     const dateA = a.dateCreated ? new Date(a.dateCreated) : new Date(0);
                     const dateB = b.dateCreated ? new Date(b.dateCreated) : new Date(0);
@@ -70,8 +70,7 @@ const Tab1 = () => {
                 setData(sortedData); 
             } else { setError(response.message || "Error fetching data."); }
         } catch (err) {
-            console.error("--> [FLEETBO_DEBUG] Native error: ", err);
-            setError(`Native Error: ${err.message}`);
+            setError(`Engine Error: ${err.message}`);
         } finally {
             setIsLoading(false);
         }
@@ -84,19 +83,12 @@ const Tab1 = () => {
         return () => { isMounted = false; };
     }, [fetchData]);
     
-    const deleteItem = async (id) => {
-        if (isDeleting.has(id) || !id) return;
-        setIsDeleting(prev => new Set(prev).add(id));
-        try {
-            const result = await Fleetbo.delete(fleetboDB, collectionName, id);
-            if (result && result.success) {
-                setData(prevData => prevData.filter(item => item.id !== id));
-            } else {  throw new Error(result.message || "Delete failed"); }
-        } catch (err) {
-            setError(`Deletion error: ${err.message}`);
-        } finally {
-            setIsDeleting(prev => { const newSet = new Set(prev);  newSet.delete(id); return newSet; });
-        }
+    const deleteItem = (id) => {
+        // 1. INSTANT UI 
+        setData(currentItems => currentItems.filter(item => item.id !== id));
+        // 2. SERVER BACKGROUND
+        Fleetbo.delete(fleetboDB, "items", id).then(() => { console.log(" Server Cleaned"); })
+                                              .catch(err => { console.error(" Delete failed", err); fetchData(); });
     };
 
     const renderContent = () => {
