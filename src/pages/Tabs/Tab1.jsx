@@ -49,7 +49,6 @@ const Tab1 = () => {
     const [isLoading, setIsLoading]   = useState(true);
     const [data, setData]             = useState([]);          
     const [error, setError]           = useState("");           
-    const [isDeleting, setIsDeleting] = useState(new Set()); 
     const collectionName              = "items";
 
     // Keep
@@ -166,13 +165,8 @@ const Tab1 = () => {
                                             <button 
                                                 onClick={() => deleteItem(item.id)} 
                                                 className="btn-delete text-danger p-2" 
-                                                disabled={isDeleting.has(item.id)}
                                             >
-                                                {isDeleting.has(item.id) ? (
-                                                    <span className="spinner-border spinner-border-sm text-danger" />
-                                                ) : (
-                                                    <Trash2 size={18} />
-                                                )}
+                                                <Trash2 size={18} />
                                             </button>
                                         </div>
                                     </div>
