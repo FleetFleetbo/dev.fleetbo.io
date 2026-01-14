@@ -9,9 +9,9 @@ const ICON_MAP = {
   User: User
 };
 const navItems = [
-  { id: 'Tab1', view: 'tab1',   isNative: false, icon: 'Home' },
-  { id: 'Tab2', view: 'Sample', isNative: true,  icon: 'Crown' }, 
-  { id: 'Tab3', view: 'tab3',   isNative: false, icon: 'User' },
+  { id: 'Tab1', view: 'tab1',   isNative: false, label: 'Tab1' },
+  { id: 'Tab2', view: 'Sample', isNative: true,  label: 'Tab2' }, 
+  { id: 'Tab3', view: 'tab3',   isNative: false, label: 'Tab3' },
 ];
 
 const Navbar = () => {
@@ -77,14 +77,12 @@ const Navbar = () => {
             onClick={() => handleSelectTab(item)}
             className={`nav-link ${activeTab === item.id ? "active" : ""}`}
           >
-            {IconComponent ? (
-              <IconComponent 
-                size={24} 
-                strokeWidth={activeTab === item.id ? 2.5 : 1.5} 
-              />
-            ) : (
-              <span>Icon Error</span>
-            )}
+            <span style={{ 
+                fontWeight: activeTab === item.id ? '800' : '500', 
+                fontSize: '14px' 
+            }}>
+                {item.label}
+            </span>
           </button>
         );
       })}
