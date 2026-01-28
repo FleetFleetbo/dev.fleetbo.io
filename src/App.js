@@ -41,7 +41,6 @@ import SetUser from "./app/items/User/SetUser";
 import Insert from "./app/items/Insert";
 import Item from "./app/items/Item";
 
-import QuickMock from "./app/mocks/Quick";
 import SampleMock from "./app/mocks/SampleMock";
 import NotFound from './app/NotFound';
 
@@ -52,10 +51,6 @@ import NotFound from './app/NotFound';
 
 // FLEETBO_IMPORTS
 
-import DatingCameraMock  from './app/mocks/DatingCameraMock';
-import NativeGalleryMock from './app/mocks/NativeGalleryMock';
-import NativeCameraMock from './app/mocks/NativeCameraMock';
-import StockCameraMock from './app/mocks/StockCameraMock';
 // FLEETBO_MORE_IMPORTS
 
 import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
@@ -79,7 +74,6 @@ function AppContent() {
             <Route path="/insert"          element={<ProtectedRoute><Insert /></ProtectedRoute>} />
             <Route path="/item/:id"        element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
-            <Route path="/mocks/quick"     element={<QuickMock />} />
             <Route path="/mocks/sample"    element={<SampleMock />} />
 
 
@@ -97,12 +91,6 @@ function AppContent() {
               New pages generated via 'npm run fleetbo alex' will be inserted here.
               ======================================================================= */}
 
-            <Route path="/mocks/datingcameramock" element={<DatingCameraMock />} />
-            <Route path="/mocks/datingcamera" element={<DatingCameraMock />} />
-            <Route path="/mocks/nativegallery" element={<NativeGalleryMock />} />
-            <Route path="/mocks/nativecamera" element={<NativeCameraMock />} />
-            <Route path="/mocks/nativegallerymock" element={<NativeGalleryMock />} />
-            <Route path="/mocks/stockcamera" element={<StockCameraMock />} />
             {/* FLEETBO_DYNAMIC ROUTES */}
 
             <Route path="*"       element={<NotFound />} />
