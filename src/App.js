@@ -26,7 +26,7 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
 // Context and internal logic
-import { AuthProvider, AuthGate, ProtectedRoute, ProtectedLayout } from '@fleetbo';
+import { AuthProvider, AuthGate, useAuth, ProtectedRoute, ProtectedLayout } from '@fleetbo';
 
 // Application pages
 import Login from "./app/auth/Login";
@@ -56,6 +56,12 @@ import NotFound from './app/NotFound';
 import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
 
 function AppContent() {
+
+    const auth = useAuth();
+    const isLoading = auth ? auth.isLoading : true; 
+    if (isLoading) {
+        return <InitializingScreen />;
+    }
     return (
         // Add Routes
         <Routes>
