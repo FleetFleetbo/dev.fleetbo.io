@@ -60,9 +60,13 @@ function AppContent() {
     const auth = useAuth();
     const location = useLocation();
 
-    const isNavbar = location.pathname === '/navbar' || window.location.hash.includes('navbar');
+    const isTechnicalRoute = 
+        location.pathname === '/navbar' || 
+        window.location.hash.includes('navbar') ||
+        location.pathname.includes('/mocks') || 
+        window.location.hash.includes('mocks'); 
 
-    if (!isNavbar) {
+    if (!isTechnicalRoute) {
         const isLoading = auth ? auth.isLoading : true;
         if (isLoading) {
             return <InitializingScreen />;
