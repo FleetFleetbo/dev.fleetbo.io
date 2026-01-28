@@ -23,7 +23,7 @@
  * - You can customize the `InitializingScreen` to match your app's branding.
  */
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // Context and internal logic
 import { AuthProvider, AuthGate, useAuth, ProtectedRoute, ProtectedLayout } from '@fleetbo';
@@ -58,10 +58,17 @@ import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
 function AppContent() {
 
     const auth = useAuth();
-    const isLoading = auth ? auth.isLoading : true; 
-    if (isLoading) {
-        return <InitializingScreen />;
+    const location = useLocation();
+
+    const isNavbar = location.pathname === '/navbar' || window.location.hash.includes('navbar');
+
+    if (!isNavbar) {
+        const isLoading = auth ? auth.isLoading : true;
+        if (isLoading) {
+            return <InitializingScreen />;
+        }
     }
+
     return (
         // Add Routes
         <Routes>
