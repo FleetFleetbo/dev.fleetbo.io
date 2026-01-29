@@ -28,6 +28,7 @@ const Navbar = () => {
       const matchedTab = navItems.find(item => !item.isNative && activeRoute.includes(`/${item.view}`));
       if (matchedTab) return matchedTab.id;
     }
+    // C'est ici que la magie opère au redémarrage de la Navbar
     const savedTab = localStorage.getItem("activeTab");
     return savedTab || 'Tab1';
   };
@@ -38,16 +39,25 @@ const Navbar = () => {
     const handleMessage = (event) => {
         if (!event.data) return;
         const { type, route, navbarMode } = event.data;
+        
+        // Moteur : Changement de route détecté
         if (type === 'SET_ACTIVE_ROUTE') {
             const matchedTab = navItems.find(item => !item.isNative && route.includes(`/${item.view}`));
-            if (matchedTab) setActiveTab(matchedTab.id);
+            if (matchedTab) {
+                setActiveTab(matchedTab.id);
+                // ✅ FIX : On persiste l'état pour survivre au démontage/remontage
+                localStorage.setItem("activeTab", matchedTab.id); 
+            }
         }
+        
         if (type === 'SET_NAVBAR_TYPE') {
             setNavbarType(navbarMode);
             localStorage.setItem("navbar", navbarMode);
         }
     };
     window.addEventListener('message', handleMessage);
+    
+    // Demande au parent où on est (au cas où on vient d'être monté)
     if (window.top !== window.self) {  
         window.top.postMessage({ type: 'FLEETBO_REQUEST_ENGINE' }, '*'); 
     }
@@ -55,6 +65,7 @@ const Navbar = () => {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+  // Ce useEffect est moins utile dans l'iframe (car location = /navbar) mais on le garde par sécurité
   useEffect(() => {
     const currentTab = navItems.find(item => !item.isNative && location.pathname.includes(item.view));
     if (currentTab) { 
@@ -65,6 +76,9 @@ const Navbar = () => {
 
   const handleSelectTab = (item) => {
     setActiveTab(item.id);
+    // ✅ FIX : On persiste le choix manuel immédiatement
+    localStorage.setItem("activeTab", item.id); 
+    
     if (window.Fleetbo) {  
         window.Fleetbo.openView(item.view, item.isNative); 
     } else { 
@@ -127,7 +141,6 @@ const Navbar = () => {
                 ...(isActive ? styles.activeButton : {}) 
             }}
           >
-            {/* Icons can be added here later */}
             <span style={styles.label}>
                 {item.label}
             </span>
