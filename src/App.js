@@ -139,9 +139,6 @@ const InitializingScreen = ({ error }) => (
 
 function App() {
     const { isFleetboReady, initializationError } = useStartupEffect();
-    
-    //const isNavbarRoute = window.location.pathname === '/navbar';
-    // On vérifie si le hash (#) contient le mot "navbar"
     const isNavbarRoute = window.location.hash.includes('navbar');
 
     if (isNavbarRoute) {
