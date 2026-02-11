@@ -13,7 +13,7 @@ const InsertHeader = ({ onBack, onGallery }) => {
                 </button>
             </div>
             <div className="navbar-right pe-3">
-                <button onClick={onGallery} className="btn-header fs-5 text-success fw-bold">
+                <button className="btn-header fs-5 text-success fw-bold">
                      <Images />
                 </button>
             </div>
@@ -29,33 +29,7 @@ const Insert = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
 
-    // Le pilote écoute passivement. Alex (le moteur) envoie le signal quand il est prêt.
-    const openCamera = async () => {
-       // Appel au module natif (ou au Mock en dev)
-       //const result = await Fleetbo.exec('DatingCamera');
-       const result = await Fleetbo.exec('StockCamera', 'open', {});
-       
-       // Gestion du retour universel
-       if (result && result.url) {
-           console.log('Nouvelle photo de profil :', result.url);
-           if (result.url) setSelectedImage(result.url);
-           // setProfilePic(result.url);
-       }
-    };
-
-    const handleOpenGallery = async () => {
-       // Appel asynchrone au module natif
-       // const result = await Fleetbo.exec('NativeGallery');
-       const result = await Fleetbo.exec('NativeGallery', 'capture', {});
-       
-       // Gestion universelle du retour (Mock ou Natif)
-       if (result && result.url) {
-           console.log('Image sélectionnée:', result.url);
-           //setImage(result.url); // Mettre à jour ton state
-           if (result.url) setSelectedImage(result.url);
-        }
-    };
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage(null);
@@ -99,7 +73,6 @@ const Insert = () => {
             
             <InsertHeader 
                 onBack={()    => navigate(-1) } 
-                onGallery={handleOpenGallery } 
             />
 
             <div className="p-3 fade-in">
@@ -115,7 +88,6 @@ const Insert = () => {
                             />
                             
                             <div 
-                                onClick={openCamera}
                                 className="position-absolute bottom-0 end-0 bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" 
                                 style={{ width: '30px', height: '30px', cursor: 'pointer', opacity: 0.9 }}
                             >
