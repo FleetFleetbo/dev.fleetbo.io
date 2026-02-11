@@ -1,5 +1,5 @@
 {
-  "name": "AAP4",
+  "name": "Fleetbo App Template",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -18,8 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "fleetbo": "node scripts/cli.js",
-    "dev": "node scripts/cli.js"
+    "fleetbo": "npx -y fleetbo-cockpit-cli@latest",
+    "dev": "npx -y fleetbo-cockpit-cli@latest"
   },
   "eslintConfig": {
     "extends": [
