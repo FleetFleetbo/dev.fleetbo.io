@@ -72,7 +72,7 @@ const Insert = () => {
             <PageConfig navbar="none" />
             
             <InsertHeader 
-                onBack={()    => navigate(-1) } 
+                onBack={()  => navigate(-1) } 
             />
 
             <div className="p-3 fade-in">
@@ -106,7 +106,7 @@ const Insert = () => {
                     </div>
 
                     <div className="mb-4">
-                        <label className="mb-1 text-secondary fs-6">uyewgfuygweyg</label>
+                        <label className="mb-1 text-secondary fs-6">Description</label>
                         <textarea 
                             className="form-control" rows={4} 
                             value={content} onChange={e => setContent(e.target.value)} 
