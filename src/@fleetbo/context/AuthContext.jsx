@@ -26,6 +26,13 @@ export const AuthProvider = ({ children }) => {
             }
         };
         checkUserSession();
+        const handleFleetboLogin = (e) => {
+            const data = e.detail || {};
+            setIsLoggedIn(true);
+            setSessionData(prev => ({ ...prev, ...data, isLoggedIn: true }));
+        };
+        window.addEventListener('FLEETBO_AUTH_SUCCESS', handleFleetboLogin);
+        return () => window.removeEventListener('FLEETBO_AUTH_SUCCESS', handleFleetboLogin);
     }, []);
 
     const login = (data) => {
