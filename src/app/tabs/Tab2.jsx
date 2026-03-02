@@ -1,5 +1,5 @@
 /**
- * Native Tab Redirect or Not
+ * You can rederect to native Tab  
  *
  * This tab is handled by a native module (or its mock in dev).
  * If React renders this route (e.g. on reload), we redirect to the mock.
