@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const navItems = [
-  { id: 'Tab1', view: 'tab1',   isNative: false, label: 'Tab 1' },
-  { id: 'Tab2', view: 'Sample', isNative: true,  label: 'Tab 2' }, 
-  { id: 'Tab3', view: 'tab3',   isNative: false, label: 'Tab 3' },
+  { id: 'Tab1', view: 'tab1', label: 'Tab 1' },
+  { id: 'Tab2', view: 'tab2', label: 'Tab 2' },
+  { id: 'Tab3', view: 'tab3', label: 'Tab 3' },
 ];
 
 const Navbar = () => {
@@ -34,6 +34,119 @@ const Navbar = () => {
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+        if (!event.data) return;
+        const { type, route, navbarMode } = event.data;
+
+        if (type === 'SET_ACTIVE_ROUTE') {
+            const matchedTab = navItems.find(item => !item.isNative && route.includes(`/${item.view}`));
+            if (matchedTab) {
+                setActiveTab(matchedTab.id);
+                localStorage.setItem("activeTab", matchedTab.id); 
+            }
+        }
+        
+        if (type === 'SET_NAVBAR_TYPE') {
+            setNavbarType(navbarMode);
+            localStorage.setItem("navbar", navbarMode);
+        }
+    };
+    window.addEventListener('message', handleMessage);
+    if (window.top !== window.self) {  
+        window.top.postMessage({ type: 'FLEETBO_REQUEST_ENGINE' }, '*'); 
+    } 
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
+  useEffect(() => {
+    const currentTab = navItems.find(item => !item.isNative && location.pathname.includes(item.view));
+    if (currentTab) { 
+        setActiveTab(currentTab.id); 
+        localStorage.setItem("activeTab", currentTab.id); 
+    }
+  }, [location]);
+
+  const handleSelectTab = (item) => {
+    setActiveTab(item.id);
+    localStorage.setItem("activeTab", item.id);
+    localStorage.setItem("activeTabView", item.view);
+    localStorage.setItem("activeTabNative", item.isNative ? "true" : "false");
+    
+    if (window.Fleetbo) {  
+        window.Fleetbo.openView(item.view, item.isNative); 
+    } else { 
+        console.warn("Fleetbo engine not found"); 
+    }
+  };
+
+  // --- MINIMALIST STYLES (INLINE) ---
+  const styles = {
+   container: {
+        position: 'fixed',
+        left: 0,
+        right: 0,
+        height: '70px',    
+        paddingBottom: 'env(safe-area-inset-bottom)', 
+        boxSizing: 'border-box',    
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: 'rgba(247, 246, 246, 0.95)',
+        zIndex: 1000,
+        ...(navbarType === 'header' 
+            ? { top: 0, borderBottom: '1px solid transparent' } 
+            : { bottom: 0, borderTop: '1px solid transparent' }
+        )
+    },
+    button: {
+        flex: 1,
+        background: 'transparent',
+        border: 'none',
+        padding: '8px',
+        cursor: 'default', 
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'opacity 0.2s',
+        color: '#999', 
+    },
+    activeButton: {
+        color: '#0E904D', 
+        fontWeight: 'bold'
+    },
+    label: {
+        fontSize: '12px',
+        marginTop: '4px'
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      {navItems.map((item) => {
+        const isActive = activeTab === item.id;
+        return (
+          <button 
+            key={item.id}
+            onClick={() => handleSelectTab(item)}
+            style={{ 
+                ...styles.button, 
+                ...(isActive ? styles.activeButton : {}) 
+            }}
+          >
+            <span style={styles.label}>
+                {item.label}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Navbar;
 
   useEffect(() => {
     const handleMessage = (event) => {
