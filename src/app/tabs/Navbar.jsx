@@ -158,7 +158,6 @@ export default Navbar;
             const matchedTab = navItems.find(item => !item.isNative && route.includes(`/${item.view}`));
             if (matchedTab) {
                 setActiveTab(matchedTab.id);
-                // ✅ FIX : On persiste l'état pour survivre au démontage/remontage
                 localStorage.setItem("activeTab", matchedTab.id); 
             }
         }
