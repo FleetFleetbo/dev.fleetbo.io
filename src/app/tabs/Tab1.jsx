@@ -160,7 +160,8 @@ const Tab1 = () => {
                             <p className="small text-secondary mb-4">Your feed is empty. Start creating content.</p>
                             <button
                                 className="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm d-inline-flex align-items-center"
-                                onClick={() => Fleetbo.exec('ItemCreator', 'open', { collection: 'items' }).then(r => r?.success && fetchData())}
+                                //onClick={() => Fleetbo.exec('ItemCreator', 'open', { collection: 'items' }).then(r => r?.success && fetchData())}
+                                onClick={() => Fleetbo.exec('SampleMock', 'open', {})}
                             >
                                 <MessageCirclePlus size={18} className="me-2" /> Create First Post
                             </button>
