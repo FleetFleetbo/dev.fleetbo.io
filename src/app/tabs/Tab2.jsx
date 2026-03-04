@@ -9,7 +9,7 @@ import { PageConfig } from '@fleetbo';
 
 const Tab2 = () => {
     // Call your native module 
-    useEffect(() => { Fleetbo.openView('Usertab', true);}, []);
+    useEffect(() => { Fleetbo.openView('SampleTabMock', true);}, []);
 
     return (
         <>
