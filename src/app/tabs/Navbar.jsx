@@ -188,7 +188,6 @@ export default Navbar;
 
   const handleSelectTab = (item) => {
     setActiveTab(item.id);
-    // ✅ FIX : On persiste le choix manuel immédiatement
     localStorage.setItem("activeTab", item.id); 
     
     if (window.Fleetbo) {  
