@@ -1,4 +1,4 @@
-// src/components/layout/ProtectedLayout.js
+// src/components/layout/ProtectedLayout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 

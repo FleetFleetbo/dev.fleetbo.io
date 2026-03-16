@@ -4,7 +4,9 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    include: '**/*.{jsx,js}',  // ← parse JSX dans .js aussi
+  })],
 
   // Alias @fleetbo → src/@fleetbo (identique à l'ancien CRA)
   resolve: {
