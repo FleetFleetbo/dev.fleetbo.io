@@ -11,7 +11,7 @@ import RouteAuth from "./app/auth/RouteAuth";
 import Tab1 from "./app/tabs/Tab1";
 import Tab2 from "./app/tabs/Tab2";
 import Tab3 from "./app/tabs/Tab3";
-import Navbar from "./app/tabs/Navbar";
+import Welcome from "./app/tabs/Welcome";
 
 import SetUser from "./app/items/User/SetUser";
 import Item from "./app/items/Item";
@@ -26,6 +26,11 @@ import NotFound from './app/NotFound';
    ======================================================================= */
 
 // FLEETBO_IMPORTS
+import GuestCreator from './app/mocks/GuestCreator';
+import GuestList from './app/mocks/GuestList';
+
+import TestModule from './app/mocks/TestModule';
+import testModule from './app/mocks/testModule';
 // FLEETBO_MORE_IMPORTS
 
 import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
@@ -79,10 +84,15 @@ function AppContent() {
               DO NOT DELETE THE ANCHOR BELOW.
               New pages generated via 'npm run fleetbo alex' will be inserted here.
               ======================================================================= */}
+            <Route path="/mocks/guestcreator" element={<GuestCreator />} />
+            <Route path="/mocks/guestlist" element={<GuestList />} />            
+            
+            <Route path="/mocks/testmodule" element={<TestModule />} />
+            <Route path="/mocks/testmodule" element={<testModule />} />
             {/* FLEETBO_DYNAMIC ROUTES */}
 
             <Route path="*"       element={<NotFound />} />
-            <Route path="/navbar" element={<Navbar />} />
+            <Route path="/navbar" element={<Welcome />} />
         </Routes>
     );
 }

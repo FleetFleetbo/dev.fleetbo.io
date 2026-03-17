@@ -7,7 +7,7 @@ const navItems = [
   { id: 'Tab3', view: 'tab3', label: 'Tab 3' },
 ];
 
-const Navbar = () => {
+const Welcome = () => {
   const location = useLocation();
 
   const getNavbarType = () => {
@@ -146,4 +146,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Welcome;

@@ -21,7 +21,6 @@
  */
 
 import React, { useState } from 'react';
-import { motion } from "framer-motion";
 import 'app/assets/css/Auth.css';
 import logo from 'app/assets/images/logo.png';
 import { useAuth, PageConfig } from '@fleetbo';
@@ -131,7 +130,7 @@ const Login = () => {
     return (
         <>
             <PageConfig navbar="none" />  
-            <motion.div
+            <div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -140,7 +139,7 @@ const Login = () => {
                 <div className="login-passerelle-box">
                     {renderContent()}
                 </div>   
-            </motion.div>
+            </div>
         </>
     );
 };

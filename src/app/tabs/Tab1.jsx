@@ -84,8 +84,8 @@ const Tab1 = () => {
             );
         }
 
-        // If data exists, the Engine renders the native GuestList over this blank slate
-        if (data.length > 0) { return <div className="flex-grow-1 bg-white"></div>; } 
+        // If data exists, the Engine renders the fleetbo module GuestList
+        return null;
     };
 
     return (

@@ -1,4 +1,3 @@
-// src/config/fleetboConfig.js
-
-export const fleetboDB    = process.env.REACT_APP_FLEETBO_DB_KEY;
-export const enterpriseID = process.env.REACT_APP_ENTERPRISE_ID;
+// src/@fleetbo/config/fleetboConfig.js
+export const fleetboDB    = import.meta.env.VITE_FLEETBO_DB_KEY;
+export const enterpriseID = import.meta.env.VITE_FLEETBO_ENTERPRISE_ID;

@@ -106,15 +106,14 @@ export const useStartupEffect = () => {
         };
     }, [navigate]);
 
-    useEffect(() => {
-        if(isFleetboReady) {
-            const lastActiveTab = localStorage.getItem("activeTab") || "Tab1";
-            const initialRoute = `/${lastActiveTab.toLowerCase()}`;
-            if (location.pathname === '/' && initialRoute !== '/tab1') { 
-                navigate(initialRoute, { replace: true });
-            }
-        }
-    }, [isFleetboReady, location.pathname, navigate]); 
+    const onFleetboReady = () => {
+        if (isReadyRef.current) return;
+        isReadyRef.current = true;
+        cleanup();
+        // Signaler à AuthContext que le moteur est disponible
+        window.dispatchEvent(new Event('FLEETBO_ENGINE_READY'));
+        setIsFleetboReady(true);
+    };
 
     return { isFleetboReady, initializationError };
 };

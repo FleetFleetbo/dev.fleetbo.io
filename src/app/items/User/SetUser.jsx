@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from "framer-motion";
 import { fleetboDB, useAuth, PageConfig } from '@fleetbo';
 
 
@@ -36,7 +35,7 @@ const SetUser = () => {
     return (
         <>
             <PageConfig navbar="none" />
-            <motion.div
+            <div
                 transition={{ duration: 0.4 }}
                 className="p-3 vh-100 d-flex align-items-center justify-content-center"
             >
@@ -79,7 +78,7 @@ const SetUser = () => {
                         <div> <p>Information not available</p> </div>
                     )}
                 </div>   
-            </motion.div>
+            </div>
         </>
     )
 };
