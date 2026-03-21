@@ -28,9 +28,6 @@ import NotFound from './app/NotFound';
 // FLEETBO_IMPORTS
 import GuestCreator from './app/mocks/GuestCreator';
 import GuestList from './app/mocks/GuestList';
-
-import TestModule from './app/mocks/TestModule';
-import testModule from './app/mocks/testModule';
 // FLEETBO_MORE_IMPORTS
 
 import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
@@ -75,21 +72,16 @@ function AppContent() {
             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
               DO NOT DELETE THE ANCHOR BELOW.
-              New pages generated via 'npm run fleetbo page NamePage' will be inserted here.
               ======================================================================= */}
             {/* FLEETBO_ROUTES */}
 
             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
               DO NOT DELETE THE ANCHOR BELOW.
-              New pages generated via 'npm run fleetbo alex' will be inserted here.
               ======================================================================= */}
+             {/* FLEETBO_DYNAMIC ROUTES */}
             <Route path="/mocks/guestcreator" element={<GuestCreator />} />
             <Route path="/mocks/guestlist" element={<GuestList />} />            
-            
-            <Route path="/mocks/testmodule" element={<TestModule />} />
-            <Route path="/mocks/testmodule" element={<testModule />} />
-            {/* FLEETBO_DYNAMIC ROUTES */}
 
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<Welcome />} />
