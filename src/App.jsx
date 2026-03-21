@@ -1,10 +1,8 @@
 import React from 'react';
 import { Routes, Route, useLocation } from "react-router-dom";
-
-// Context and internal logic
 import { AuthProvider, AuthGate, useAuth, ProtectedRoute, ProtectedLayout } from '@fleetbo';
 
-// Application pages
+// Application views
 import Login from "./app/auth/Login";
 import RouteAuth from "./app/auth/RouteAuth";
 
@@ -63,12 +61,7 @@ function AppContent() {
             <Route path="/setuser"         element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
             <Route path="/item/:id"        element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
-            {/* =======================================================================
-              FLEETBO DYNAMIC ROUTES
-              DO NOT DELETE THE ANCHOR BELOW.
-              ======================================================================= */}
             {/* FLEETBO_ROUTES */}
-
             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
               DO NOT DELETE THE ANCHOR BELOW.
