@@ -15,9 +15,6 @@ import Welcome from "./app/tabs/Welcome";
 
 import SetUser from "./app/items/User/SetUser";
 import Item from "./app/items/Item";
-
-import SampleMock from "./app/mocks/SampleMock";
-import SampleTabMock from "./app/mocks/SampleTabMock";
 import NotFound from './app/NotFound';
 
 /* =======================================================================
@@ -65,9 +62,6 @@ function AppContent() {
 
             <Route path="/setuser"         element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
             <Route path="/item/:id"        element={<ProtectedRoute><Item /></ProtectedRoute>} />
-
-            <Route path="/mocks/samplemock"    element={<SampleMock />} />
-            <Route path="/mocks/sampletabmock" element={<SampleTabMock />} />
 
             {/* =======================================================================
               FLEETBO DYNAMIC ROUTES
