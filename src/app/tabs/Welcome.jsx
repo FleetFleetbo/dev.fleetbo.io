@@ -15,12 +15,10 @@ const Welcome = () => {
     if (params.get('type') === 'header') return 'header';
     if (params.get('type') === 'footer') return 'footer';
     const savedType = localStorage.getItem("navbar");
-    if (savedType) return savedType;
-    return 'footer';
+    return savedType || 'footer';
   };
 
   const [navbarType, setNavbarType] = useState(getNavbarType);
-  const [isVisible, setIsVisible]   = useState(false);
 
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
@@ -29,8 +27,7 @@ const Welcome = () => {
       const matchedTab = navItems.find(item => !item.isNative && activeRoute.includes(`/${item.view}`));
       if (matchedTab) return matchedTab.id;
     }
-    const savedTab = localStorage.getItem("activeTab");
-    return savedTab || 'Tab1';
+    return localStorage.getItem("activeTab") || 'Tab1';
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
@@ -41,13 +38,6 @@ const Welcome = () => {
         const { type, route, navbarMode } = event.data;
 
         if (type === 'SET_ACTIVE_ROUTE') {
-            
-            if (route.includes('/login') || route.includes('/auth')) {
-                setIsVisible(false);
-            } else {
-                setIsVisible(true);
-            }
-
             const matchedTab = navItems.find(item => !item.isNative && route.includes(`/${item.view}`));
             if (matchedTab) {
                 setActiveTab(matchedTab.id);
@@ -77,10 +67,6 @@ const Welcome = () => {
     }
   }, [location]);
 
-  if (!isVisible) {
-      return <div style={{ ...styles.container, backgroundColor: 'transparent' }} />;
-  }
-
   const handleSelectTab = (item) => {
     setActiveTab(item.id);
     localStorage.setItem("activeTab", item.id);
@@ -107,9 +93,11 @@ const Welcome = () => {
         alignItems: 'center',
         backgroundColor: 'rgba(247, 246, 246, 0.95)',
         zIndex: 1000,
+        // 🥷 RESTAURATION DES BORDURES CONDITIONNELLES
+        // Puisque Test.jsx n'a plus de bordures, on les définit ici proprement selon le mode.
         ...(navbarType === 'header' 
-            ? { top: 0, borderBottom: '1px solid transparent' } 
-            : { bottom: 0, borderTop: '1px solid transparent' }
+            ? { top: 0, borderBottom: '1px solid #eee' } 
+            : { bottom: 0, borderTop: '1px solid #eee' }
         )
     },
     button: {
@@ -122,7 +110,6 @@ const Welcome = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'opacity 0.2s',
         color: '#999', 
     },
     activeButton: {
@@ -148,9 +135,7 @@ const Welcome = () => {
                 ...(isActive ? styles.activeButton : {}) 
             }}
           >
-            <span style={styles.label}>
-                {item.label}
-            </span>
+            <span style={styles.label}> {item.label} </span>
           </button>
         );
       })}
