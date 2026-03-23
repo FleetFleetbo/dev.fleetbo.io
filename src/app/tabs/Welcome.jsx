@@ -20,6 +20,7 @@ const Welcome = () => {
   };
 
   const [navbarType, setNavbarType] = useState(getNavbarType);
+  const [isVisible, setIsVisible]   = useState(false);
 
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
@@ -40,6 +41,13 @@ const Welcome = () => {
         const { type, route, navbarMode } = event.data;
 
         if (type === 'SET_ACTIVE_ROUTE') {
+            
+            if (route.includes('/login') || route.includes('/auth')) {
+                setIsVisible(false);
+            } else {
+                setIsVisible(true);
+            }
+
             const matchedTab = navItems.find(item => !item.isNative && route.includes(`/${item.view}`));
             if (matchedTab) {
                 setActiveTab(matchedTab.id);
@@ -52,6 +60,7 @@ const Welcome = () => {
             localStorage.setItem("navbar", navbarMode);
         }
     };
+
     window.addEventListener('message', handleMessage);
     if (window.top !== window.self) {  
         window.top.postMessage({ type: 'FLEETBO_REQUEST_ENGINE' }, '*'); 
@@ -68,6 +77,10 @@ const Welcome = () => {
     }
   }, [location]);
 
+  if (!isVisible) {
+      return <div style={{ ...styles.container, backgroundColor: 'transparent' }} />;
+  }
+
   const handleSelectTab = (item) => {
     setActiveTab(item.id);
     localStorage.setItem("activeTab", item.id);
@@ -81,7 +94,6 @@ const Welcome = () => {
     }
   };
 
-  // --- MINIMALIST STYLES (INLINE) ---
   const styles = {
    container: {
         position: 'fixed',
