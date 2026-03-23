@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider, AuthGate, useAuth, ProtectedRoute, ProtectedLayout } from '@fleetbo';
+import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
 
 // Application views
 import Login from "./app/auth/Login";
@@ -19,16 +20,26 @@ import NotFound from './app/NotFound';
     FLEETBO AUTO-GENERATION ZONE
     DO NOT DELETE OR MODIFY THE SECTION BELOW.
    ======================================================================= */
-
 // FLEETBO_IMPORTS
 import GuestCreator from './app/mocks/GuestCreator';
 import GuestList from './app/mocks/GuestList';
 // FLEETBO_MORE_IMPORTS
 
-import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
+
+const DelayedNavbar = () => {
+    const [isReady, setIsReady] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsReady(true), 1500);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (!isReady) return null; 
+    
+    return <Welcome />;
+};
 
 function AppContent() {
-
     const auth = useAuth();
     const location = useLocation();
 
@@ -48,7 +59,6 @@ function AppContent() {
     return (
         <Routes>
             <Route path="/"                element={<AuthGate />} />
-
             <Route path="/auth/route"      element={<RouteAuth />} />
             <Route path="/login"           element={<Login />} />
 
@@ -71,7 +81,7 @@ function AppContent() {
             <Route path="/mocks/guestlist" element={<GuestList />} />            
 
             <Route path="*"       element={<NotFound />} />
-            <Route path="/navbar" element={<Welcome />} />
+            <Route path="/navbar" element={<DelayedNavbar />} />
         </Routes>
     );
 }
