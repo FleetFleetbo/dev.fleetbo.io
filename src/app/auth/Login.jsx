@@ -110,11 +110,11 @@ const Login = () => {
 
                     <button 
                         onClick={leaveApp} 
-                        className="btn btn-link text-secondary text-decoration-none mt-3" 
+                        className="btn btn-link text-secondary text-decoration-none mt-2" 
                         style={{ fontSize: '14px' }}
                         disabled={loadingLog || loadingLeave}
                     >
-                        {loadingLeave ? "Disconnecting..." : sessionData.appName || "Fleetbo"}
+                        {loadingLeave ? "Disconnecting..." : "Leave"}
                     </button>
 
                     <p className="mt-4 text-muted" style={{ fontSize: '12px' }}>
