@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "fleetbo": "npx fleetbo-cockpit-cli@latest",
+    "fleetbo": "npx -y fleetbo-cockpit-cli@latest",
     "android": "npx fleetbo-cockpit-cli@latest android",
     "ios": "npx fleetbo-cockpit-cli@latest ios",
     "alex": "npx fleetbo-cockpit-cli@latest alex"
