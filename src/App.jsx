@@ -21,11 +21,8 @@ import NotFound from './app/NotFound';
    ======================================================================= */
 
 // FLEETBO_IMPORTS
-import GuestCreator from './app/mocks/GuestCreator';
-import GuestList from './app/mocks/GuestList';
 import GuestManager from './app/mocks/GuestManager';
 import ProfileManager from './app/mocks/ProfileManager';
-import profileManager from './app/mocks/profileManager';
 import SampleTab from './app/mocks/SampleTab';
 // FLEETBO_MORE_IMPORTS
 
@@ -35,7 +32,7 @@ const DelayedNavbar = () => {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        const timer = setTimeout(() => setIsReady(true), 1000);
+        const timer = setTimeout(() => setIsReady(true), 1200);
         return () => clearTimeout(timer);
     }, []);
 
@@ -82,11 +79,8 @@ function AppContent() {
               ======================================================================= */}
              <Route path="/mocks/guestmanager" element={<GuestManager />} />
              <Route path="/mocks/profilemanager" element={<ProfileManager />} />
-             <Route path="/mocks/profilemanager" element={<profileManager />} />
              <Route path="/mocks/sampletab" element={<SampleTab />} />
-             {/* FLEETBO_DYNAMIC ROUTES */}
-            <Route path="/mocks/guestcreator" element={<GuestCreator />} />
-            <Route path="/mocks/guestlist" element={<GuestList />} />            
+             {/* FLEETBO_DYNAMIC ROUTES */}        
 
             <Route path="*"       element={<NotFound />} />
             <Route path="/navbar" element={<DelayedNavbar />} />
