@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import com.fleetbo.sdk.FleetboModule
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONObject
 
 class ProfileManager(context: Context, communicator: Any) : FleetboModule(context, communicator) {
@@ -43,13 +44,13 @@ class ProfileManager(context: Context, communicator: Any) : FleetboModule(contex
                                         .put("userId", uid)
                                         .put("username", newUsername)
                                         .put("phoneNumber", newPhone)
-                                        .put("dateCreated", "2026")
+                                        .put("dateCreated", "2026-03-28")
                                         .toString()
                                     saveDocument("fleetboDB", "users", json)
                                 },
                                 fetchProfile = {
-                                    val uid = getAuthUid() ?: ""
-                                    if (uid.isNotEmpty()) {
+                                    val uid = getAuthUid()
+                                    if (!uid.isNullOrEmpty()) {
                                         getUserDocuments("fleetboDB", "users")
                                     } else {
                                         ""
@@ -87,11 +88,14 @@ fun ProfileScreen(
     
     val scope = rememberCoroutineScope()
 
+    val avatarLetter by remember { derivedStateOf { if (username.isNotEmpty()) username.take(1).uppercase() else "?" } }
+    val isFormValid by remember { derivedStateOf { inputUsername.isNotBlank() && inputPhone.isNotBlank() } }
+
     LaunchedEffect(refreshTrigger) {
         isLoading = true
         try {
-            val res = fetchProfile()
-            if (res.isNotEmpty()) {
+            val res = withTimeoutOrNull(8000L) { fetchProfile() }
+            if (!res.isNullOrEmpty()) {
                 val json = JSONObject(res)
                 if (json.optBoolean("success")) {
                     val dataArray = json.optJSONArray("data")
@@ -111,6 +115,7 @@ fun ProfileScreen(
                 hasProfile = false
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             hasProfile = false
         } finally {
             isLoading = false
@@ -138,7 +143,7 @@ fun ProfileScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if (username.isNotEmpty()) username.take(1).uppercase() else "?",
+                        text = avatarLetter,
                         color = Color.White,
                         fontSize = 40.sp,
                         fontWeight = FontWeight.Bold
@@ -198,15 +203,23 @@ fun ProfileScreen(
                 
                 Button(
                     onClick = { 
-                        if (inputUsername.isNotEmpty() && inputPhone.isNotEmpty()) {
+                        if (isFormValid) {
                             isLoading = true
                             scope.launch {
-                                onSaveProfile(inputUsername, inputPhone)
-                                onRefresh()
+                                try {
+                                    onSaveProfile(inputUsername, inputPhone)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                } finally {
+                                    onRefresh()
+                                }
                             }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0E904D)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isFormValid) Color(0xFF0E904D) else Color.LightGray
+                    ),
+                    enabled = isFormValid,
                     modifier = Modifier.fillMaxWidth(0.8f).height(50.dp)
                 ) {
                     Text("SAVE", color = Color.White, fontWeight = FontWeight.Bold)
@@ -219,4 +232,4 @@ fun ProfileScreen(
 class ProfileManagerProxyFragment : Fragment() {
     // Requis par le contrat d'architecture même si inutilisé ici
 }
-// ⚡ Forged by Alex on 2026-03-28 at 20:01:02
+// ⚡ Forged by Alex on 2026-03-28 at 23:03:31
