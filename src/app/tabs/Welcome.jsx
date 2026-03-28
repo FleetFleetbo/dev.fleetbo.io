@@ -93,8 +93,7 @@ const Welcome = () => {
         alignItems: 'center',
         backgroundColor: 'rgba(247, 246, 246, 0.95)',
         zIndex: 1000,
-        // 🥷 RESTAURATION DES BORDURES CONDITIONNELLES
-        // Puisque Test.jsx n'a plus de bordures, on les définit ici proprement selon le mode.
+
         ...(navbarType === 'header' 
             ? { top: 0, borderBottom: '1px solid #eee' } 
             : { bottom: 0, borderTop: '1px solid #eee' }
