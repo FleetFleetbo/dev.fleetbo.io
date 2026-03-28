@@ -2,22 +2,20 @@
  * Fleetbo Tab Redirect or Not
  * This tab is handled by a fleetbo module (or its mock in dev).
  */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PageConfig } from '@fleetbo';
    
 export default function Tab3() {
+    const [navMode, setNavMode] = useState("show");
     useEffect(() => {
         Fleetbo.openView('ProfileManager', true, {
             emit: async (action, payload) => {
-                if (action === 'LOGOUT') {
-                    Fleetbo.logout();
-                }
+                if (action === 'LOGOUT') { Fleetbo.logout(); }
                 if (action === 'OPEN_EDIT_PROFILE') {
                     // await Fleetbo.exec('EditProfileModule', 'open');
                 }
             }
         });
-    }, []);
-   
-    return <PageConfig navbar="show" />;
+    }, []); 
+    return (<> <PageConfig navbar={navMode} /> </>);
 }
