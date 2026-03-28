@@ -1,54 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { fleetboDB } from '@fleetbo';
 
 export default function ProfileManager() {
-    const [username, setUsername] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [dateCreated, setDateCreated] = useState("");
+    const [profile, setProfile] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [hasProfile, setHasProfile] = useState(false);
-
-    const [inputUsername, setInputUsername] = useState("");
-    const [inputPhone, setInputPhone] = useState("");
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+    const [inputUsername, setInputUsername] = useState('');
+    const [inputPhone, setInputPhone] = useState('');
+
+    const avatarLetter = useMemo(() => {
+        return profile?.username ? profile.username.charAt(0).toUpperCase() : '?';
+    }, [profile?.username]);
+
+    const isFormValid = useMemo(() => {
+        return inputUsername.trim() !== '' && inputPhone.trim() !== '';
+    }, [inputUsername, inputPhone]);
+
     useEffect(() => {
-        let isMounted = true;
         const loadProfile = async () => {
             setIsLoading(true);
             try {
-                const res = await Fleetbo.getDocsU(fleetboDB, 'users');
-                if (isMounted) {
-                    if (res && res.success && res.data && res.data.length > 0) {
-                        const data = res.data[0];
-                        setUsername(data.username || "Unknown user");
-                        setPhoneNumber(data.phoneNumber || "Not provided");
-                        setDateCreated(data.dateCreated || "");
-                        setHasProfile(true);
-                    } else {
-                        setHasProfile(false);
-                    }
+                const result = await Fleetbo.getDocsU(fleetboDB, 'users');
+                if (result && result.success && result.data && result.data.length > 0) {
+                    setProfile(result.data[0]);
+                } else {
+                    setProfile(null);
                 }
             } catch (error) {
-                if (isMounted) setHasProfile(false);
+                console.error(error);
+                setProfile(null);
             } finally {
-                if (isMounted) setIsLoading(false);
+                setIsLoading(false);
             }
         };
         loadProfile();
-        return () => { isMounted = false; };
     }, [refreshTrigger]);
 
     const handleSave = async () => {
-        if (inputUsername && inputPhone) {
-            setIsLoading(true);
+        if (!isFormValid) return;
+        setIsLoading(true);
+        try {
             const payload = {
+                userId: "mock_user_id",
                 username: inputUsername,
                 phoneNumber: inputPhone,
-                dateCreated: "2026"
+                dateCreated: "2026-03-28"
             };
-            await Fleetbo.addWithUserId(fleetboDB, 'users', JSON.stringify(payload));
+            await Fleetbo.add(fleetboDB, 'users', JSON.stringify(payload));
             setRefreshTrigger(prev => prev + 1);
+        } catch (error) {
+            console.error(error);
+            setIsLoading(false);
         }
     };
 
@@ -59,84 +62,82 @@ export default function ProfileManager() {
                     <div className="spinner-border" style={{ color: '#0E904D' }} role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
-                ) : hasProfile ? (
-                    <>
+                ) : profile ? (
+                    <div className="d-flex flex-column align-items-center w-100">
                         <div 
-                            className="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
-                            style={{ width: '100px', height: '100px', backgroundColor: '#0E904D', fontSize: '40px' }}
+                            className="rounded-circle d-flex align-items-center justify-content-center mb-4"
+                            style={{ width: '100px', height: '100px', backgroundColor: '#0E904D', color: 'white', fontSize: '40px', fontWeight: 'bold' }}
                         >
-                            {username ? username.charAt(0).toUpperCase() : "?"}
+                            {avatarLetter}
                         </div>
-                        <div className="mt-4 fs-4 fw-bold text-dark">{username}</div>
-                        <div className="mt-2 text-secondary">{phoneNumber}</div>
-                        {dateCreated && <div className="mt-1 text-muted" style={{ fontSize: '14px' }}>Member since: {dateCreated}</div>}
                         
-                        <div className="mt-5 w-100 d-flex flex-column align-items-center">
-                            <div 
-                                className="d-flex align-items-center justify-content-center text-white fw-bold rounded"
-                                style={{ width: '80%', height: '50px', backgroundColor: '#000000', cursor: 'default', transition: 'transform 0.1s' }}
-                                onTouchStart={(e) => e.currentTarget.style.transform = 'scale(0.92)'}
-                                onTouchEnd={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.92)'}
-                                onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onClick={() => Fleetbo.emit('OPEN_EDIT_PROFILE', {})}
-                            >
-                                EDIT PROFILE
-                            </div>
-                            <div 
-                                className="d-flex align-items-center justify-content-center text-white fw-bold rounded mt-3"
-                                style={{ width: '80%', height: '50px', backgroundColor: '#DC3545', cursor: 'default', transition: 'transform 0.1s' }}
-                                onTouchStart={(e) => e.currentTarget.style.transform = 'scale(0.92)'}
-                                onTouchEnd={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.92)'}
-                                onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onClick={() => Fleetbo.emit('LOGOUT', {})}
-                            >
-                                LOGOUT
-                            </div>
+                        <h2 className="fw-bold text-dark mb-2" style={{ fontSize: '24px' }}>{profile.username}</h2>
+                        <span className="text-secondary mb-1" style={{ fontSize: '16px' }}>{profile.phoneNumber}</span>
+                        {profile.dateCreated && (
+                            <span className="text-muted mb-5" style={{ fontSize: '14px' }}>Member since: {profile.dateCreated}</span>
+                        )}
+
+                        <div 
+                            className="d-flex align-items-center justify-content-center text-white rounded mb-3"
+                            style={{ width: '80%', height: '50px', backgroundColor: 'black', fontWeight: 'bold', cursor: 'default' }}
+                            onClick={() => Fleetbo.emit('OPEN_EDIT_PROFILE', {})}
+                        >
+                            EDIT PROFILE
                         </div>
-                    </>
+
+                        <div 
+                            className="d-flex align-items-center justify-content-center text-white rounded"
+                            style={{ width: '80%', height: '50px', backgroundColor: '#DC3545', fontWeight: 'bold', cursor: 'default' }}
+                            onClick={() => Fleetbo.emit('LOGOUT', {})}
+                        >
+                            LOGOUT
+                        </div>
+                    </div>
                 ) : (
-                    <>
-                        <div className="fs-4 fw-bold text-dark">Create your profile</div>
-                        <div className="mt-2 text-secondary" style={{ fontSize: '14px' }}>Please provide your information.</div>
-                        
-                        <div className="mt-4 w-100">
+                    <div className="d-flex flex-column align-items-center w-100">
+                        <h2 className="fw-bold text-dark mb-2" style={{ fontSize: '24px' }}>Create your profile</h2>
+                        <span className="text-secondary mb-4" style={{ fontSize: '14px' }}>Please provide your information.</span>
+
+                        <div className="w-100 mb-3">
                             <label className="form-label text-secondary" style={{ fontSize: '12px' }}>Username</label>
                             <input 
                                 type="text" 
                                 className="form-control" 
                                 value={inputUsername}
                                 onChange={(e) => setInputUsername(e.target.value)}
+                                style={{ height: '50px' }}
                             />
                         </div>
-                        <div className="mt-3 w-100">
+
+                        <div className="w-100 mb-5">
                             <label className="form-label text-secondary" style={{ fontSize: '12px' }}>Phone number</label>
                             <input 
                                 type="text" 
                                 className="form-control" 
                                 value={inputPhone}
                                 onChange={(e) => setInputPhone(e.target.value)}
+                                style={{ height: '50px' }}
                             />
                         </div>
-                        
-                        <div className="mt-5 w-100 d-flex justify-content-center">
-                            <div 
-                                className="d-flex align-items-center justify-content-center text-white fw-bold rounded"
-                                style={{ width: '80%', height: '50px', backgroundColor: '#0E904D', cursor: 'default', transition: 'transform 0.1s' }}
-                                onTouchStart={(e) => e.currentTarget.style.transform = 'scale(0.92)'}
-                                onTouchEnd={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.92)'}
-                                onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                onClick={handleSave}
-                            >
-                                SAVE
-                            </div>
+
+                        <div 
+                            className="d-flex align-items-center justify-content-center text-white rounded"
+                            style={{ 
+                                width: '80%', 
+                                height: '50px', 
+                                backgroundColor: isFormValid ? '#0E904D' : '#D3D3D3', 
+                                fontWeight: 'bold', 
+                                cursor: 'default',
+                                pointerEvents: isFormValid ? 'auto' : 'none'
+                            }}
+                            onClick={handleSave}
+                        >
+                            SAVE
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
         </div>
     );
 }
-// ⚡ Forged by Alex on 2026-03-28 at 20:01:02
+// ⚡ Forged by Alex on 2026-03-28 at 23:03:31
