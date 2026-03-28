@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, AuthGate, useAuth, ProtectedRoute, ProtectedLayout } from '@fleetbo';
-import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
 
 // Application views
 import Login from "./app/auth/Login";
@@ -20,17 +19,23 @@ import NotFound from './app/NotFound';
     FLEETBO AUTO-GENERATION ZONE
     DO NOT DELETE OR MODIFY THE SECTION BELOW.
    ======================================================================= */
+
 // FLEETBO_IMPORTS
 import GuestCreator from './app/mocks/GuestCreator';
 import GuestList from './app/mocks/GuestList';
+import GuestManager from './app/mocks/GuestManager';
+import ProfileManager from './app/mocks/ProfileManager';
+import profileManager from './app/mocks/profileManager';
+import SampleTab from './app/mocks/SampleTab';
 // FLEETBO_MORE_IMPORTS
 
+import { useStartupEffect } from '@fleetbo/hooks/useStartupEffect';
 
 const DelayedNavbar = () => {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        const timer = setTimeout(() => setIsReady(true), 1500);
+        const timer = setTimeout(() => setIsReady(true), 1000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -39,22 +44,21 @@ const DelayedNavbar = () => {
     return <Welcome />;
 };
 
+const ActiveTabRedirect = ({ tab, children }) => {
+    const saved = localStorage.getItem("activeTab") || "Tab1";
+    if (saved === "Tab2") return <Navigate to="/tab2" replace />;
+    if (saved === "Tab3") return <Navigate to="/tab3" replace />;
+    return children;
+};
+
 function AppContent() {
-    const auth = useAuth();
     const location = useLocation();
 
     const isTechnicalRoute = 
         location.pathname === '/navbar' || 
         window.location.hash.includes('navbar') ||
         location.pathname.includes('/mocks') || 
-        window.location.hash.includes('mocks'); 
-
-    if (!isTechnicalRoute) {
-        const isLoading = auth ? auth.isLoading : true;
-        if (isLoading) {
-            return <InitializingScreen />;
-        }
-    }
+        window.location.hash.includes('mocks');
 
     return (
         <Routes>
@@ -63,7 +67,7 @@ function AppContent() {
             <Route path="/login"           element={<Login />} />
 
             <Route                         element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
-                <Route path="/tab1"        element={<Tab1 />} />
+                <Route path="/tab1"        element={<ActiveTabRedirect tab="Tab1"><Tab1 /></ActiveTabRedirect>} />
                 <Route path="/tab2"        element={<Tab2 />} />
                 <Route path="/tab3"        element={<Tab3 />} />
             </Route>
@@ -76,6 +80,10 @@ function AppContent() {
               FLEETBO DYNAMIC ROUTES
               DO NOT DELETE THE ANCHOR BELOW.
               ======================================================================= */}
+             <Route path="/mocks/guestmanager" element={<GuestManager />} />
+             <Route path="/mocks/profilemanager" element={<ProfileManager />} />
+             <Route path="/mocks/profilemanager" element={<profileManager />} />
+             <Route path="/mocks/sampletab" element={<SampleTab />} />
              {/* FLEETBO_DYNAMIC ROUTES */}
             <Route path="/mocks/guestcreator" element={<GuestCreator />} />
             <Route path="/mocks/guestlist" element={<GuestList />} />            
