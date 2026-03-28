@@ -23,7 +23,7 @@
 import { useEffect } from 'react';
 import { PageConfig } from '@fleetbo';
    
-export default function Tab3() {
+export default function Tab1() {
     const [navMode, setNavMode] = useState("show");
     useEffect(() => {
         Fleetbo.openView('GuestManager', true, {
