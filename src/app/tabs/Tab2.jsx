@@ -4,10 +4,11 @@
  * This tab is handled by a native module (or its mock in dev).
  * If React renders this route (e.g. on reload), we redirect to the mock.
  */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PageConfig } from '@fleetbo';
 
 export default function Tab2() {
+    const [navMode, setNavMode] = useState("show");
     useEffect(() => {
            Fleetbo.openView('SampleTab', true, {
                emit: async (action, payload) => {
@@ -17,7 +18,6 @@ export default function Tab2() {
                    }
                }
            });
-       }, []);
-   
-    return <PageConfig navbar="show" />;
+    }, []);
+    return (<> <PageConfig navbar={navMode} /> </>);
 }
