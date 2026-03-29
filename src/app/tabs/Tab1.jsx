@@ -20,9 +20,9 @@
  *   Fleetbo.delete(db, col, id)            → Delete doc
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { PageConfig } from '@fleetbo';
-   
+ 
 export default function Tab1() {
     const [navMode, setNavMode] = useState("show");
     useEffect(() => {
@@ -33,6 +33,5 @@ export default function Tab1() {
             }
         });
     }, []);
-   
     return (<> <PageConfig navbar={navMode} /> </>);
-}
+};
