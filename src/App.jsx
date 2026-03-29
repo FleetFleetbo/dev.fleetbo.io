@@ -32,7 +32,7 @@ const DelayedNavbar = () => {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        const timer = setTimeout(() => setIsReady(true), 1200);
+        const timer = setTimeout(() => setIsReady(true), 1500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -100,7 +100,7 @@ const InitializingScreen = ({ error }) => (
                 </button>
             </>
         ) : (
-            <div className="spinner-border text-success" role="status">
+            <div className="spinner-border text-light" role="status">
                 <span className="visually-hidden">Loading...</span>
             </div>
         )}
