@@ -10,6 +10,8 @@ export default function Tab3() {
     useEffect(() => {
         Fleetbo.openView('ProfileManager', true, {
             emit: async (action, payload) => {
+                if (action === 'HIDE_NAVBAR') setNavMode("none");
+                if (action === 'SHOW_NAVBAR') setNavMode("show");
                 if (action === 'LOGOUT') { Fleetbo.logout(); }
                 if (action === 'OPEN_EDIT_PROFILE') {
                     // await Fleetbo.exec('EditProfileModule', 'open');
