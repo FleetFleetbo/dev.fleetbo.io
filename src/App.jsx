@@ -11,8 +11,6 @@ import Tab2 from "./app/tabs/Tab2";
 import Tab3 from "./app/tabs/Tab3";
 import Welcome from "./app/tabs/Welcome";
 
-import SetUser from "./app/items/User/SetUser";
-import Item from "./app/items/Item";
 import NotFound from './app/NotFound';
 
 /* =======================================================================
@@ -68,9 +66,6 @@ function AppContent() {
                 <Route path="/tab2"        element={<Tab2 />} />
                 <Route path="/tab3"        element={<Tab3 />} />
             </Route>
-
-            <Route path="/setuser"         element={<ProtectedRoute><SetUser /></ProtectedRoute>} />
-            <Route path="/item/:id"        element={<ProtectedRoute><Item /></ProtectedRoute>} />
 
             {/* FLEETBO_ROUTES */}
             {/* =======================================================================
