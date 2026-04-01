@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@fleetbo": ["src/@fleetbo/index.js"],
+      "@fleetbo/*": ["src/@fleetbo/*"],
+      "app/*": ["src/app/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "build"]
+}
